@@ -1,5 +1,5 @@
 const title = 'XCJ'
-const subTitle = 'A front end'
+const subTitle = 'A Front-end'
 
 export default {
   language: 'EN',

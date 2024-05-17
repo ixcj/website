@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import { useDisplay } from '@/hooks'
-import { breakpointsConfig, mobileBreakpoint } from '@/config/breakpoints'
+import Cursor from '@/components/Cursor/index.vue'
 
-const { name: breakpointsName } = useDisplay(breakpointsConfig, mobileBreakpoint)
+import { breakpointsName, mobile } from '@/utils'
 </script>
 
 <template>
-  <div :class="[breakpointsName]">
-    {{ $t('subTitle') }}
+  <div
+    :class="[
+      breakpointsName,
+      mobile ? 'mobile' : ''
+    ]"
+  >
+    <Cursor v-if="!mobile" />
+    <div style="cursor: pointer; background-color: burlywood; padding: 50px;">{{ $t('title') }}</div>
   </div>
 </template>
 

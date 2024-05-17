@@ -1,7 +1,11 @@
-import {
-  type MobileBreakpoint,
-  type BreakpointsConfigItem,
-} from '@/hooks/useDisplay'
+export type BreakpointsConfigName = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
+
+export type MobileBreakpoint = number | BreakpointsConfigName
+
+export interface BreakpointsConfigItem {
+  name: BreakpointsConfigName
+  range: [number, number]
+}
 
 export const mobileBreakpoint: MobileBreakpoint = 'xs'
 
