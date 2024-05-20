@@ -11,8 +11,12 @@ function onMousemove(event: MouseEvent) {
   const { clientX, clientY, target, } = event
 
   requestAnimationFrame(() => {
-    cursor.value!.style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`
+    const style = cursor.value!.style
+    
+    style.transform = `translate3d(${clientX}px, ${clientY}px, 0) scale(1.2)`
     cursorType.value = getComputedStyle(target as Element)?.cursor || 'auto'
+    style.opacity = '1'
+    style.transition = '0.125s ease-out'
   })
 }
 
@@ -47,7 +51,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .page-cursor {
-  --cursor-size: 20px;
+  --cursor-size: 15px;
   position: fixed;
   z-index: 9999;
   top: calc(0px - var(--cursor-size) / 2);
@@ -56,15 +60,19 @@ onUnmounted(() => {
   height: var(--cursor-size);
   border-radius: 50%;
   backdrop-filter: invert(100%);
-  transition: 0.125s ease-out;
   pointer-events: none;
+  opacity: 0;
 
   &.pointer {
     --cursor-size: 40px;
+
+    &.pressed {
+      --cursor-size: 20px;
+    }
   }
 
   &.pressed {
-    --cursor-size: 13px;
+    --cursor-size: 8px;
   }
 }
 </style>

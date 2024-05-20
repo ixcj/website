@@ -1,7 +1,32 @@
 <script setup lang="ts">
+import { useHead } from '@unhead/vue'
+import { useI18n } from 'vue-i18n'
 import { breakpointsName, mobile } from '@/utils'
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
+
+const { t } = useI18n()
+
+const title = `${t('title')} | ${t('subTitle')}`
+
+useHead({
+  title,
+  htmlAttrs: { lang: t('lang') },
+  meta: [
+    {
+      name: 'keywords',
+      content: t('keywords'),
+    },
+    {
+      name: 'description',
+      content: t('description'),
+    },
+    {
+      name: 'og:title',
+      content: title,
+    },
+  ],
+})
 </script>
 
 <template>
