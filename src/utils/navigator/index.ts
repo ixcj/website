@@ -1,4 +1,4 @@
 export function getBrowserLanguage() {
-  const isChinese = globalThis.navigator?.language.includes('zh')
-  return isChinese ? 'zh' : 'en'
+  const isEnglish = globalThis.navigator?.language.includes('en')
+  return isEnglish ? 'en' : 'zh'
 }
