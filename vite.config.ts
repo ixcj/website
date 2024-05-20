@@ -3,8 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { fileURLToPath, URL } from 'node:url'
 
-const tags = require('./src/config/index.ts').tags
-const assetsUrl = require('./src/config/index.ts').assetsUrl
+const { tags, assetsUrl } = require('./src/config/index.ts')
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,6 +15,9 @@ export default defineConfig({
       },
     })
   ],
+  ssr: {
+    noExternal: ['vue-i18n'],
+  },
   css: {
     preprocessorOptions: {
       scss: {

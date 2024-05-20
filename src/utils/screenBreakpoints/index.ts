@@ -21,5 +21,5 @@ watchDebounced(
   
     mobile.value = (newWidth <= mobileThresholdValue)
   },
-  { immediate: true, debounce: 33 }
+  { immediate: true, debounce: 16 }
 )
