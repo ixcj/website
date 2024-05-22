@@ -8,15 +8,17 @@ const cursorState = ref('')
 function onMousemove(event: MouseEvent) {
   if(!cursor.value) return
 
-  const { clientX, clientY, target, } = event
+  const { clientX, clientY } = event
+  const target = event.target as HTMLElement
 
   requestAnimationFrame(() => {
     const style = cursor.value!.style
-    
     style.transform = `translate3d(${clientX}px, ${clientY}px, 0) scale(1.2)`
-    cursorType.value = getComputedStyle(target as Element)?.cursor || 'auto'
-    style.opacity = '1'
-    style.transition = '0.125s ease-out'
+    cursorType.value = getComputedStyle(target as HTMLElement)?.cursor || 'auto'
+
+    const hideCursor = target.classList.contains('hide-cursor')
+    style.transition = hideCursor ? '0.2s ease-out' : '0.125s ease-out'
+    style.opacity = hideCursor ? '0' : '1'
   })
 }
 

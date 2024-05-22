@@ -5,8 +5,9 @@ import { breakpointsConfig, mobileBreakpoint } from '@/config/breakpoints'
 export const { width: windowWidth } = useWindowSize()
 export const breakpointsName = ref('xl')
 export const mobile = ref(false)
+export const touch = ref(false)
 
-const mobileThresholdValue =
+export const mobileThresholdValue =
   typeof mobileBreakpoint === 'number'
     ? mobileBreakpoint
     : breakpointsConfig.find(item => item.name === mobileBreakpoint)?.range[1] ?? 600
@@ -23,3 +24,7 @@ watchDebounced(
   },
   { immediate: true, debounce: 16 }
 )
+
+globalThis.matchMedia && globalThis.matchMedia('(pointer: coarse)').addEventListener('change', () => {
+  touch.value = globalThis.matchMedia('(pointer: coarse)').matches
+})

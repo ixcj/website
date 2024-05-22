@@ -1,0 +1,10 @@
+:root {
+  --transition-duration: 0.125s;
+  --bg-color: #f7f8f8;
+  --text-color: #000212;
+
+  &.dark {
+    --bg-color: #000212;
+    --text-color: #f7f8f8;
+  }
+}

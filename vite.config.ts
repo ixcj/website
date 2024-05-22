@@ -1,22 +1,28 @@
 /// <reference types="vite-ssg" />
 import { defineConfig } from 'vite'
+import { createI18n } from 'vue-i18n'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 
-const { getI18n } = require('./src/language/index.ts')
+const { messages, defaultLanguage } = require('./src/language/index.ts')
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  ssr: {
-    noExternal: ['vue-i18n'],
-  },
   ssgOptions: {
     includedRoutes() {
-      return ['/', '/en/']
+      return Object.keys(messages).map(language => {
+        return language === defaultLanguage ? '/' : `/${language}/`
+      })
     },
     onBeforePageRender(route, _, ctx) {
-      const i18n = getI18n(route === '/en/' ? 'en' : 'zh')
+      const locale = route.replace(/^\/|\/$/g, '') ?? defaultLanguage
+      const i18n = createI18n({
+        legacy: false,
+        locale,
+        fallbackLocale: defaultLanguage,
+        messages,
+      })
       ctx.app.use(i18n)
       return undefined
     }

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/dom-view-transitions": "^1.0.4",
     "@vueuse/core": "^10.9.0",
     "gsap": "^3.12.5",
     "sass": "^1.77.1",

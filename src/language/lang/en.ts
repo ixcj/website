@@ -1,13 +1,16 @@
-const title = 'XCJ'
-const subTitle = 'A Front-end'
-const keywords = 'Front-end,XCJ,Vue,JavaScript'
-const description = 'XCJ\'s Personal Homepage.'
+const name = 'XCJ'
 
 export default {
   lang: 'en-US',
   language: 'EN',
-  title,
-  subTitle,
-  keywords,
-  description,
+  
+  name,
+  title: name,
+  subTitle: 'A Front-end',
+  description: `${name}\'s Personal Homepage.`,
+
+  home: 'Home',
+  about: 'About',
+  project: 'Project',
+  experience: 'Experience',
 }

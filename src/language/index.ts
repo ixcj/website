@@ -5,28 +5,15 @@ import en from './lang/en.ts'
 // @ts-ignore
 globalThis.__VUE_PROD_DEVTOOLS__ = false
 
-export function getI18n(lang: string = 'zh') {
-  return createI18n({
-    legacy: false,
-    locale: lang,
-    fallbackLocale: 'zh',
-    messages: {
-      zh,
-      en
-    },
-  })
-}
+export const defaultLanguage = 'zh'
+export const messages = { zh, en }
 
-const locale = globalThis.location?.pathname.startsWith('/en') ? 'en' : 'zh'
-
+const locale = globalThis.location?.pathname.replace(/^\/|\/$/g, '') ?? defaultLanguage
 const i18n = createI18n({
   legacy: false,
   locale: locale,
-  fallbackLocale: 'zh',
-  messages: {
-    zh,
-    en
-  },
+  fallbackLocale: defaultLanguage,
+  messages,
 })
  
 export default i18n

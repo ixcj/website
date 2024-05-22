@@ -1,13 +1,16 @@
-const title = 'XCJ'
-const subTitle = '一个前端'
-const keywords = '前端,XCJ,Vue,JavaScript'
-const description = 'XCJ的个人主页。'
+const name = 'XCJ'
 
 export default {
-  lang: 'zh-CN',
-  language: '中',
-  title,
-  subTitle,
-  keywords,
-  description,
+  lang: 'en-US',
+  language: 'EN',
+  
+  name,
+  title: name,
+  subTitle: '一个前端',
+  description: `${name}的个人主页。`,
+
+  home: '主页',
+  about: '关于',
+  project: '项目',
+  experience: '经历',
 }
