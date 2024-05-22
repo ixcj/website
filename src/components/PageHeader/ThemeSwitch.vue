@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import { nextTick } from 'vue'
-import { useDark } from '@vueuse/core'
+import { nextTick, watchEffect } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
 
-const isDark = useDark()
+const isDark = useLocalStorage('isDark', false)
+watchEffect(() => {
+  document.documentElement.classList.toggle('dark', isDark.value)
+})
+
+async function toggleDark() {
+  isDark.value = !isDark.value
+  await nextTick()
+}
 
 function switchTheme(event: MouseEvent) {
   if (!document.startViewTransition) {
-    displayNewImage()
+    toggleDark()
     return
   }
 
@@ -20,8 +28,7 @@ function switchTheme(event: MouseEvent) {
     `circle(${radius}px at ${clientX}px ${clientY}px)`,
   ]
 
-  const transition = document.startViewTransition(async () => await displayNewImage())
-
+  const transition = document.startViewTransition(async () => await toggleDark())
   transition.ready.then(() => {
     document.documentElement.animate(
       {
@@ -36,11 +43,6 @@ function switchTheme(event: MouseEvent) {
       }
     )
   })
-}
-
-async function displayNewImage() {
-  isDark.value = !isDark.value
-  await nextTick()
 }
 </script>
 

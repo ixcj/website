@@ -8,14 +8,14 @@
 
 :root {
   color: var(--text-color);
-}
 
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
+  &::view-transition-old(root),
+  &::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
 
-.dark::view-transition-old(root) {
-  z-index: 1;
+  &.dark::view-transition-old(root) {
+    z-index: 1;
+  }
 }

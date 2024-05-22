@@ -13,8 +13,8 @@ function onMousemove(event: MouseEvent) {
 
   requestAnimationFrame(() => {
     const style = cursor.value!.style
-    style.transform = `translate3d(${clientX}px, ${clientY}px, 0) scale(1.2)`
-    cursorType.value = getComputedStyle(target as HTMLElement)?.cursor || 'auto'
+    style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`
+    cursorType.value = getComputedStyle(target)?.cursor || 'auto'
 
     const hideCursor = target.classList.contains('hide-cursor')
     style.transition = hideCursor ? '0.2s ease-out' : '0.125s ease-out'
@@ -53,7 +53,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .page-cursor {
-  --cursor-size: 15px;
+  --cursor-size: 20px;
   position: fixed;
   z-index: 9999;
   top: calc(0px - var(--cursor-size) / 2);
@@ -74,7 +74,7 @@ onUnmounted(() => {
   }
 
   &.pressed {
-    --cursor-size: 8px;
+    --cursor-size: 10px;
   }
 }
 </style>

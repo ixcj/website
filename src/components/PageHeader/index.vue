@@ -16,7 +16,6 @@ watchEffect(() => {
 
   globalThis.document?.body.style.setProperty('--header-height', `${headerHeight.value}px`)
 })
-
 </script>
 
 <template>
@@ -82,6 +81,7 @@ watchEffect(() => {
           .page-header-link {
             text-decoration: none;
             color: var(--text-color);
+            transition: color var(--transition-duration);
           }
         }
       }

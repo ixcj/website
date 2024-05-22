@@ -35,10 +35,12 @@ useHead({
 
 <style lang="scss">
 .container {
+  min-height: 100vh;
   padding-top: var(--header-height);
   box-sizing: border-box;
-  transition: padding var(--transition-duration);
   background-color: var(--bg-color);
-  min-height: 100vh;
+  transition: 
+    padding-top var(--transition-duration),
+    background-color var(--transition-duration);
 }
 </style>
