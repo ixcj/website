@@ -33,8 +33,11 @@ watchEffect(() => {
     <div class="page-header-inner">
       <span class="page-header-title">{{ $t('title') }}</span>
       <div class="page-header-feature">
-        <span class="switch-lang" @click="handleSwitchLang">{{ $t('language') }}</span>
-        <ThemeSwitch v-if="!mobile" />
+        <template v-if="!mobile">
+          <span class="switch-lang" @click="handleSwitchLang">{{ $t('language') }}</span>
+          <ThemeSwitch />
+        </template>
+        
 
         <Hamburger
           v-if="mobile"
@@ -52,6 +55,7 @@ watchEffect(() => {
             <a class="page-header-link" :href="`#${item}`">{{ $t(item) }}</a>
           </li>
           <li v-if="mobile" class="page-header-nav-item" style="flex: 0 0 100%;">
+            <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
             <ThemeSwitch class="page-header-link" />
           </li>
         </ul>
@@ -164,10 +168,6 @@ watchEffect(() => {
         pointer-events: all;
       }
 
-      .switch-lang {
-        cursor: pointer;
-      }
-
       .page-header-hamburger {
         position: absolute;
         right: var(--inside);
@@ -203,6 +203,10 @@ watchEffect(() => {
         }
       }
     }
+  }
+
+  .switch-lang {
+    cursor: pointer;
   }
 }
 </style>
