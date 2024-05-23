@@ -51,7 +51,7 @@ function switchTheme(event: MouseEvent) {
     class="theme-switch hide-cursor"
     @click="switchTheme"
   >
-    {{ isDark ? '☀️' : '🌙' }}
+    {{ isDark ? '🌙' : '☀️' }}
   </div>
 </template>
 

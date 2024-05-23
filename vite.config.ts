@@ -16,7 +16,7 @@ export default defineConfig({
       })
     },
     onBeforePageRender(route, _, ctx) {
-      const locale = route.replace(/^\/|\/$/g, '') ?? defaultLanguage
+      const locale = route.replace(/^\/|\/$/g, '') || defaultLanguage
       const i18n = createI18n({
         legacy: false,
         locale,

@@ -1,12 +1,13 @@
 const name = 'XCJ'
+const intro = '一个前端'
 
 export default {
-  lang: 'en-US',
-  language: 'EN',
+  lang: 'zh-US',
+  language: '中',
   
   name,
-  title: name,
-  subTitle: '一个前端',
+  intro,
+  title: `${name} - ${intro}`,
   description: `${name}的个人主页。`,
 
   home: '主页',

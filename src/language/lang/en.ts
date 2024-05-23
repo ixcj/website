@@ -1,12 +1,13 @@
 const name = 'XCJ'
+const intro = 'A Front-end'
 
 export default {
   lang: 'en-US',
   language: 'EN',
   
   name,
-  title: name,
-  subTitle: 'A Front-end',
+  intro,
+  title: `${name} - ${intro}`,
   description: `${name}\'s Personal Homepage.`,
 
   home: 'Home',

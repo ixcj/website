@@ -7,7 +7,7 @@ import PageHeader from '@/components/PageHeader/index.vue'
 
 const { t } = useI18n()
 
-const title = `${t('title')} | ${t('subTitle')}`
+const title = t('title')
 const description = t('description')
 
 useHead({
@@ -26,7 +26,7 @@ useHead({
     <PageHeader />
     
     <section class="main">
-      {{ $t('subTitle') }}
+      {{ $t('name') }}
     </section>
 
     <PageCursor v-if="!touch" />
@@ -35,7 +35,7 @@ useHead({
 
 <style lang="scss">
 .container {
-  min-height: 100vh;
+  min-height: 200vh;
   padding-top: var(--header-height);
   box-sizing: border-box;
   background-color: var(--bg-color);
