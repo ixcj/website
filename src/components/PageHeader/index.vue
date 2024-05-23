@@ -31,13 +31,12 @@ watchEffect(() => {
 <template>
   <header class="page-header">
     <div class="page-header-inner">
-      <span class="page-header-title">{{ $t('title') }}</span>
+      <!-- <span class="page-header-title">{{ $t('title') }}</span> -->
       <div class="page-header-feature">
         <template v-if="!mobile">
           <span class="switch-lang" @click="handleSwitchLang">{{ $t('language') }}</span>
           <ThemeSwitch />
         </template>
-        
 
         <Hamburger
           v-if="mobile"
@@ -46,15 +45,33 @@ watchEffect(() => {
           @click="menuHamburgerActive = !menuHamburgerActive"
         />
       </div>
+
+      <nav class="page-header-nav" v-if="!mobile">
+        <Transition name="nav">
+          <ul
+            v-show="showMenu"
+            ref="navList"
+            class="page-header-nav-list"
+          >
+            <li class="page-header-nav-item" v-for="item in section">
+              <a class="page-header-link" :href="`#${item}`">{{ $t(item) }}</a>
+            </li>
+          </ul>
+        </Transition>
+      </nav>
     </div>
 
-    <nav class="page-header-nav">
+    <nav class="page-header-nav mobile-nav" v-if="mobile">
       <Transition name="nav">
-        <ul v-show="showMenu" class="page-header-nav-list">
+        <ul
+          v-show="showMenu"
+          ref="navList"
+          class="page-header-nav-list column"
+        >
           <li class="page-header-nav-item" v-for="item in section">
             <a class="page-header-link" :href="`#${item}`">{{ $t(item) }}</a>
           </li>
-          <li v-if="mobile" class="page-header-nav-item" style="flex: 0 0 100%;">
+          <li class="page-header-nav-item">
             <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
             <ThemeSwitch class="page-header-link" />
           </li>
@@ -65,12 +82,6 @@ watchEffect(() => {
 </template>
 
 <style lang="scss" scoped>
-.nav-enter-active,
-.nav-leave-active {
-  transition: var(--transition-duration) ease;
-  transform-origin: top;
-}
-
 .nav-enter-from,
 .nav-leave-to {
   opacity: 0;
@@ -119,24 +130,22 @@ watchEffect(() => {
       transition: padding-top var(--transition-duration);
 
       .page-header-nav-list {
-        padding: 15px 0;
         background-color: rgba($color: #aaa, $alpha: .1);
         backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba($color: #aaa, $alpha: .3) !important;
       }
     }
   }
 
   .page-header-inner {
     position: absolute;
-    border-radius: 999px;
+    border-radius: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 48px;
     width: 100%;
     max-width: calc(v-bind(mobileThresholdValue) * 1px);
-    min-width: 300px;
+    min-width: 100px;
     border: 1px solid rgba($color: #aaa, $alpha: .3);
     border-bottom-color: rgba($color: #aaa, $alpha: .3) !important;
     background-color: rgba($color: #aaa, $alpha: .1);
@@ -189,6 +198,22 @@ watchEffect(() => {
       gap: 10px;
       justify-content: center;
       align-items: center;
+      transition: var(--transition-duration) ease;
+
+      &.column {
+        flex-direction: column;
+        border-bottom: 1px solid rgba($color: #aaa, $alpha: .3) !important;
+        gap: 0px;
+
+        .page-header-nav-item {
+          width: 90%;
+          border-bottom: 1px solid rgba($color: #aaa, $alpha: .3);
+
+          &:last-of-type {
+            border: none;
+          }
+        }
+      }
 
       .page-header-nav-item {
         display: flex;
@@ -196,10 +221,12 @@ watchEffect(() => {
         align-items: center;
         
         .page-header-link {
-          padding: 5px 20px;
+          width: 100%;
+          padding: 15px 20px;
           text-decoration: none;
           color: var(--text-color);
           transition: color var(--transition-duration);
+          text-align: center;
         }
       }
     }
