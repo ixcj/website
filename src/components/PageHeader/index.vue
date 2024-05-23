@@ -33,8 +33,8 @@ watchEffect(() => {
     <div class="page-header-inner">
       <span class="page-header-title">{{ $t('title') }}</span>
       <div class="page-header-feature">
-        <ThemeSwitch />
         <span class="switch-lang" @click="handleSwitchLang">{{ $t('language') }}</span>
+        <ThemeSwitch v-if="!mobile" />
 
         <Hamburger
           v-if="mobile"
@@ -50,6 +50,9 @@ watchEffect(() => {
         <ul v-show="showMenu" class="page-header-nav-list">
           <li class="page-header-nav-item" v-for="item in section">
             <a class="page-header-link" :href="`#${item}`">{{ $t(item) }}</a>
+          </li>
+          <li v-if="mobile" class="page-header-nav-item" style="flex: 0 0 100%;">
+            <ThemeSwitch class="page-header-link" />
           </li>
         </ul>
       </Transition>
@@ -189,6 +192,7 @@ watchEffect(() => {
 
       .page-header-nav-item {
         display: flex;
+        justify-content: center;
         align-items: center;
         
         .page-header-link {
