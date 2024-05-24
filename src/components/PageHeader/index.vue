@@ -146,6 +146,7 @@ watchEffect(() => {
     width: 100%;
     max-width: calc(v-bind(mobileThresholdValue) * 1px);
     min-width: 100px;
+    box-sizing: border-box;
     border: 1px solid rgba($color: #aaa, $alpha: .3);
     border-bottom-color: rgba($color: #aaa, $alpha: .3) !important;
     background-color: rgba($color: #aaa, $alpha: .1);
@@ -194,7 +195,6 @@ watchEffect(() => {
     .page-header-nav-list {
       height: 100%;
       display: flex;
-      flex-wrap: wrap;
       gap: 10px;
       justify-content: center;
       align-items: center;
