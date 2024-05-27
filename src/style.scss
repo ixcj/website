@@ -10,6 +10,8 @@
 :root {
   color: var(--text-color);
   background-color: var(--bg-color);
+  scroll-behavior: smooth;
+  font-family: 'MiSans';
 
   &::view-transition-old(root),
   &::view-transition-new(root) {

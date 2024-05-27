@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { breakpointsName, mobile, touch } from '@/utils/screen'
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
+import PageMain from '@/components/PageMain/index.vue'
 
 const { t } = useI18n()
 
@@ -24,10 +25,7 @@ useHead({
 <template>
   <div class="container" :class="[breakpointsName, mobile ? 'mobile' : '']">
     <PageHeader />
-    
-    <section class="main">
-      {{ $t('name') }}
-    </section>
+    <PageMain />
 
     <PageCursor v-if="!touch" />
   </div>
@@ -36,11 +34,8 @@ useHead({
 <style lang="scss">
 .container {
   min-height: 200vh;
-  padding-top: var(--header-height);
   box-sizing: border-box;
   background-color: var(--bg-color);
-  transition: 
-    padding-top var(--transition-duration),
-    background-color var(--transition-duration);
+  transition: background-color var(--transition-duration);
 }
 </style>

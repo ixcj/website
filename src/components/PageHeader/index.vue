@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect, computed } from 'vue'
 import { mobile, mobileThresholdValue } from '@/utils/screen'
-import { section } from '@/config/section'
+import { sectionList } from '@/config/section'
 import ThemeSwitch from './ThemeSwitch.vue'
 import Hamburger from './Hamburger.vue'
 
@@ -31,7 +31,6 @@ watchEffect(() => {
 <template>
   <header class="page-header">
     <div class="page-header-inner">
-      <!-- <span class="page-header-title">{{ $t('title') }}</span> -->
       <div class="page-header-feature">
         <template v-if="!mobile">
           <span class="switch-lang" @click="handleSwitchLang">{{ $t('language') }}</span>
@@ -39,7 +38,7 @@ watchEffect(() => {
         </template>
 
         <Hamburger
-          v-if="mobile"
+          v-else
           :active="menuHamburgerActive"
           class="page-header-hamburger"
           @click="menuHamburgerActive = !menuHamburgerActive"
@@ -53,8 +52,8 @@ watchEffect(() => {
             ref="navList"
             class="page-header-nav-list"
           >
-            <li class="page-header-nav-item" v-for="item in section">
-              <a class="page-header-link" :href="`#${item}`">{{ $t(item) }}</a>
+            <li class="page-header-nav-item" v-for="section in sectionList">
+              <a class="page-header-link" :href="`#${section}`">{{ $t(section) }}</a>
             </li>
           </ul>
         </Transition>
@@ -68,8 +67,8 @@ watchEffect(() => {
           ref="navList"
           class="page-header-nav-list column"
         >
-          <li class="page-header-nav-item" v-for="item in section">
-            <a class="page-header-link" :href="`#${item}`">{{ $t(item) }}</a>
+          <li class="page-header-nav-item" v-for="section in sectionList">
+            <a class="page-header-link" :href="`#${section}`">{{ $t(section) }}</a>
           </li>
           <li class="page-header-nav-item">
             <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
@@ -90,6 +89,7 @@ watchEffect(() => {
 
 .page-header {
   position: fixed;
+  z-index: 99;
   top: 0;
   left: 0;
   width: 100%;
@@ -132,6 +132,7 @@ watchEffect(() => {
       .page-header-nav-list {
         background-color: rgba($color: #aaa, $alpha: .1);
         backdrop-filter: blur(10px);
+        text-shadow: 0 0 5px var(--bg-color);
       }
     }
   }

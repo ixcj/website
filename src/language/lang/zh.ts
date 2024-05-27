@@ -7,7 +7,7 @@ export default {
   
   name,
   intro,
-  title: `${name} - ${intro}`,
+  title: `${name} · ${intro}`,
   description: `${name}的个人主页。`,
 
   home: '主页',

@@ -7,7 +7,7 @@ export default {
   
   name,
   intro,
-  title: `${name} - ${intro}`,
+  title: `${name} · ${intro}`,
   description: `${name}\'s Personal Homepage.`,
 
   home: 'Home',
