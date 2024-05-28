@@ -1,5 +1,8 @@
-const name = 'XCJ'
-const intro = '一个前端'
+export const name = 'XCJ'
+export const intro = '一个前端'
+export const motto = [
+  '123'
+]
 
 export default {
   lang: 'zh-US',
@@ -7,11 +10,14 @@ export default {
   
   name,
   intro,
+  motto,
   title: `${name} · ${intro}`,
   description: `${name}的个人主页。`,
 
-  home: '主页',
-  about: '关于',
-  project: '项目',
-  experience: '经历',
+  SectionText: {
+    home: '主页',
+    about: '关于',
+    project: '项目',
+    experience: '经历',
+  },
 }

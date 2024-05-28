@@ -30,7 +30,8 @@ function switchTheme(event: MouseEvent) {
 
   const transition = document.startViewTransition(async () => await toggleDark())
   transition.ready.then(() => {
-    document.documentElement.animate(
+    document.documentElement.classList.add('hide-scroll-bar')
+    const animation = document.documentElement.animate(
       {
         clipPath: isDark.value ? clipPath.reverse() : clipPath
       },
@@ -40,8 +41,11 @@ function switchTheme(event: MouseEvent) {
         pseudoElement: isDark.value
           ? '::view-transition-old(root)'
           : '::view-transition-new(root)',
-      }
+      },
     )
+    
+    animation.onfinish =
+      () => document.documentElement.classList.remove('hide-scroll-bar')
   })
 }
 </script>

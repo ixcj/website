@@ -4,6 +4,7 @@ import { mobile, mobileThresholdValue } from '@/utils/screen'
 import { sectionList } from '@/config/section'
 import ThemeSwitch from './ThemeSwitch.vue'
 import Hamburger from './Hamburger.vue'
+// import { mottoLength } from '@/language'
 
 const headerHeight = ref(80)
 
@@ -53,7 +54,7 @@ watchEffect(() => {
             class="page-header-nav-list"
           >
             <li class="page-header-nav-item" v-for="section in sectionList">
-              <a class="page-header-link" :href="`#${section}`">{{ $t(section) }}</a>
+              <a class="page-header-link" :href="`#${section}`">{{ $t(`SectionText.${section}`) }}</a>
             </li>
           </ul>
         </Transition>
@@ -68,7 +69,7 @@ watchEffect(() => {
           class="page-header-nav-list column"
         >
           <li class="page-header-nav-item" v-for="section in sectionList">
-            <a class="page-header-link" :href="`#${section}`">{{ $t(section) }}</a>
+            <a class="page-header-link" :href="`#${section}`">{{ $t(`SectionText.${section}`) }}</a>
           </li>
           <li class="page-header-nav-item">
             <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
@@ -92,9 +93,11 @@ watchEffect(() => {
   z-index: 99;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: calc(v-bind(headerHeight) * 1px);
   transition: height var(--transition-duration);
+  padding-right: var(--scroll-bar-width);
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -235,6 +238,8 @@ watchEffect(() => {
 
   .switch-lang {
     cursor: pointer;
+    font-size: 14px;
+    line-height: 14px;
   }
 }
 </style>

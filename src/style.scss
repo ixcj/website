@@ -22,4 +22,9 @@
   &.dark::view-transition-old(root) {
     z-index: 1;
   }
+
+  &.hide-scroll-bar {
+    overflow-y: hidden;
+    padding-right: var(--scroll-bar-width);
+  }
 }

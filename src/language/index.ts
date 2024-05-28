@@ -8,7 +8,8 @@ globalThis.__VUE_PROD_DEVTOOLS__ = false
 export const defaultLanguage = 'zh'
 export const messages = { zh, en }
 
-const locale = globalThis.location?.pathname.replace(/^\/|\/$/g, '') || defaultLanguage
+const locale = globalThis.location?.pathname.replace(/^\/|\/$/g, '')
+  || defaultLanguage
 const i18n = createI18n({
   legacy: false,
   locale: locale,
@@ -17,3 +18,6 @@ const i18n = createI18n({
 })
  
 export default i18n
+
+export const mottoLength =
+  locale === 'zh' ? zh.motto.length : en.motto.length
