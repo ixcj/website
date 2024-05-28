@@ -31,30 +31,23 @@ function switchTheme(event: MouseEvent) {
   const transition = document.startViewTransition(async () => await toggleDark())
   transition.ready.then(() => {
     document.documentElement.classList.add('hide-scroll-bar')
-    const animation = document.documentElement.animate(
-      {
-        clipPath: isDark.value ? clipPath.reverse() : clipPath
-      },
-      {
-        duration: 400,
-        easing: "ease-in",
-        pseudoElement: isDark.value
-          ? '::view-transition-old(root)'
-          : '::view-transition-new(root)',
-      },
-    )
-    
-    animation.onfinish =
-      () => document.documentElement.classList.remove('hide-scroll-bar')
+    document.documentElement.animate({
+      clipPath: isDark.value ? clipPath.reverse() : clipPath
+    }, {
+      duration: 400,
+      easing: "ease-in",
+      pseudoElement: isDark.value
+        ? '::view-transition-old(root)'
+        : '::view-transition-new(root)',
+    }).onfinish = () => {
+      document.documentElement.classList.remove('hide-scroll-bar')
+    }
   })
 }
 </script>
 
 <template>
-  <div
-    class="theme-switch hide-cursor"
-    @click="switchTheme"
-  >
+  <div class="theme-switch hide-cursor" @click="switchTheme">
     {{ isDark ? '🌙' : '☀️' }}
   </div>
 </template>

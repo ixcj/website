@@ -4,7 +4,6 @@ import { mobile, mobileThresholdValue } from '@/utils/screen'
 import { sectionList } from '@/config/section'
 import ThemeSwitch from './ThemeSwitch.vue'
 import Hamburger from './Hamburger.vue'
-// import { mottoLength } from '@/language'
 
 const headerHeight = ref(80)
 
@@ -25,7 +24,7 @@ watchEffect(() => {
     menuHamburgerActive.value = false
   }
 
-  globalThis.document?.body.style.setProperty('--header-height', `${headerHeight.value}px`)
+  document.body.style.setProperty('--header-height', `${headerHeight.value}px`)
 })
 </script>
 
@@ -94,7 +93,7 @@ watchEffect(() => {
   top: 0;
   left: 0;
   width: 100vw;
-  height: calc(v-bind(headerHeight) * 1px);
+  height: var(--header-height);
   transition: height var(--transition-duration);
   padding-right: var(--scroll-bar-width);
   box-sizing: border-box;

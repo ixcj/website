@@ -34,7 +34,7 @@ function setScrollBarWidth() {
     || globalThis?.document.documentElement.clientWidth || 0
 
   scrollBarWidth.value = iWidth - cWidth
-  globalThis?.document.documentElement.style.setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
+  globalThis?.document.body.style.setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
 }
 
 globalThis.matchMedia &&
