@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import { sectionList } from '@/config/section'
-import PageMainHome from './PageMainHome.vue'
+import SectionHome from '@/components/Section/SectionHome.vue'
 
 const sectionMap: { [section: string]: Component } = {
-  home: PageMainHome
+  home: SectionHome
 }
 </script>
 

@@ -10,8 +10,10 @@ export const mobileThresholdValue =
 export const { width: windowWidth } = useWindowSize()
 export const breakpointsName = ref('xl')
 export const mobile = ref(windowWidth.value <= mobileThresholdValue)
-export const touch = ref(Boolean(globalThis.matchMedia('(pointer: coarse)')?.matches))
 export const scrollBarWidth = ref(0)
+
+const haveMatchMedia = 'matchMedia' in globalThis
+export const touch = ref(haveMatchMedia && Boolean(globalThis.matchMedia('(pointer: coarse)')?.matches))
 
 watchDebounced(
   windowWidth,
@@ -30,14 +32,14 @@ watchDebounced(
 
 function setScrollBarWidth() {
   const iWidth = globalThis?.innerWidth || 0
-  const cWidth = globalThis?.document.body.clientWidth
-    || globalThis?.document.documentElement.clientWidth || 0
+  const cWidth = globalThis?.document?.body.clientWidth
+    || globalThis?.document?.documentElement.clientWidth || 0
 
   scrollBarWidth.value = iWidth - cWidth
-  globalThis?.document.documentElement.style.setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
+  globalThis?.document?.documentElement.style.setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
 }
 
-globalThis.matchMedia &&
+haveMatchMedia &&
   globalThis.matchMedia('(pointer: coarse)').addEventListener('change', () => {
     touch.value = globalThis.matchMedia('(pointer: coarse)').matches
   })

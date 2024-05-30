@@ -2,9 +2,9 @@
 import { nextTick, watchEffect } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 
-const isDark = useLocalStorage('isDark', false)
+const isDark = useLocalStorage('isDark', true)
 watchEffect(() => {
-  document.documentElement.classList.toggle('dark', isDark.value)
+  globalThis?.document?.documentElement.classList.toggle('dark', isDark.value)
 })
 
 async function toggleDark() {

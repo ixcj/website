@@ -24,7 +24,7 @@ watchEffect(() => {
     menuHamburgerActive.value = false
   }
 
-  document.documentElement.style.setProperty('--header-height', `${headerHeight.value}px`)
+  globalThis?.document?.documentElement.style.setProperty('--header-height', `${headerHeight.value}px`)
 })
 </script>
 
