@@ -29,12 +29,12 @@ watchDebounced(
 )
 
 function setScrollBarWidth() {
-  let iWidth = globalThis?.innerWidth || 0
-  let cWidth = globalThis?.document.body.clientWidth
+  const iWidth = globalThis?.innerWidth || 0
+  const cWidth = globalThis?.document.body.clientWidth
     || globalThis?.document.documentElement.clientWidth || 0
 
   scrollBarWidth.value = iWidth - cWidth
-  globalThis?.document.body.style.setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
+  globalThis?.document.documentElement.style.setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
 }
 
 globalThis.matchMedia &&

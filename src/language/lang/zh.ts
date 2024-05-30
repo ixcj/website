@@ -5,7 +5,7 @@ export const motto = [
 ]
 
 export default {
-  lang: 'zh-US',
+  lang: 'zh-CN',
   language: '中',
   
   name,

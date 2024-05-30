@@ -24,7 +24,7 @@ watchEffect(() => {
     menuHamburgerActive.value = false
   }
 
-  document.body.style.setProperty('--header-height', `${headerHeight.value}px`)
+  document.documentElement.style.setProperty('--header-height', `${headerHeight.value}px`)
 })
 </script>
 
@@ -67,7 +67,7 @@ watchEffect(() => {
           ref="navList"
           class="page-header-nav-list column"
         >
-          <li class="page-header-nav-item" v-for="section in sectionList">
+          <li class="page-header-nav-item" v-for="section in sectionList" @click="menuHamburgerActive = false">
             <a class="page-header-link" :href="`#${section}`">{{ $t(`SectionText.${section}`) }}</a>
           </li>
           <li class="page-header-nav-item">
