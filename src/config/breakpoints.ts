@@ -12,7 +12,7 @@ export const mobileBreakpoint: MobileBreakpoint = 'xs'
 export const breakpointsConfig: BreakpointsConfigItem[] = [
   {
     name: 'xs',
-    range: [-Infinity, 600],
+    range: [0, 600],
   },
   {
     name: 'sm',

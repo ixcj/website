@@ -15,7 +15,7 @@ export default {
   description: `${name}的个人主页。`,
 
   SectionText: {
-    home: '主页',
+    home: '首页',
     about: '关于',
     project: '项目',
     experience: '经历',
