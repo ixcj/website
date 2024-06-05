@@ -9,8 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/dom-view-transitions": "^1.0.4",
+    "@vueuse/core": "^10.9.0",
+    "gsap": "^3.12.5",
     "sass": "^1.77.1",
-    "vue": "^3.4.21"
+    "vue": "^3.4.21",
+    "vue-i18n": "^9.13.1"
   },
   "devDependencies": {
     "@types/node": "^20.12.11",
