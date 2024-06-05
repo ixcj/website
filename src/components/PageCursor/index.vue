@@ -18,6 +18,7 @@ function onMousemove(event: MouseEvent) {
 
     const hideCursor = target.classList.contains('hide-cursor')
     style.opacity = hideCursor ? '0' : '1'
+    style.transition = hideCursor ? '0.2s ease-out' : '0.125s ease-out'
   })
 }
 
@@ -59,7 +60,6 @@ onUnmounted(() => {
   left: calc(0px - var(--cursor-size) / 2);
   width: var(--cursor-size);
   height: var(--cursor-size);
-  transition: 0.125s ease-out;
   border-radius: 50%;
   backdrop-filter: invert(100%);
   pointer-events: none;
