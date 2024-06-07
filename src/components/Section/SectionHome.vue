@@ -1,6 +1,38 @@
 <script setup lang="ts">
+import { ref, watchEffect } from 'vue'
 import { mobileThresholdValue } from '@/utils/screen'
 import { avatarLink } from '@/config/link'
+import { mottoLength } from '@/language'
+import { useI18n } from 'vue-i18n'
+import { useTypewriter } from '@/hooks/useTypewriter'
+
+const { t } = useI18n()
+
+const mottoIndex = ref(getIndex(mottoLength))
+
+const { text, output } = useTypewriter(t(`motto[${mottoIndex.value}]`), {
+  interval: 33,
+  backInterval: 33,
+  callback: (type) => {
+    if (type === 'output') {
+      setTimeout(() => {
+        mottoIndex.value = getIndex(mottoLength, mottoIndex.value)
+      }, 3000)
+    }
+  }
+})
+
+watchEffect(() => {
+  text.value = t(`motto[${mottoIndex.value}]`)
+})
+
+function getIndex(length: number, exclude: number | undefined = undefined) {
+  const list = [...Array(length).keys()]
+
+  if (length > 1 && exclude) list.splice(exclude, 1)
+
+  return list[Math.floor(Math.random() * list.length)]
+}
 </script>
 
 <template>
@@ -11,6 +43,9 @@ import { avatarLink } from '@/config/link'
       </a>
       <p class="name">{{ $t('name') }}</p>
       <p class="intro">{{ $t('intro') }}</p>
+      <p class="motto">
+        <span>{{ output }}</span>
+      </p>
     </div>
   </div>
 </template>
@@ -42,6 +77,10 @@ import { avatarLink } from '@/config/link'
 
     .intro {
       font-size: 18px;
+    }
+
+    .motto {
+      font-size: 16px;
     }
   }
 }
