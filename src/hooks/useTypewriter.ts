@@ -17,7 +17,7 @@ interface Options {
   immediate?: boolean
 
   /** 回调函数 */
-  callback?: (type: 'output' | 'backspace') => void
+  callback?: () => void
 }
 
 export function useTypewriter(
@@ -32,31 +32,32 @@ export function useTypewriter(
   } = options
 
   const text = ref(defaultText)
-  const output = ref('')
+  const output = ref(immediate ? '' : defaultText)
 
   let timer: any
   let unwatch: WatchStopHandle
 
   async function onOutput(fn?: Function) {
-    while(output.value.length < text.value.length) {
+    if (output.value.length < text.value.length) {
       await delayedTask(() => {
         output.value = text.value.substring(0, output.value.length + 1)
+        onOutput(fn)
       }, interval)
+    } else {
+      callback && callback()
+      fn && fn()
     }
-
-    callback && callback('output')
-    fn && fn()
   }
 
-  async function onBackspace(fn?: Function) {
-    while(output.value.length !== 0) {
+  async function onBackspace() {
+    if (output.value.length !== 0) {
       await delayedTask(() => {
         output.value = output.value.substring(0, output.value.length - 1)
+        onBackspace()
       }, backInterval)
+    } else {
+      onOutput()
     }
-
-    callback && callback('backspace')
-    fn && fn()
   }
 
   function delayedTask(task: Function, delay: number) {
@@ -73,7 +74,7 @@ export function useTypewriter(
       text,
       () => {
         clearTimeout(timer)
-        onBackspace(onOutput)
+        onBackspace()
       },
       { immediate }
     )

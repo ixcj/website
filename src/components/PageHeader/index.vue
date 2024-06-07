@@ -17,6 +17,10 @@ function handleSwitchLang() {
 }
 
 watchEffect(() => {
+  document.documentElement.classList.toggle('hide-scroll-bar', showMenu.value)
+})
+
+watchEffect(() => {
   if (mobile.value) {
     headerHeight.value = 50
   } else {
@@ -74,6 +78,8 @@ watchEffect(() => {
             <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
             <ThemeSwitch class="page-header-link" />
           </li>
+
+          <div class="overlay" @click="menuHamburgerActive = false"></div>
         </ul>
       </Transition>
     </nav>
@@ -194,6 +200,17 @@ watchEffect(() => {
     height: 100%;
     margin: 0 auto;
     z-index: 0;
+
+    &.mobile-nav {
+      .overlay {
+        position: fixed;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+    }
 
     .page-header-nav-list {
       height: 100%;
