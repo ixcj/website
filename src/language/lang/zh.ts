@@ -14,7 +14,7 @@ export default {
   intro,
   motto,
   title: `${name} · ${intro}`,
-  description: `${name}的个人主页。`,
+  description: `${name}的个人主页`,
 
   SectionText: {
     home: '首页',

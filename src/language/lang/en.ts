@@ -1,5 +1,5 @@
 export const name = 'XCJ'
-export const intro = 'A Front-end'
+export const intro = 'A Frontend Developer'
 export const motto = [
   'That which does not kill us makes us stronger.',
   'The higher we soar, the smaller we appear to those who cannot fly.',
@@ -14,7 +14,7 @@ export default {
   intro,
   motto,
   title: `${name} · ${intro}`,
-  description: `${name}\'s Personal Homepage.`,
+  description: `${name}\'s Personal Homepage`,
 
   SectionText: {
     home: 'Home',

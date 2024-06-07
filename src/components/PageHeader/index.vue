@@ -4,15 +4,20 @@ import { mobile, mobileThresholdValue } from '@/utils/screen'
 import { sectionList } from '@/config/section'
 import ThemeSwitch from './ThemeSwitch.vue'
 import Hamburger from './Hamburger.vue'
+import { useI18n } from 'vue-i18n'
 
-const headerHeight = ref(80)
+const DEFAULT_HEADER_HEIGHT = 80
+const MOBILE_HEADER_HEIGHT = 50
+const HEADER_INNER_HEIGHT = 48
 
+const headerHeight = ref(DEFAULT_HEADER_HEIGHT)
 const menuHamburgerActive = ref(false)
 const showMenu = computed(() => menuHamburgerActive.value || !mobile.value)
 
+const { locale } = useI18n()
+
 function handleSwitchLang() {
-  const lang = document.location.pathname.replace(/^\/|\/$/g, '')
-  const pathname = lang === 'en' ? '' : 'en'
+  const pathname = locale.value === 'en' ? '' : 'en'
   document.location.pathname = pathname
 }
 
@@ -22,9 +27,9 @@ watchEffect(() => {
 
 watchEffect(() => {
   if (mobile.value) {
-    headerHeight.value = 50
+    headerHeight.value = MOBILE_HEADER_HEIGHT
   } else {
-    headerHeight.value = 80
+    headerHeight.value = DEFAULT_HEADER_HEIGHT
     menuHamburgerActive.value = false
   }
 
@@ -147,11 +152,11 @@ watchEffect(() => {
 
   .page-header-inner {
     position: absolute;
-    border-radius: 24px;
+    border-radius: calc(v-bind(HEADER_INNER_HEIGHT) * 1px);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 48px;
+    height: calc(v-bind(HEADER_INNER_HEIGHT) * 1px);
     width: 100%;
     max-width: calc(v-bind(mobileThresholdValue) * 1px);
     min-width: 100px;

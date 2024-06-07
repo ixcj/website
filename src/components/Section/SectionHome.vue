@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
 import { avatarLink } from '@/config/link'
 import { mottoLength } from '@/language'
 import { useI18n } from 'vue-i18n'
@@ -7,23 +6,20 @@ import { useTypewriter } from '@/hooks/useTypewriter'
 
 const { t, locale } = useI18n()
 
-const mottoIndex = ref(getIndex(mottoLength))
+let mottoIndex = getIndex(mottoLength)
 
 const typewriterDelay = 3000
 const interval = locale.value === 'zh' ? 50 : 25
 
-const { text, output } = useTypewriter(t(`motto[${mottoIndex.value}]`), {
+const { text, output: motto } = useTypewriter(t(`motto[${mottoIndex}]`), {
   interval,
   backInterval: interval * 0.618,
   callback: () => {
     setTimeout(() => {
-      mottoIndex.value = getIndex(mottoLength, mottoIndex.value)
+      mottoIndex = getIndex(mottoLength, mottoIndex)
+      text.value = t(`motto[${mottoIndex}]`)
     }, typewriterDelay)
   }
-})
-
-watchEffect(() => {
-  text.value = t(`motto[${mottoIndex.value}]`)
 })
 
 function getIndex(length: number, exclude: number | undefined = undefined) {
@@ -38,12 +34,12 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
 <template>
   <div class="section-home">
     <div class="personal-info">
-      <a :href="avatarLink || 'javascript:void(0)'" target="_blank">
+      <a :href="avatarLink || 'javascript: void(0);'" target="_blank">
         <img class="avatar" src="/avatar.png" alt="avatar">
       </a>
       <p class="name">{{ $t('name') }}</p>
       <p class="intro">{{ $t('intro') }}</p>
-      <p class="motto">{{ output }}</p>
+      <p class="motto" :class="locale">{{ motto }}</p>
     </div>
   </div>
 </template>
@@ -77,12 +73,19 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
     }
 
     .motto {
-      font-size: 16px;
+      font-size: 14px;
       max-width: 80%;
+      min-height: 50px;
       text-align: center;
 
+      &.en {
+        &::after {
+          margin-left: 5px;
+        }
+      }
+
       &::after {
-        content: ' |';
+        content: '|';
         animation: motto-cursor 1s infinite step-start;
       }
     }
