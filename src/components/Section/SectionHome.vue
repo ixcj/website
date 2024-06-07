@@ -6,18 +6,21 @@ import { mottoLength } from '@/language'
 import { useI18n } from 'vue-i18n'
 import { useTypewriter } from '@/hooks/useTypewriter'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const mottoIndex = ref(getIndex(mottoLength))
 
+const typewriterDelay = 3000
+const typewriterInterval = locale.value === 'zh' ? 100 : 33
+
 const { text, output } = useTypewriter(t(`motto[${mottoIndex.value}]`), {
-  interval: 33,
-  backInterval: 33,
+  interval: typewriterInterval,
+  backInterval: typewriterInterval,
   callback: (type) => {
     if (type === 'output') {
       setTimeout(() => {
         mottoIndex.value = getIndex(mottoLength, mottoIndex.value)
-      }, 3000)
+      }, typewriterDelay)
     }
   }
 })
