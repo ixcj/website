@@ -17,7 +17,7 @@ function handleSwitchLang() {
 }
 
 watchEffect(() => {
-  document.documentElement.classList.toggle('hide-scroll-bar', showMenu.value)
+  document.documentElement.classList.toggle('hide-scroll-bar', menuHamburgerActive.value)
 })
 
 watchEffect(() => {
@@ -79,7 +79,7 @@ watchEffect(() => {
             <ThemeSwitch class="page-header-link" />
           </li>
 
-          <div class="overlay" @click="menuHamburgerActive = false"></div>
+          <div class="overlay" @click.stop="menuHamburgerActive = false"></div>
         </ul>
       </Transition>
     </nav>
