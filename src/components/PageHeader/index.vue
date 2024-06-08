@@ -22,7 +22,7 @@ function handleSwitchLang() {
 }
 
 watchEffect(() => {
-  document.documentElement.classList.toggle('hide-scroll-bar', menuHamburgerActive.value)
+  globalThis?.document?.documentElement.classList.toggle('hide-scroll-bar', menuHamburgerActive.value)
 })
 
 watchEffect(() => {
