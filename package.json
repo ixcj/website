@@ -16,7 +16,7 @@
     "vue-i18n": "^9.13.1"
   },
   "devDependencies": {
-     "@types/dom-view-transitions": "^1.0.4",
+    "@types/dom-view-transitions": "^1.0.4",
     "@types/node": "^20.12.11",
     "@unhead/vue": "^1.9.10",
     "@vitejs/plugin-vue": "^5.0.4",
