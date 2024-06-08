@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
+import { siteUrl } from '@/config/link'
 import { breakpointsName, mobile, touch } from '@/utils/screen'
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
@@ -18,6 +19,8 @@ useHead({
     { name: 'og:title', content: title },
     { name: 'description', content: description },
     { name: 'og:description', content: description },
+    { name: 'og:url', content: siteUrl },
+    { name: 'og:image', content: `${siteUrl.replace(/\/$/, '')}/og.png` },
   ],
 })
 </script>
