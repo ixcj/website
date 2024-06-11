@@ -17,6 +17,8 @@ export default {
   motto,
   title: `${name} · ${intro}`,
   description: `${name}的个人主页`,
+  keywords: `${name},个人主页,前端开发者,ThreeUse,Vue.js`,
+  author: name,
 
   SectionText: {
     home: '首页',
