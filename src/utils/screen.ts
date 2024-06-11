@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useWindowSize, watchDebounced } from '@vueuse/core'
-import { breakpointsConfig, mobileBreakpoint } from '@/config/breakpoints'
+import { breakpointsConfig, mobileBreakpoint } from '@/config'
 
 export const mobileThresholdValue =
   typeof mobileBreakpoint === 'number'

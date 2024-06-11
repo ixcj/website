@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { sectionList } from '@/config/section'
+import { sectionList } from '@/config'
 import SectionHome from '@/components/Section/SectionHome.vue'
 
 const sectionMap: { [section: string]: Component } = {

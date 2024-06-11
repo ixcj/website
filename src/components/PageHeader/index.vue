@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect, computed } from 'vue'
 import { mobile, mobileThresholdValue } from '@/utils/screen'
-import { sectionList } from '@/config/section'
+import { sectionList } from '@/config'
 import ThemeSwitch from './ThemeSwitch.vue'
 import Hamburger from './Hamburger.vue'
 import { useI18n } from 'vue-i18n'
