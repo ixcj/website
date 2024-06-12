@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { sectionList } from '@/config'
+import { sectionList, type Section } from '@/config'
 import SectionHome from '@/components/Section/SectionHome.vue'
+import SectionAbout from '@/components/Section/SectionAbout.vue'
+import SectionProject from '@/components/Section/SectionProject.vue'
+import SectionExperience from '@/components/Section/SectionExperience.vue'
 
-const sectionMap: { [section: string]: Component } = {
-  home: SectionHome
+const sectionMap: { [section in Section]: Component } = {
+  home: SectionHome,
+  about: SectionAbout,
+  project: SectionProject,
+  experience: SectionExperience,
 }
 </script>
 

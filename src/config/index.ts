@@ -1,6 +1,6 @@
 // Section 配置
-export type Section = "home" | "about" | "project" | "experience"
-export const sectionList: Section[] = ['home', 'about', 'project', 'experience']
+export const sectionList = <const>['home', 'about', 'project', 'experience']
+export type Section = typeof sectionList[number]
 
 // 链接
 export * from './link'
