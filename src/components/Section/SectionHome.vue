@@ -115,6 +115,11 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
       width: 20px;
       height: 20px;
       padding: 4px;
+      transition: transform var(--transition-duration);
+      
+      &:hover {
+        transform: scale(1.3);
+      }
 
       .icon {
         text-decoration: none;

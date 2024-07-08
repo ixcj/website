@@ -14,6 +14,8 @@ import {} from '@/config'
 
 <style lang="scss" scoped>
 .section-about {
+  padding: 30px 0;
+  
   .section-about-skill {
     display: flex;
     justify-content: center;

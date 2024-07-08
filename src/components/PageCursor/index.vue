@@ -16,7 +16,7 @@ function onMousemove(event: MouseEvent) {
     style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`
     cursorType.value = getComputedStyle(target)?.cursor || 'auto'
 
-    const hideCursor = target.classList.contains('hide-cursor')
+    const hideCursor = target.classList.contains('hide-cursor') || target.parentElement?.classList.contains('hide-cursor')
     style.opacity = hideCursor ? '0' : '1'
     style.transition = hideCursor ? '0.2s ease-out' : '0.125s ease-out'
   })
