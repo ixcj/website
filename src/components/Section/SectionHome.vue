@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { avatarLink } from '@/config/link'
+import { avatarLink, socialLinks } from '@/config/link'
 import { mottoLength } from '@/language'
 import { useI18n } from 'vue-i18n'
 import { useTypewriter } from '@/hooks/useTypewriter'
@@ -41,6 +41,20 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
       <p class="intro">{{ $t('intro') }}</p>
       <p class="motto" :class="locale">{{ motto }}</p>
     </div>
+    <div class="social-links">
+      <a
+        v-for="(link, index) in socialLinks"
+        :key="index"
+        :href="link.link"
+        :alt="link.name"
+        :title="link.name"
+        class="link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <component :is="link.icon" class="icon" />
+      </a>
+    </div>
   </div>
 </template>
 
@@ -65,7 +79,8 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
     }
 
     .name {
-      font-size: 28px
+      font-size: 28px;
+      font-weight: bold;
     }
 
     .intro {
@@ -87,6 +102,23 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
       &::after {
         content: '|';
         animation: motto-cursor 1s infinite step-start;
+      }
+    }
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    .link {
+      width: 20px;
+      height: 20px;
+      padding: 4px;
+
+      .icon {
+        text-decoration: none;
+        color: var(--text-color);
       }
     }
   }

@@ -26,4 +26,6 @@ export default {
     project: '项目',
     experience: '经历',
   },
+
+  mySkills: '我的技能',
 }
