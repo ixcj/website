@@ -38,8 +38,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   globalThis.document.removeEventListener('mousemove', onMousemove)
-  globalThis.document.addEventListener('mousedown', onMousedown)
-  globalThis.document.addEventListener('mouseup', onMouseup)
+  globalThis.document.removeEventListener('mousedown', onMousedown)
+  globalThis.document.removeEventListener('mouseup', onMouseup)
 })
 </script>
 
