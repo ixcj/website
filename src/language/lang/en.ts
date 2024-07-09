@@ -23,7 +23,24 @@ export default {
   SectionText: {
     home: 'Home',
     about: 'About',
+    skills: 'Skills',
     project: 'Project',
     experience: 'Experience',
   },
+
+  SectionTitle: {
+    home: 'Home',
+    about: 'About Me',
+    skills: 'My Skills',
+    project: 'My Project',
+    experience: 'My Experience',
+  },
+
+  personalIntroduction: `
+    <p>Personal Introduction<p>
+    <p>Personal Introduction<p>
+    <p>Personal Introduction<p>
+    <p>Personal <a href="javascript:void(0);" target="_blank">aaaaaa</a> Introduction<p>
+    
+  `,
 }

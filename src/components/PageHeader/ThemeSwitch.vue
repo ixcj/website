@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, watchEffect } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
+import { Sun, Moon } from '@vicons/fa'
 
 const isDark = useLocalStorage('isDark', true)
 watchEffect(() => {
@@ -48,12 +49,18 @@ function switchTheme(event: MouseEvent) {
 
 <template>
   <div class="theme-switch hide-cursor" @click="switchTheme">
-    {{ isDark ? '🌙' : '☀️' }}
+    <component :is="isDark ? Moon : Sun" class="icon hide-cursor" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .theme-switch {
   cursor: pointer;
+
+  .icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+  }
 }
 </style>
