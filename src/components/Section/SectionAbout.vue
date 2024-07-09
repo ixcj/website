@@ -1,27 +1,61 @@
 <script setup lang="ts">
-import {} from '@/config'
 </script>
 
 <template>
   <div class="section-about">
-    <div class="section-about-skill">
-      <p class="section-about-skill-title">{{ $t('mySkills') }}</p>
-      <div class="section-about-skill-box">
-      </div>
+    <p class="section-title">{{ $t('SectionTitle.about') }}</p>
+
+    <div class="section-about-introduce">
+      <div v-html="$t('personalIntroduction')"></div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .section-about {
-  padding: 30px 0;
-  
-  .section-about-skill {
-    display: flex;
-    justify-content: center;
-    
-    .section-about-skill-title {
-      font-size: 24px;
+  .section-about-introduce {
+    margin-top: 20px;
+    padding: 0 20px;
+
+    ::v-deep() {
+      p {
+        margin-bottom: 10px;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      a {
+        text-decoration: none;
+        white-space: nowrap;
+        color: var(--text-color);
+        position: relative;
+        z-index: 0;
+
+        &:hover {
+          color: var(--bg-color);
+
+          &::after {
+            opacity: 1;
+            height: 100%;
+          }
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          display: block;
+          width: 100%;
+          height: 33%;
+          background-color: var(--text-color);
+          opacity: 0.33;
+          z-index: -1;
+          transition: var(--transition-duration);
+        }
+      }
     }
   }
 }

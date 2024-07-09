@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { avatarLink, socialLinks } from '@/config/link'
+import { avatarLink, socialLinks } from '@/config'
 import { mottoLength } from '@/language'
 import { useI18n } from 'vue-i18n'
 import { useTypewriter } from '@/hooks/useTypewriter'
@@ -60,13 +60,9 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
 
 <style lang="scss" scoped>
 .section-home {
-  padding: 30px 0;
-  box-sizing: border-box;
-
   .personal-info {
     position: relative;
     z-index: 1;
-    margin: 0 auto;
     width: 100%;
     display: flex;
     gap: 10px;

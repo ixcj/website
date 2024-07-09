@@ -23,9 +23,23 @@ export default {
   SectionText: {
     home: '首页',
     about: '关于',
+    skills: '技能',
     project: '项目',
     experience: '经历',
   },
 
-  mySkills: '我的技能',
+  SectionTitle: {
+    home: '首页',
+    about: '关于我',
+    skills: '我的技能',
+    project: '我的项目',
+    experience: '我的经历',
+  },
+
+  personalIntroduction: `
+    <p>个人介绍<p>
+    <p>个人介绍<p>
+    <p>个人介绍<p>
+    <p>个人<a href="javascript:void(0);" target="_blank">个人介绍</a>介绍<p>
+  `,
 }
