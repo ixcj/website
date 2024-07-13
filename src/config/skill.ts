@@ -20,22 +20,22 @@ interface Skill_Image extends Skill {
 
 export const skillList: Array<Skill_Icon | Skill_Image> = [
   {
-    name: 'Html',
+    name: 'HTML',
     icon: Html5,
     color: '#dd4b25',
-    type: 'icon'
+    type: 'icon',
   },
   {
-    name: 'Css',
+    name: 'CSS',
     icon: Css3Alt,
     color: '#106fb6',
-    type: 'icon'
+    type: 'icon',
   },
   {
     name: 'JavaScript',
     icon: JsSquare,
     color: '#edc418',
-    type: 'icon'
+    type: 'icon',
   },
   {
     name: 'TypeScript',
@@ -43,9 +43,9 @@ export const skillList: Array<Skill_Icon | Skill_Image> = [
     type: 'image',
   },
   {
-    name: 'Vue',
+    name: 'Vue.js',
     icon: Vue,
-    type: 'image'
+    type: 'image',
   },
   {
     name: 'Three.js',
@@ -56,6 +56,6 @@ export const skillList: Array<Skill_Icon | Skill_Image> = [
     name: 'Git',
     icon: GitAlt,
     color: '#eb4d28',
-    type: 'icon'
+    type: 'icon',
   },
 ]

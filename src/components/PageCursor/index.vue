@@ -38,8 +38,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   globalThis.document.removeEventListener('mousemove', onMousemove)
-  globalThis.document.addEventListener('mousedown', onMousedown)
-  globalThis.document.addEventListener('mouseup', onMouseup)
+  globalThis.document.removeEventListener('mousedown', onMousedown)
+  globalThis.document.removeEventListener('mouseup', onMouseup)
 })
 </script>
 
@@ -56,8 +56,8 @@ onUnmounted(() => {
   --cursor-size: 20px;
   position: fixed;
   z-index: 9999;
-  top: calc(0px - var(--cursor-size) / 2);
-  left: calc(0px - var(--cursor-size) / 2);
+  top: calc(-1 * var(--cursor-size) / 2);
+  left: calc(-1 * var(--cursor-size) / 2);
   width: var(--cursor-size);
   height: var(--cursor-size);
   border-radius: 50%;
