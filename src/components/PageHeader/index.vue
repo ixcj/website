@@ -177,7 +177,7 @@ watchEffect(() => {
     }
 
     .page-header-feature {
-      --inside: 15px;
+      --inside: 10px;
       position: absolute;
       inset: 0;
       z-index: 999;
@@ -259,6 +259,7 @@ watchEffect(() => {
 
   .switch-lang {
     cursor: pointer;
+    padding: 5px;
     font-size: 14px;
     line-height: 14px;
   }

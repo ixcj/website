@@ -20,4 +20,4 @@ const i18n = createI18n({
 export default i18n
 
 export const mottoLength =
-  locale === 'zh' ? zh.motto.length : en.motto.length
+  locale === 'zh' ? zh.mottos.length : en.mottos.length

@@ -48,19 +48,22 @@ function switchTheme(event: MouseEvent) {
 </script>
 
 <template>
-  <div class="theme-switch hide-cursor" @click="switchTheme">
-    <component :is="isDark ? Moon : Sun" class="icon hide-cursor" />
+  <div class="theme-switch hide-page-cursor" @click="switchTheme">
+    <component :is="isDark ? Moon : Sun" class="icon" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .theme-switch {
   cursor: pointer;
+  padding: 5px;
 
   .icon {
     width: 16px;
     height: 16px;
     vertical-align: middle;
+    position: relative;
+    z-index: -1;
   }
 }
 </style>

@@ -11,13 +11,13 @@ let mottoIndex = getIndex(mottoLength)
 const typewriterDelay = 3000
 const interval = locale.value === 'zh' ? 50 : 25
 
-const { text, output: motto } = useTypewriter(t(`motto[${mottoIndex}]`), {
+const { text, output: motto } = useTypewriter(t(`mottos[${mottoIndex}]`), {
   interval,
   backInterval: interval * 0.618,
   callback: () => {
     setTimeout(() => {
       mottoIndex = getIndex(mottoLength, mottoIndex)
-      text.value = t(`motto[${mottoIndex}]`)
+      text.value = t(`mottos[${mottoIndex}]`)
     }, typewriterDelay)
   }
 })

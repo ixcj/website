@@ -1,9 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
+const props = withDefaults(defineProps<{
+  hideCursorClass?: string
+}>(), {
+  hideCursorClass: 'hide-page-cursor'
+})
+
 const cursor = ref<HTMLElement | null>(null)
 const cursorType = ref('auto')
 const cursorState = ref('')
+
+let myReq: number = 0
 
 function onMousemove(event: MouseEvent) {
   if(!cursor.value) return
@@ -11,12 +19,14 @@ function onMousemove(event: MouseEvent) {
   const { clientX, clientY } = event
   const target = event.target as HTMLElement
 
-  requestAnimationFrame(() => {
+  cancelAnimationFrame(myReq)
+
+  myReq = requestAnimationFrame(() => {
     const style = cursor.value!.style
     style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`
     cursorType.value = getComputedStyle(target)?.cursor || 'auto'
 
-    const hideCursor = target.classList.contains('hide-cursor') || target.parentElement?.classList.contains('hide-cursor')
+    const hideCursor = target.classList.contains(props.hideCursorClass)
     style.opacity = hideCursor ? '0' : '1'
     style.transition = hideCursor ? '0.2s ease-out' : '0.125s ease-out'
   })

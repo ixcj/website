@@ -32,6 +32,7 @@
         color: var(--text-color);
         position: relative;
         z-index: 0;
+        transition: color var(--transition-duration);
 
         &:hover {
           color: var(--bg-color);

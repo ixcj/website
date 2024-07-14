@@ -33,6 +33,7 @@ import { skillList } from '@/config'
     justify-content: center;
     gap: 10px;
     margin-top: 20px;
+    padding: 0 20px;
 
     .section-skill-item {
       font-size: 16px;
