@@ -145,7 +145,6 @@ watchEffect(() => {
       .page-header-nav-list {
         background-color: rgba($color: #aaa, $alpha: .1);
         backdrop-filter: blur(10px);
-        text-shadow: 0 0 5px var(--bg-color);
       }
     }
   }
@@ -224,6 +223,7 @@ watchEffect(() => {
       justify-content: center;
       align-items: center;
       transition: var(--transition-duration) ease;
+      text-shadow: 0 0 5px var(--bg-color);
 
       &.column {
         flex-direction: column;
