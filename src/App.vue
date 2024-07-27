@@ -61,7 +61,7 @@ globalThis.onload = () => {
 
 <style lang="scss">
 .container {
-  min-height: 200vh;
+  min-height: 100vh;
   box-sizing: border-box;
   background-color: var(--bg-color);
   transition: background-color var(--transition-duration);
@@ -103,8 +103,6 @@ globalThis.onload = () => {
   .fade-enter-from,
   .fade-leave-to {
     opacity: 0;
-    transform: scale(1.2);
-    filter: blur(3px);
   }
 }
 </style>
