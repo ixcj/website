@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
 import { siteUrl } from '@/config'
@@ -38,12 +39,21 @@ useHead({
     { name: 'twitter:image', content: ogImage },
   ],
 })
+
+const loading = ref(false)
+
+globalThis.onload = () => {
+  loading.value = true
+}
 </script>
 
 <template>
   <div class="container" :class="[breakpointsName, mobile ? 'mobile' : '']">
     <PageHeader />
-    <PageMain />
+
+    <Transition name="fade">
+      <PageMain v-show="loading" />
+    </Transition>
 
     <PageCursor v-if="!touch" />
   </div>
@@ -83,6 +93,18 @@ useHead({
     width: 750px;
     height: 750px;
     background-color: rgba($color: #80D0C7, $alpha: 0.125);
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: 0.5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+    transform: scale(1.2);
+    filter: blur(3px);
   }
 }
 </style>
