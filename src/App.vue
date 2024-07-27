@@ -55,5 +55,34 @@ useHead({
   box-sizing: border-box;
   background-color: var(--bg-color);
   transition: background-color var(--transition-duration);
+  position: relative;
+  overflow-x: hidden;
+
+  &::after,
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    filter: blur(150px);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  &::after {
+    top: 100px;
+    left: 60%;
+    width: 750px;
+    height: 750px;
+    background-color: rgba($color: #C850C0, $alpha: 0.1);
+  }
+
+  &::before {
+    top: 200px;
+    left: 40%;
+    width: 750px;
+    height: 750px;
+    background-color: rgba($color: #80D0C7, $alpha: 0.125);
+  }
 }
 </style>
