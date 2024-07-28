@@ -219,7 +219,7 @@ watchEffect(() => {
     .page-header-nav-list {
       height: 100%;
       display: flex;
-      gap: 10px;
+      gap: 0;
       justify-content: center;
       align-items: center;
       transition: var(--transition-duration) ease;
@@ -247,7 +247,7 @@ watchEffect(() => {
         
         .page-header-link {
           width: 100%;
-          padding: 15px 20px;
+          padding: 15px;
           text-decoration: none;
           color: var(--text-color);
           transition: color var(--transition-duration);

@@ -9,7 +9,7 @@ const projects = computed(() => {
     const jsonData = t('projects')
     return JSON.parse(decodeURIComponent(jsonData))
   } catch(err) {
-    console.error(err)
+    console.error('An error occurred while getting the projects configuration: ', err)
     return []
   }
 })
@@ -17,7 +17,7 @@ const projects = computed(() => {
 
 <template>
   <div class="section-project">
-    <p class="section-title">{{ $t('SectionTitle.project') }}</p>
+    <h2 class="section-title">{{ $t('SectionTitle.project') }}</h2>
 
     <div class="project-box">
       <div

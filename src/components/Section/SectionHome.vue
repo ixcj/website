@@ -37,7 +37,7 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
       <a :href="avatarLink || 'javascript: void(0);'" target="_blank">
         <img class="avatar" src="/avatar.png" alt="avatar">
       </a>
-      <p class="name">{{ $t('name') }}</p>
+      <h1 class="name">{{ $t('name') }}</h1>
       <p class="intro">{{ $t('intro') }}</p>
       <p class="motto" :class="locale">{{ motto }}</p>
     </div>
@@ -77,6 +77,7 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
     .name {
       font-size: 28px;
       font-weight: bold;
+      margin: 0;
     }
 
     .intro {

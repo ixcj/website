@@ -2,7 +2,7 @@
 
 <template>
   <div class="section-experience">
-    <p class="section-title">{{ $t('SectionTitle.experience') }}</p>
+    <h2 class="section-title">{{ $t('SectionTitle.experience') }}</h2>
   </div>
 </template>
 

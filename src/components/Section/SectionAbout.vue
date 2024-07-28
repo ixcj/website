@@ -6,7 +6,7 @@ const { locale } = useI18n()
 
 <template>
   <div class="section-about">
-    <p class="section-title">{{ $t('SectionTitle.about') }}</p>
+    <h2 class="section-title">{{ $t('SectionTitle.about') }}</h2>
 
     <div class="section-about-introduce">
       <template v-if="locale === 'zh'">
