@@ -22,7 +22,6 @@ export default {
   mottos,
   title: `${name} · ${intro}`,
   description: `${name}\'s Personal Homepage`,
-  keywords: `${name},Personal Homepage,Frontend Developer,ThreeUse,Vue.js`,
   author: name,
 
   SectionText: {

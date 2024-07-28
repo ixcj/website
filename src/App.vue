@@ -20,7 +20,6 @@ useHead({
   meta: [
     // HTML Meta Tags
     { name: 'description', content: description },
-    { name: 'keywords', content: t('keywords') },
     { name: 'author', content: t('author') },
 
     // Open Graph Meta Tags
