@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
 import { siteUrl } from '@/config'
-import { breakpointsName, mobile, touch } from '@/utils/screen'
+import { breakpointsName, mobile, touch, setScrollBarWidth } from '@/utils/screen'
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
@@ -44,6 +44,9 @@ const loading = ref(false)
 
 globalThis.onload = () => {
   loading.value = true
+  nextTick(() => {
+    setScrollBarWidth()
+  })
 }
 </script>
 

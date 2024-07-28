@@ -5,10 +5,9 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const projects = computed(() => {
-  const jsonData = t('projects')
-
   try {
-    return JSON.parse(jsonData)
+    const jsonData = t('projects')
+    return JSON.parse(decodeURIComponent(jsonData))
   } catch(err) {
     console.error(err)
     return []
@@ -25,13 +24,8 @@ const projects = computed(() => {
         v-for="item in projects"
         class="project-item"
       >
-        <div class="front">
-          <p class="project-item-name">{{ item.name }}</p>
-          <img class="project-item-cover" :src="item.cover" alt="">
-        </div>
-        <div class="back">
-          <p class="project-item-name">{{ item.name }}</p>
-        </div>
+        <p class="project-item-name">{{ item.name }}</p>
+        <img class="project-item-cover" :src="item.cover" alt="">
       </div>
     </div>
   </div>
@@ -49,52 +43,27 @@ const projects = computed(() => {
       width: calc((100% - 20px) / 2);
       height: 350px;
       position: relative;
+      background-color: var(--text-color);
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 5px;
 
-      &:hover {
-        .front {
-          transform: rotateY(180deg);
-        }
-
-        .back {
-          transform: rotateY(0deg);
-        }
+      .project-item-name {
+        color: var(--bg-color);
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        position: absolute;
+        left: 50%;
+        transform: translate3d(-50%, 0, 30px);
+        perspective: 200px;
       }
 
-      .front,
-      .back {
-        position: absolute;
-        top: 0;
-        left: 0;
+      .project-item-cover {
         width: 100%;
         height: 100%;
-        border-radius: 10px;
-        background-color: var(--text-color);
-        backface-visibility: hidden;
-        transition: transform calc(var(--transition-duration) * 2);
-        padding: 15px;
-        overflow: hidden;
-
-        .project-item-name {
-          color: var(--bg-color);
-          font-size: 18px;
-          font-weight: bold;
-          text-align: center;
-          position: absolute;
-          left: 50%;
-          transform: translate3d(-50%, 0, 30px);
-          perspective: 200px;
-        }
-
-        .project-item-cover {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          opacity: 0.85;
-        }
-      }
-
-      .back {
-        transform: rotateY(180deg);
+        object-fit: contain;
+        opacity: 0.85;
       }
     }
   }

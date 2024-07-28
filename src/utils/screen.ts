@@ -30,7 +30,7 @@ watchDebounced(
   { immediate: true, debounce: 16 }
 )
 
-function setScrollBarWidth() {
+export function setScrollBarWidth() {
   const iWidth = globalThis?.innerWidth || 0
   const cWidth = globalThis?.document?.body.clientWidth
     || globalThis?.document?.documentElement.clientWidth || 0
