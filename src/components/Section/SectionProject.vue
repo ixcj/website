@@ -25,7 +25,7 @@ const projects = computed(() => {
         class="project-item"
       >
         <p class="project-item-name">{{ item.name }}</p>
-        <img class="project-item-cover" :src="item.cover" alt="">
+        <img class="project-item-cover" :src="item.cover" alt="Project cover">
       </div>
     </div>
   </div>

@@ -35,7 +35,7 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
   <div class="section-home">
     <div class="personal-info">
       <a :href="avatarLink || 'javascript: void(0);'" target="_blank">
-        <img class="avatar" src="/avatar.png" alt="avatar">
+        <img class="avatar" src="/avatar.png" alt="Avatar">
       </a>
       <h1 class="name">{{ $t('name') }}</h1>
       <p class="intro">{{ $t('intro') }}</p>
@@ -46,7 +46,6 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
         v-for="(link, index) in socialLinks"
         :key="index"
         :href="link.link"
-        :alt="link.name"
         :title="link.name"
         class="link"
         target="_blank"
