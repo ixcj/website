@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
+    "github-calendar": "^2.3.4",
     "gsap": "^3.12.5",
     "sass": "^1.77.1",
     "vue": "^3.4.21",

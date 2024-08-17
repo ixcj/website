@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
+import { type Component, computed } from 'vue'
+import { contentWidth } from '@/utils/screen'
 import { sectionList, type Section } from '@/config'
-import { mobileThresholdValue } from '@/utils/screen'
 import SectionHome from '@/components/Section/SectionHome.vue'
 import SectionAbout from '@/components/Section/SectionAbout.vue'
 import SectionSkills from '@/components/Section/SectionSkills.vue'
@@ -15,6 +15,12 @@ const sectionMap: { [section in Section]: Component } = {
   project: SectionProject,
   experience: SectionExperience,
 }
+
+const contentWidthString = computed(() => {
+  return typeof contentWidth.value === 'number'
+    ? `${contentWidth.value}px`
+    : contentWidth.value
+})
 </script>
 
 <template>
@@ -41,7 +47,8 @@ const sectionMap: { [section in Section]: Component } = {
   .section-item {
     padding: 20px 0;
     margin: 0 auto;
-    max-width: calc(v-bind(mobileThresholdValue) * 1px);
+    max-width: v-bind(contentWidthString);
+    transition: max-width var(--transition-duration);
 
     ::v-deep() {
       .section-title {

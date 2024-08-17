@@ -4,6 +4,7 @@ import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
 import { siteUrl } from '@/config'
 import { breakpointsName, mobile, touch, setScrollBarWidth } from '@/utils/screen'
+import { githubContributionUser } from '@/config'
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
@@ -38,6 +39,14 @@ useHead({
     { name: 'twitter:description', content: description },
     { name: 'twitter:image', content: ogImage },
   ],
+  link: [
+    // 设置了 githubContributionUser 则引入样式
+    githubContributionUser ? {
+      href: new URL('@/assets/style/github-calendar-responsive.css', import.meta.url).href,
+      rel: "stylesheet",
+      type: "text/css"
+    } : {},
+  ]
 })
 
 const loading = ref(false)

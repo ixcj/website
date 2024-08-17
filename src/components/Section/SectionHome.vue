@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { avatarLink, socialLinks } from '@/config'
+import { onMounted } from 'vue'
+import { avatarLink, socialLinks, githubContributionUser } from '@/config'
 import { mottoLength } from '@/language'
 import { useI18n } from 'vue-i18n'
 import { useTypewriter } from '@/hooks/useTypewriter'
+// @ts-ignore
+import GitHubCalendar from 'github-calendar'
 
 const { t, locale } = useI18n()
 
@@ -29,6 +32,17 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
 
   return list[Math.floor(Math.random() * list.length)]
 }
+
+function setGithubContributionCalendar() {
+  githubContributionUser
+    && GitHubCalendar('#github-contribution-calendar', 'ixcj', {
+      global_stats: false,
+    })
+}
+
+onMounted(() => {
+  setGithubContributionCalendar()
+})
 </script>
 
 <template>
@@ -53,6 +67,9 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
       >
         <component :is="link.icon" class="icon" />
       </a>
+    </div>
+    <div v-if="githubContributionUser" class="github-contribution-calendar-container">
+      <div id="github-contribution-calendar"></div>
     </div>
   </div>
 </template>
@@ -121,6 +138,18 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
         text-decoration: none;
         color: var(--text-color);
       }
+    }
+  }
+
+  .github-contribution-calendar-container {
+    width: 100%;
+    overflow-y: auto;
+    margin-top: 20px;
+
+    #github-contribution-calendar {
+      width: 680px;
+      min-height: auto !important;
+      margin: 0 auto;
     }
   }
   
