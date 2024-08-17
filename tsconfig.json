@@ -26,7 +26,10 @@
         "src/*"
       ]
     },
-    "types": ["vite-plugin-font/src/font"]
+    "types": [
+      "vite-plugin-font/src/font",
+      "@types/dom-view-transitions"
+    ]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
