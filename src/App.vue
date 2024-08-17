@@ -7,6 +7,7 @@ import { breakpointsName, mobile, touch, setScrollBarWidth } from '@/utils/scree
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
+import { css } from '@/assets/font/MiSans-Normal.ttf?subsets'
 
 const { t } = useI18n()
 
@@ -50,7 +51,11 @@ globalThis.onload = () => {
 </script>
 
 <template>
-  <div class="container" :class="[breakpointsName, mobile ? 'mobile' : '']">
+  <div
+    class="container"
+    :class="[breakpointsName, mobile ? 'mobile' : '']"
+    :style="{ fontFamily: css.family }"
+  >
     <PageHeader />
 
     <Transition name="fade">

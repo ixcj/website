@@ -12,7 +12,6 @@
   background-color: var(--bg-color);
   scroll-behavior: smooth;
   scroll-padding-top: var(--header-height);
-  font-family: 'MiSans';
 
   &::view-transition-old(root),
   &::view-transition-new(root) {

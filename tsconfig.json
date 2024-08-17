@@ -26,6 +26,7 @@
         "src/*"
       ]
     },
+    "types": ["vite-plugin-font/src/font"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
