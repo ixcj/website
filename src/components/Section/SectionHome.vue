@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { avatarLink, socialLinks, githubContributionUser } from '@/config'
 import { mottoLength } from '@/language'
 import { useI18n } from 'vue-i18n'
@@ -8,6 +8,7 @@ import { useTypewriter } from '@/hooks/useTypewriter'
 import GitHubCalendar from 'github-calendar'
 
 const { t, locale } = useI18n()
+const loading = ref(true)
 
 let mottoIndex = getIndex(mottoLength)
 
@@ -34,14 +35,17 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
 }
 
 function setGithubContributionCalendar() {
-  githubContributionUser
-    && GitHubCalendar('#github-contribution-calendar', 'ixcj', {
-      global_stats: false,
-    })
+  loading.value = true
+  GitHubCalendar('#github-contribution-calendar', 'ixcj', {
+    global_stats: false,
+    cache: 'no-cache',
+  }).finally(() => {
+    loading.value = false
+  })
 }
 
 onMounted(() => {
-  setGithubContributionCalendar()
+  githubContributionUser && setGithubContributionCalendar()
 })
 </script>
 
@@ -69,7 +73,12 @@ onMounted(() => {
       </a>
     </div>
     <div v-if="githubContributionUser" class="github-contribution-calendar-container">
-      <div id="github-contribution-calendar"></div>
+      <Transition name="fade">
+        <div v-show="!loading" id="github-contribution-calendar" class="github-contribution-calendar"></div>
+      </Transition>
+      <Transition name="fade">
+        <div v-if="loading" class="github-contribution-calendar loading"></div>
+      </Transition>
     </div>
   </div>
 </template>
@@ -142,20 +151,52 @@ onMounted(() => {
   }
 
   .github-contribution-calendar-container {
-    width: 100%;
+    width: calc(100% - 40px);
+    min-height: 128px;
     overflow-y: auto;
-    margin-top: 20px;
+    margin: 20px auto 0;
+    position: relative;
 
-    #github-contribution-calendar {
-      width: 680px;
+    .github-contribution-calendar {
+      width: 690px;
       min-height: auto !important;
       margin: 0 auto;
+
+      &.loading {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+
+        &::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-color: var(--text-color);
+          opacity: 0.05;
+          border-radius: 5px;
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          inset: -20%;
+          background: linear-gradient(45deg, rgba(255,255,255,0) 40%, rgba(255, 255, 255, 0.1), rgba(255,255,255,0) 60%);
+          animation: shark-wrap 2s infinite;
+          transform: translateX(-100%);
+        }
+      }
     }
   }
   
   @keyframes motto-cursor {
     50% { opacity: 1; }
     100% { opacity: 0; }
+  }
+
+  @keyframes shark-wrap {
+    to {
+      transform: translateX(100%);
+    }
   }
 }
 </style>

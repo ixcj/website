@@ -19,26 +19,26 @@ export const breakpointsConfig: BreakpointsConfigItem[] = [
   {
     name: 'sm',
     range: [600, 960],
-    contentWidth: 720,
+    contentWidth: 800,
   },
   {
     name: 'md',
     range: [960, 1280],
-    contentWidth: 720,
+    contentWidth: 800,
   },
   {
     name: 'lg',
     range: [1280, 1920],
-    contentWidth: 720,
+    contentWidth: 800,
   },
   {
     name: 'xl',
     range: [1920, 2560],
-    contentWidth: 720,
+    contentWidth: 800,
   },
   {
     name: 'xxl',
     range: [2560, Infinity],
-    contentWidth: 720,
+    contentWidth: 800,
   },
 ]

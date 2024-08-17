@@ -42,7 +42,7 @@ useHead({
   link: [
     // 设置了 githubContributionUser 则引入样式
     githubContributionUser ? {
-      href: new URL('@/assets/style/github-calendar-responsive.css', import.meta.url).href,
+      href: '/css/github-calendar-responsive.css',
       rel: "stylesheet",
       type: "text/css"
     } : {},
@@ -109,16 +109,6 @@ globalThis.onload = () => {
     width: 750px;
     height: 750px;
     background-color: rgba($color: #80D0C7, $alpha: 0.125);
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: 0.5s ease;
-  }
-
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
   }
 }
 </style>
