@@ -35,8 +35,10 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
 }
 
 function setGithubContributionCalendar() {
+  if (!githubContributionUser) return
+
   loading.value = true
-  GitHubCalendar('#github-contribution-calendar', 'ixcj', {
+  GitHubCalendar('#github-contribution-calendar', githubContributionUser, {
     global_stats: false,
     cache: 'no-cache',
   }).finally(() => {
@@ -45,7 +47,7 @@ function setGithubContributionCalendar() {
 }
 
 onMounted(() => {
-  githubContributionUser && setGithubContributionCalendar()
+  setGithubContributionCalendar()
 })
 </script>
 
