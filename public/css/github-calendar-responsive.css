@@ -34,17 +34,6 @@ caption.sr-only {
   flex: 0 0 130px;
 }
 
-.js-calendar-graph {
-  overflow-y: auto;
-}
-
-.js-calendar-graph > div:first-child {
-  max-width: none !important;
-  overflow-y: auto !important;
-  width: var(--github-calendar-width, '690px') !important;
-  margin: 0 auto;
-}
-
 :root {
   --color-calendar-graph-day-bg: rgba(0, 0, 0, 0.1);
   --color-calendar-graph-day-L1-bg: #9be9a8;
@@ -85,10 +74,13 @@ caption.sr-only {
   border-radius: 2px;
   height: 10px !important;
   width: 10px !important;
+  transition: background-color var(--transition-duration);
 }
 
 table.ContributionCalendar-grid {
   margin-bottom: 0pt;
+  width: var(--github-calendar-width, '690px') !important;
+  margin: 0 auto;
 }
 
 table.ContributionCalendar-grid td {

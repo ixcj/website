@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from 'vue'
+import { ref, nextTick, watchEffect, onMounted } from 'vue'
 import { avatarLink, socialLinks, githubContributionUser } from '@/config'
 import { mottoLength } from '@/language'
 import { useI18n } from 'vue-i18n'
 import { useTypewriter } from '@/hooks/useTypewriter'
+import { isStartViewTransition } from '@/utils/screen'
 // @ts-ignore
 import GitHubCalendar from 'github-calendar'
 
 const GITHUB_CALENDAR_WIDTH = 690
-const TYPEWRITER_PARAGRAPH_INTERVAL = 3000
+const TYPEWRITER_PARAGRAPH_INTERVAL = 5000
 
 let mottoIndex = getIndex(mottoLength)
 
 const { t, locale } = useI18n()
 const TYPEWRITER_OUTPUT_INTERVAL = locale.value === 'zh' ? 50 : 25
 
-const { text, output: motto } = useTypewriter(t(`mottos[${mottoIndex}]`), {
+const { text, output: motto, pause } = useTypewriter(t(`mottos[${mottoIndex}]`), {
   interval: TYPEWRITER_OUTPUT_INTERVAL,
   backInterval: TYPEWRITER_OUTPUT_INTERVAL * 0.618,
   callback: () => {
@@ -34,6 +35,8 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
   return list[Math.floor(Math.random() * list.length)]
 }
 
+watchEffect(() => pause(isStartViewTransition.value))
+
 const loading = ref(true)
 
 function setGithubContributionCalendar() {
@@ -43,23 +46,19 @@ function setGithubContributionCalendar() {
   GitHubCalendar('#github-contribution-calendar', githubContributionUser, {
     global_stats: false,
     cache: 'no-cache',
-    tooltips: true,
+    tooltips: false,
   }).finally(() => {
     loading.value = false
 
     nextTick(() => {
-      const githubContributionCalendarContainer = document.querySelector('.js-calendar-graph')
+      const calendarGraphContainer = document.querySelector('.js-calendar-graph > div')
 
-      if (githubContributionCalendarContainer) {
-        githubContributionCalendarContainer.classList.add('hide-page-cursor')
+      if (calendarGraphContainer) {
+        calendarGraphContainer.classList.add('hide-page-cursor')
 
-        const { scrollWidth, clientWidth } = githubContributionCalendarContainer
-        if(scrollWidth > clientWidth) {
-          githubContributionCalendarContainer.scrollTo({
-            left: GITHUB_CALENDAR_WIDTH,
-            behavior: 'smooth'
-          })
-        }
+        const toolTipList = Array.from(calendarGraphContainer.querySelectorAll('tool-tip'))
+        toolTipList.forEach(item => item.remove())
+        toolTipList.splice(0, toolTipList.length)
       }
     })
   })

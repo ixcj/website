@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, watchEffect } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
+import { mobile, isStartViewTransition } from '@/utils/screen'
 import { Sun, Moon } from '@vicons/fa'
 
 const isDark = useLocalStorage('isDark', true)
@@ -14,7 +15,7 @@ async function toggleDark() {
 }
 
 function switchTheme(event: MouseEvent) {
-  if (!document.startViewTransition) {
+  if (!document.startViewTransition || mobile.value) {
     toggleDark()
     return
   }
@@ -31,6 +32,7 @@ function switchTheme(event: MouseEvent) {
 
   const transition = document.startViewTransition(async () => await toggleDark())
   transition.ready.then(() => {
+    isStartViewTransition.value = true
     document.documentElement.classList.add('hide-scroll-bar')
     document.documentElement.animate({
       clipPath: isDark.value ? clipPath.reverse() : clipPath
@@ -41,6 +43,7 @@ function switchTheme(event: MouseEvent) {
         ? '::view-transition-old(root)'
         : '::view-transition-new(root)',
     }).onfinish = () => {
+      isStartViewTransition.value = false
       document.documentElement.classList.remove('hide-scroll-bar')
     }
   })

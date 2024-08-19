@@ -2,6 +2,8 @@ import { ref } from 'vue'
 import { useWindowSize, watchDebounced } from '@vueuse/core'
 import { breakpointsConfig, mobileBreakpoint } from '@/config'
 
+export const isStartViewTransition = ref(false)
+
 export const mobileThresholdValue =
   typeof mobileBreakpoint === 'number'
     ? mobileBreakpoint

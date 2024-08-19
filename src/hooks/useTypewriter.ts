@@ -24,11 +24,13 @@ export function useTypewriter(
   defaultText: string = '',
   options: Options = {}
 ) {
+  let isPause = false
+
   const {
     interval = 50,
     backInterval = 50,
     immediate = true,
-    callback = undefined
+    callback = undefined,
   } = options
 
   const text = ref(defaultText)
@@ -40,7 +42,7 @@ export function useTypewriter(
   async function onOutput(fn?: Function) {
     if (output.value.length < text.value.length) {
       await delayedTask(() => {
-        output.value = text.value.substring(0, output.value.length + 1)
+        !isPause && (output.value = text.value.substring(0, output.value.length + 1))
         onOutput(fn)
       }, interval)
     } else {
@@ -52,7 +54,7 @@ export function useTypewriter(
   async function onBackspace() {
     if (output.value.length !== 0) {
       await delayedTask(() => {
-        output.value = output.value.substring(0, output.value.length - 1)
+        !isPause && (output.value = output.value.substring(0, output.value.length - 1))
         onBackspace()
       }, backInterval)
     } else {
@@ -67,6 +69,10 @@ export function useTypewriter(
         resolve(true)
       }, delay)
     })
+  }
+
+  function pause(pauseStatus?: boolean | undefined) {
+    isPause = pauseStatus === undefined ? !isPause : pauseStatus
   }
 
   onMounted(() => {
@@ -87,5 +93,6 @@ export function useTypewriter(
   return {
     text,
     output,
+    pause,
   }
 }
