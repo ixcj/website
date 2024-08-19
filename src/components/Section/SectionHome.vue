@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 import { avatarLink, socialLinks, githubContributionUser } from '@/config'
 import { mottoLength } from '@/language'
 import { useI18n } from 'vue-i18n'
@@ -7,22 +7,22 @@ import { useTypewriter } from '@/hooks/useTypewriter'
 // @ts-ignore
 import GitHubCalendar from 'github-calendar'
 
-const { t, locale } = useI18n()
-const loading = ref(true)
+const GITHUB_CALENDAR_WIDTH = 690
+const TYPEWRITER_PARAGRAPH_INTERVAL = 3000
 
 let mottoIndex = getIndex(mottoLength)
 
-const typewriterDelay = 3000
-const interval = locale.value === 'zh' ? 50 : 25
+const { t, locale } = useI18n()
+const TYPEWRITER_OUTPUT_INTERVAL = locale.value === 'zh' ? 50 : 25
 
 const { text, output: motto } = useTypewriter(t(`mottos[${mottoIndex}]`), {
-  interval,
-  backInterval: interval * 0.618,
+  interval: TYPEWRITER_OUTPUT_INTERVAL,
+  backInterval: TYPEWRITER_OUTPUT_INTERVAL * 0.618,
   callback: () => {
     setTimeout(() => {
       mottoIndex = getIndex(mottoLength, mottoIndex)
       text.value = t(`mottos[${mottoIndex}]`)
-    }, typewriterDelay)
+    }, TYPEWRITER_PARAGRAPH_INTERVAL)
   }
 })
 
@@ -34,6 +34,9 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
   return list[Math.floor(Math.random() * list.length)]
 }
 
+const loading = ref(true)
+const githubContributionCalendarContainer = ref<HTMLElement | null>(null)
+
 function setGithubContributionCalendar() {
   if (!githubContributionUser) return
 
@@ -43,6 +46,18 @@ function setGithubContributionCalendar() {
     cache: 'no-cache',
   }).finally(() => {
     loading.value = false
+
+    nextTick(() => {
+      if (!githubContributionCalendarContainer.value) return
+
+      const { scrollWidth, clientWidth } = githubContributionCalendarContainer.value
+      if(scrollWidth > clientWidth) {
+        githubContributionCalendarContainer.value.scrollTo({
+          left: GITHUB_CALENDAR_WIDTH,
+          behavior: 'smooth'
+        })
+      }
+    })
   })
 }
 
@@ -74,7 +89,11 @@ onMounted(() => {
         <component :is="link.icon" class="icon" />
       </a>
     </div>
-    <div v-if="githubContributionUser" class="github-contribution-calendar-container">
+    <div
+      v-if="githubContributionUser"
+      class="github-contribution-calendar-container"
+      ref="githubContributionCalendarContainer"
+    >
       <Transition name="fade">
         <div v-show="!loading" id="github-contribution-calendar" class="github-contribution-calendar"></div>
       </Transition>
@@ -160,11 +179,12 @@ onMounted(() => {
     position: relative;
 
     .github-contribution-calendar {
-      width: 690px;
+      width: calc(v-bind(GITHUB_CALENDAR_WIDTH) * 1px);
       min-height: auto !important;
       margin: 0 auto;
 
       &.loading {
+        width: auto;
         position: absolute;
         inset: 0;
         overflow: hidden;

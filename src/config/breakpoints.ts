@@ -14,12 +14,12 @@ export const breakpointsConfig: BreakpointsConfigItem[] = [
   {
     name: 'xs',
     range: [0, 600],
-    contentWidth: '100%',
+    contentWidth: 600,
   },
   {
     name: 'sm',
     range: [600, 960],
-    contentWidth: 800,
+    contentWidth: 600,
   },
   {
     name: 'md',
