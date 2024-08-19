@@ -5,7 +5,6 @@ caption.sr-only {
 .width-full {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-top: 0.5em;
   position: sticky;
   left: 0;
@@ -119,8 +118,7 @@ tool-tip {
   fill: #aaa;
 }
 
-div.px-md-5 {
-  height: 1rem;
+div.px-md-5 {  
   padding-right: 3px;
 }
 

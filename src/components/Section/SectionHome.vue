@@ -178,7 +178,6 @@ onMounted(() => {
   .github-contribution-calendar-container {
     width: calc(100% - 40px);
     min-height: 128px;
-    overflow-y: auto;
     margin: 20px auto 0;
     position: relative;
 
