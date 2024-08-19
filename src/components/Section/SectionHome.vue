@@ -205,9 +205,24 @@ onMounted(() => {
           content: '';
           position: absolute;
           inset: -20%;
-          background: linear-gradient(45deg, rgba(255,255,255,0) 40%, rgba(255, 255, 255, 0.1), rgba(255,255,255,0) 60%);
+          background-color: var(--foreground-color);
           animation: shark-wrap 2s infinite;
           transform: translateX(-100%);
+          mask-image: linear-gradient(
+            45deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.05) 50%,
+            transparent 60%,
+          );
+
+          .dark & {
+            mask-image: linear-gradient(
+              45deg,
+              transparent 40%,
+              rgba(255, 255, 255, 0.075) 50%,
+              transparent 60%,
+            );
+          }
         }
       }
     }
