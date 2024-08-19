@@ -42,8 +42,8 @@ import { skillList } from '@/config'
       justify-content: center;
       align-items: center;
       padding: 8px 12px;
-      background-color: var(--text-color);
-      color: var(--bg-color);
+      background-color: var(--foreground-color);
+      color: var(--background-color);
       border-radius: 10px;
 
       .section-skill-item-icon {

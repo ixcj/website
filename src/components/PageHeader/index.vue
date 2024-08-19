@@ -223,7 +223,7 @@ watchEffect(() => {
       justify-content: center;
       align-items: center;
       transition: var(--transition-duration) ease;
-      text-shadow: 0 0 5px var(--bg-color);
+      text-shadow: 0 0 5px var(--background-color);
 
       &.column {
         flex-direction: column;
@@ -249,7 +249,7 @@ watchEffect(() => {
           width: 100%;
           padding: 15px;
           text-decoration: none;
-          color: var(--text-color);
+          color: var(--foreground-color);
           transition: color var(--transition-duration);
           text-align: center;
         }

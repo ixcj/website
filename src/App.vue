@@ -60,26 +60,26 @@ globalThis.onload = () => {
 </script>
 
 <template>
-  <div
-    class="container"
-    :class="[breakpointsName, mobile ? 'mobile' : '']"
-    :style="{ fontFamily: css.family }"
-  >
-    <PageHeader />
+  <Transition name="fade">
+    <div
+      v-show="loading"
+      class="container"
+      :class="[breakpointsName, mobile ? 'mobile' : '']"
+      :style="{ fontFamily: css.family }"
+    >
+      <PageMain />
+      <PageHeader />
+    </div>
+  </Transition>
 
-    <Transition name="fade">
-      <PageMain v-show="loading" />
-    </Transition>
-
-    <PageCursor v-if="!touch" />
-  </div>
+  <PageCursor v-if="!touch" />
 </template>
 
 <style lang="scss">
 .container {
   min-height: 100vh;
   box-sizing: border-box;
-  background-color: var(--bg-color);
+  background-color: var(--background-color);
   transition: background-color var(--transition-duration);
   position: relative;
   overflow-x: hidden;

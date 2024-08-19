@@ -8,8 +8,8 @@
 }
 
 :root {
-  color: var(--text-color);
-  background-color: var(--bg-color);
+  color: var(--foreground-color);
+  background-color: var(--background-color);
   scroll-behavior: smooth;
   scroll-padding-top: var(--header-height);
 

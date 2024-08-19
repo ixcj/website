@@ -1,7 +1,4 @@
-import { Html5, Css3Alt, JsSquare, GitAlt } from '@vicons/fa'
-import Vue from '@/assets/svg/Vue-logo.svg'
-import Threejs from '@/assets/svg/Threejs-logo.svg'
-import TypeScript from '@/assets/svg/Typescript-logo.svg'
+import { Html5, Css3Alt, JsSquare, GitAlt, Github } from '@vicons/fa'
 
 interface Skill {
   name: string
@@ -39,23 +36,39 @@ export const skillList: Array<Skill_Icon | Skill_Image> = [
   },
   {
     name: 'TypeScript',
-    icon: TypeScript,
+    icon: new URL('@/assets/svg/Typescript-logo.svg', import.meta.url).href,
     type: 'image',
   },
   {
     name: 'Vue.js',
-    icon: Vue,
+    icon: new URL('@/assets/svg/Vue-logo.svg', import.meta.url).href,
+    type: 'image',
+  },
+  {
+    name: 'VueUse',
+    icon: new URL('@/assets/svg/VueUse-logo.svg', import.meta.url).href,
+    type: 'image',
+  },
+  {
+    name: 'Vite',
+    icon: new URL('@/assets/svg/Vite-logo.svg', import.meta.url).href,
     type: 'image',
   },
   {
     name: 'Three.js',
-    icon: Threejs,
+    icon: new URL('@/assets/svg/Threejs-logo.svg', import.meta.url).href,
     type: 'image',
   },
   {
     name: 'Git',
     icon: GitAlt,
     color: '#eb4d28',
+    type: 'icon',
+  },
+  {
+    name: 'GitHub',
+    icon: Github,
+    color: 'var(--background-color)',
     type: 'icon',
   },
 ]

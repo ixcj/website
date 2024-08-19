@@ -43,13 +43,13 @@ const projects = computed(() => {
       width: calc((100% - 20px) / 2);
       height: 350px;
       position: relative;
-      background-color: var(--text-color);
+      background-color: var(--foreground-color);
       padding: 10px;
       box-sizing: border-box;
       border-radius: 5px;
 
       .project-item-name {
-        color: var(--bg-color);
+        color: var(--background-color);
         font-size: 18px;
         font-weight: bold;
         text-align: center;

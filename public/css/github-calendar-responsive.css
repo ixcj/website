@@ -7,17 +7,42 @@ caption.sr-only {
   justify-content: space-between;
   align-items: center;
   margin-top: 0.5em;
+  position: sticky;
+  left: 0;
+  max-width: var(--github-calendar-width, '690px');
+  margin: 5px auto 0;
 }
 
 .width-full > .float-left,
 .width-full > .float-right {
   font-size: 12px;
-  color: var(--text-color);
+  color: var(--foreground-color);
   padding: 0;
+}
+
+.width-full > .float-left {
+  flex: 1;
 }
 
 .width-full > .float-left > a {
   color: inherit;
+  opacity: 0.875
+}
+
+.width-full > .float-right {
+  white-space: nowrap;
+  flex: 0 0 130px;
+}
+
+.js-calendar-graph {
+  overflow-y: auto;
+}
+
+.js-calendar-graph > div:first-child {
+  max-width: none !important;
+  overflow-y: auto !important;
+  width: var(--github-calendar-width, '690px') !important;
+  margin: 0 auto;
 }
 
 :root {

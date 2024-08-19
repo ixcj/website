@@ -35,7 +35,6 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
 }
 
 const loading = ref(true)
-const githubContributionCalendarContainer = ref<HTMLElement | null>(null)
 
 function setGithubContributionCalendar() {
   if (!githubContributionUser) return
@@ -44,18 +43,23 @@ function setGithubContributionCalendar() {
   GitHubCalendar('#github-contribution-calendar', githubContributionUser, {
     global_stats: false,
     cache: 'no-cache',
+    tooltips: true,
   }).finally(() => {
     loading.value = false
 
     nextTick(() => {
-      if (!githubContributionCalendarContainer.value) return
+      const githubContributionCalendarContainer = document.querySelector('.js-calendar-graph')
 
-      const { scrollWidth, clientWidth } = githubContributionCalendarContainer.value
-      if(scrollWidth > clientWidth) {
-        githubContributionCalendarContainer.value.scrollTo({
-          left: GITHUB_CALENDAR_WIDTH,
-          behavior: 'smooth'
-        })
+      if (githubContributionCalendarContainer) {
+        githubContributionCalendarContainer.classList.add('hide-page-cursor')
+
+        const { scrollWidth, clientWidth } = githubContributionCalendarContainer
+        if(scrollWidth > clientWidth) {
+          githubContributionCalendarContainer.scrollTo({
+            left: GITHUB_CALENDAR_WIDTH,
+            behavior: 'smooth'
+          })
+        }
       }
     })
   })
@@ -93,6 +97,7 @@ onMounted(() => {
       v-if="githubContributionUser"
       class="github-contribution-calendar-container"
       ref="githubContributionCalendarContainer"
+      :style="{ '--github-calendar-width': GITHUB_CALENDAR_WIDTH + 'px' }"
     >
       <Transition name="fade">
         <div v-show="!loading" id="github-contribution-calendar" class="github-contribution-calendar"></div>
@@ -166,7 +171,7 @@ onMounted(() => {
 
       .icon {
         text-decoration: none;
-        color: var(--text-color);
+        color: var(--foreground-color);
       }
     }
   }
@@ -179,7 +184,7 @@ onMounted(() => {
     position: relative;
 
     .github-contribution-calendar {
-      width: calc(v-bind(GITHUB_CALENDAR_WIDTH) * 1px);
+      width: 100%;
       min-height: auto !important;
       margin: 0 auto;
 
@@ -188,14 +193,14 @@ onMounted(() => {
         position: absolute;
         inset: 0;
         overflow: hidden;
+        border-radius: 8px;
 
         &::after {
           content: '';
           position: absolute;
           inset: 0;
-          background-color: var(--text-color);
+          background-color: var(--foreground-color);
           opacity: 0.05;
-          border-radius: 5px;
         }
 
         &::before {

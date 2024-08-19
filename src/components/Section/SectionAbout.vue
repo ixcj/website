@@ -44,13 +44,13 @@ const { locale } = useI18n()
       a {
         text-decoration: none;
         white-space: nowrap;
-        color: var(--text-color);
+        color: var(--foreground-color);
         position: relative;
         z-index: 0;
         transition: color var(--transition-duration);
 
         &:hover {
-          color: var(--bg-color);
+          color: var(--background-color);
 
           &::after {
             opacity: 1;
@@ -66,7 +66,7 @@ const { locale } = useI18n()
           display: block;
           width: 100%;
           height: 33%;
-          background-color: var(--text-color);
+          background-color: var(--foreground-color);
           opacity: 0.33;
           z-index: -1;
           transition: var(--transition-duration);
