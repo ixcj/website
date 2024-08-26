@@ -7,18 +7,22 @@ import { skillList } from '@/config'
     <h2 class="section-title">{{ $t('SectionTitle.skills') }}</h2>
     <div class="section-skill-box">
       <div v-for="item in skillList" class="section-skill-item">
-        <component
-          v-if="item.type !== 'image' && item.icon"
-          :is="item.icon"
-          :style="{ color: item.color }"
-          class="section-skill-item-icon"
-        />
-        <img
-          v-if="item.type === 'image' && item.icon"
-          :src="item.icon"
-          :alt="item.name"
-          class="section-skill-item-icon"
-        >
+        <template v-if="item.icon">
+          <img
+            v-if="item.type === 'image'"
+            :src="item.icon"
+            :alt="item.name"
+            class="section-skill-item-icon"
+            loading="lazy"
+          >
+          <component
+            v-else
+            :is="item.icon"
+            :style="{ color: item.color }"
+            class="section-skill-item-icon"
+          />
+        </template>
+        
         <span>{{ item.name }}</span>
       </div>
     </div>
