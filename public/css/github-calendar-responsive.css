@@ -43,10 +43,10 @@ caption.sr-only {
 
 :root.dark {
   --color-calendar-graph-day-bg: rgba(255, 255, 255, 0.1);
-  --color-calendar-graph-day-L1-bg: #003820;
-  --color-calendar-graph-day-L2-bg: #00602d;
-  --color-calendar-graph-day-L3-bg: #10983d;
-  --color-calendar-graph-day-L4-bg: #27d545;
+  --color-calendar-graph-day-L1-bg: #0e4429;
+  --color-calendar-graph-day-L2-bg: #006d32;
+  --color-calendar-graph-day-L3-bg: #26a641;
+  --color-calendar-graph-day-L4-bg: #39d353;
 }
 
 .ContributionCalendar-day[data-level='0'] {
