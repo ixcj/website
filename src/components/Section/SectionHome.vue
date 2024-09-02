@@ -59,6 +59,9 @@ function setGithubContributionCalendar() {
         const toolTipList = Array.from(calendarGraphContainer.querySelectorAll('tool-tip'))
         toolTipList.forEach(item => item.remove())
         toolTipList.splice(0, toolTipList.length)
+
+        const link = document.querySelector('.Link--muted')
+        link?.setAttribute('target', '_blank')
       }
     })
   })
@@ -92,6 +95,8 @@ onMounted(() => {
         <component :is="link.icon" class="icon" />
       </a>
     </div>
+
+    <p v-if="githubContributionUser" class="github-calendar-title">GitHub {{ $t('contributionCalendar') }}</p>
     <div
       v-if="githubContributionUser"
       class="github-contribution-calendar-container"
@@ -175,10 +180,16 @@ onMounted(() => {
     }
   }
 
+  .github-calendar-title {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 18px;
+  }
+
   .github-contribution-calendar-container {
     width: calc(100% - 40px);
     min-height: 128px;
-    margin: 20px auto 0;
+    margin: 10px auto 0;
     position: relative;
 
     .github-contribution-calendar {
