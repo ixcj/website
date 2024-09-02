@@ -47,4 +47,6 @@ export default {
   },
 
   projects: encodeURIComponent(JSON.stringify(projects)),
+
+  contributionCalendar: '贡献日历',
 }

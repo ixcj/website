@@ -41,4 +41,6 @@ export default {
   },
 
   projects: JSON.stringify(projects),
+
+  contributionCalendar: 'Contribution calendar',
 }
