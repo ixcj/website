@@ -9,12 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^10.9.0",
+    "gsap": "^3.12.5",
     "sass": "^1.77.1",
-    "vue": "^3.4.21"
+    "vue": "^3.4.21",
+    "vue-i18n": "^9.13.1"
   },
   "devDependencies": {
+    "@types/dom-view-transitions": "^1.0.4",
     "@types/node": "^20.12.11",
     "@unhead/vue": "^1.9.10",
+    "@vicons/fa": "^0.12.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",

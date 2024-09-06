@@ -1,30 +1,59 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { useHead } from '@unhead/vue'
+import { useI18n } from 'vue-i18n'
+import { siteUrl } from '@/config'
+import { breakpointsName, mobile, touch } from '@/utils/screen'
+import PageCursor from '@/components/PageCursor/index.vue'
+import PageHeader from '@/components/PageHeader/index.vue'
+import PageMain from '@/components/PageMain/index.vue'
+
+const { t } = useI18n()
+
+const title = t('title')
+const description = t('description')
+const ogImage = `${siteUrl.replace(/\/$/, '')}/og.png`
+
+useHead({
+  title,
+  htmlAttrs: { lang: t('lang') },
+  meta: [
+    // HTML Meta Tags
+    { name: 'description', content: description },
+    { name: 'keywords', content: t('keywords') },
+    { name: 'author', content: t('author') },
+
+    // Open Graph Meta Tags
+    { property: 'og:site_name', content: title },
+    { property: 'og:url', content: siteUrl },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { property: 'og:image', content: ogImage },
+
+    // Twitter Meta Tags
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:url', content: siteUrl },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:image', content: ogImage },
+  ],
+})
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="container" :class="[breakpointsName, mobile ? 'mobile' : '']">
+    <PageHeader />
+    <PageMain />
+
+    <PageCursor v-if="!touch" />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+<style lang="scss">
+.container {
+  min-height: 200vh;
+  box-sizing: border-box;
+  background-color: var(--bg-color);
+  transition: background-color var(--transition-duration);
 }
 </style>
