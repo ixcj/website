@@ -16,10 +16,10 @@ let myReq: number = 0
 function onMousemove(event: MouseEvent) {
   if(!cursor.value) return
 
+  cancelAnimationFrame(myReq)
+
   const { clientX, clientY } = event
   const target = event.target as HTMLElement
-
-  cancelAnimationFrame(myReq)
 
   myReq = requestAnimationFrame(() => {
     const style = cursor.value!.style
