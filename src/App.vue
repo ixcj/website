@@ -8,6 +8,7 @@ import { githubContributionUser } from '@/config'
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
+import PageFooter from '@/components/PageFooter/index.vue'
 import { css } from '@/assets/font/MiSans-Normal.ttf?subsets'
 
 const { t } = useI18n()
@@ -67,8 +68,9 @@ globalThis.onload = () => {
       :class="[breakpointsName, mobile ? 'mobile' : '']"
       :style="{ fontFamily: css.family }"
     >
-      <PageMain />
       <PageHeader />
+      <PageMain />
+      <PageFooter />
     </div>
   </Transition>
 
