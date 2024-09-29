@@ -54,8 +54,6 @@ function setGithubContributionCalendar() {
       const calendarGraphContainer = document.querySelector('.js-calendar-graph > div')
 
       if (calendarGraphContainer) {
-        calendarGraphContainer.classList.add('hide-page-cursor')
-
         const toolTipList = Array.from(calendarGraphContainer.querySelectorAll('tool-tip'))
         toolTipList.forEach(item => item.remove())
         toolTipList.splice(0, toolTipList.length)
@@ -99,7 +97,7 @@ onMounted(() => {
     <template v-if="githubContributionUser">
       <p class="calendar-title">GitHub {{ $t('contributionCalendar') }}</p>
       <div
-        class="calendar-container"
+        class="calendar-container hide-page-cursor"
         ref="githubContributionCalendarContainer"
         :style="{ '--github-calendar-width': GITHUB_CALENDAR_WIDTH + 'px' }"
       >

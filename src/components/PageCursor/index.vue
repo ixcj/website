@@ -2,9 +2,9 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const props = withDefaults(defineProps<{
-  hideCursorClass?: string
+  hideCursorSelector?: string | string[]
 }>(), {
-  hideCursorClass: 'hide-page-cursor'
+  hideCursorSelector: '.hide-page-cursor'
 })
 
 const cursor = ref<HTMLElement | null>(null)
@@ -26,7 +26,10 @@ function onMousemove(event: MouseEvent) {
     style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`
     cursorType.value = getComputedStyle(target)?.cursor || 'auto'
 
-    const hideCursor = target.classList.contains(props.hideCursorClass)
+    const hideCursorSelectorList = Array.isArray(props.hideCursorSelector)
+      ? props.hideCursorSelector
+      : [props.hideCursorSelector]
+    const hideCursor = hideCursorSelectorList.some(item => target.closest(item) !== null)
     style.opacity = hideCursor ? '0' : '1'
     style.transition = hideCursor ? '0.2s ease-out' : '0.125s ease-out'
   })
