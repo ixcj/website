@@ -10,13 +10,13 @@ export const mottos = [
 ]
 
 export const projects = [
-  {
-    name: '个人网站',
-    cover: '/avatar.png',
-    links: [],
-    introduce: '',
-    tags: '',
-  }
+  // {
+  //   name: '个人网站',
+  //   cover: '/avatar.png',
+  //   links: [],
+  //   introduce: '',
+  //   tags: '',
+  // }
 ]
 
 export default {
