@@ -96,20 +96,25 @@ onMounted(() => {
       </a>
     </div>
 
-    <p v-if="githubContributionUser" class="github-calendar-title">GitHub {{ $t('contributionCalendar') }}</p>
-    <div
-      v-if="githubContributionUser"
-      class="github-contribution-calendar-container"
-      ref="githubContributionCalendarContainer"
-      :style="{ '--github-calendar-width': GITHUB_CALENDAR_WIDTH + 'px' }"
-    >
-      <Transition name="fade">
-        <div v-show="!loading" id="github-contribution-calendar" class="github-contribution-calendar"></div>
-      </Transition>
-      <Transition name="fade">
-        <div v-if="loading" class="github-contribution-calendar loading"></div>
-      </Transition>
-    </div>
+    <template v-if="githubContributionUser">
+      <p class="calendar-title">GitHub {{ $t('contributionCalendar') }}</p>
+      <div
+        class="calendar-container"
+        ref="githubContributionCalendarContainer"
+        :style="{ '--github-calendar-width': GITHUB_CALENDAR_WIDTH + 'px' }"
+      >
+        <Transition name="fade">
+          <div
+            v-show="!loading"
+            id="github-contribution-calendar"
+            class="contribution-calendar"
+          ></div>
+        </Transition>
+        <Transition name="fade">
+          <div v-if="loading" class="contribution-calendar loading"></div>
+        </Transition>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -180,19 +185,19 @@ onMounted(() => {
     }
   }
 
-  .github-calendar-title {
+  .calendar-title {
     text-align: center;
     margin-top: 30px;
     font-size: 18px;
   }
 
-  .github-contribution-calendar-container {
+  .calendar-container {
     width: calc(100% - 40px);
     min-height: 128px;
     margin: 10px auto 0;
     position: relative;
 
-    .github-contribution-calendar {
+    .contribution-calendar {
       width: 100%;
       min-height: auto !important;
       margin: 0 auto;

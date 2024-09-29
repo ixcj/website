@@ -19,3 +19,11 @@ export const socialLinks = [
     icon: Blog,
   },
 ]
+
+// 页脚链接
+export const footerLinks = [
+  {
+    name: 'Powered by ixcj/website',
+    link: 'https://github.com/ixcj/website',
+  },
+]

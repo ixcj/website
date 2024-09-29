@@ -1,7 +1,19 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { footerLinks } from '@/config';
+</script>
 
 <template>
   <footer class="page-footer">
+    <p>© 2024 {{ $t('name') }}. All rights reserved.</p>
+    <div class="footer-links">
+      <a
+        v-for="item in footerLinks"
+        :href="item.link"
+        class="page-link hide-page-cursor"
+        target="_blank"
+        rel="noopener noreferrer"
+      >{{ item.name }}</a>
+    </div>
   </footer>
 </template>
 
@@ -9,10 +21,15 @@
 .page-footer {
   width: 100%;
   position: relative;
-  min-height:80px;
+  min-height: 80px;
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   &::before {
-    content:  '';
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -23,6 +40,13 @@
     .dark & {
       opacity: 0.2;
     }
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
   }
 }
 </style>
