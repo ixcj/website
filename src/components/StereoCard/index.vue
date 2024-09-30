@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-interface Props {
-  data: any
-}
+// interface Props {
+//   data: any
+// }
 
-const props = withDefaults(defineProps<Props>(), {
-  data: () => ({})
-})
+// const props = withDefaults(defineProps<Props>(), {
+//   data: () => ({})
+// })
 
 const stereoCardRef = ref<HTMLElement | null>(null)
 const cardWrapperRef = ref<HTMLElement | null>(null)
