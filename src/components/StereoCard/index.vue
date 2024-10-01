@@ -32,11 +32,14 @@ const resizeObserver = new ResizeObserver(entries => {
 })
 
 function updateStereoCardRefParams(el: Element | HTMLElement) {
-  const { top, left, width, height } = el.getBoundingClientRect()
+  const { top, left } = el.getBoundingClientRect()
+  const width = el.clientWidth
+  const height = el.clientWidth
+  console.log(top, left)
   stereoCardRefParams = { top, left, width, height }
 }
 
-function windowResize() {
+function setStereoCardRefParams() {
   stereoCardRef.value && updateStereoCardRefParams(stereoCardRef.value)
 }
 
@@ -91,14 +94,16 @@ onMounted(() => {
   setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
   stereoCardRef.value?.addEventListener('mousemove', onMousemove)
   stereoCardRef.value?.addEventListener('mouseout', onMouseout)
-  globalThis.addEventListener('resize', windowResize)
+  globalThis.addEventListener('resize', setStereoCardRefParams)
+  globalThis.addEventListener('scroll', setStereoCardRefParams)
 })
 
 onUnmounted(() => {
   resizeObserver.disconnect()
   stereoCardRef.value?.removeEventListener('mousemove', onMousemove)
   stereoCardRef.value?.removeEventListener('mouseout', onMouseout)
-  globalThis.removeEventListener('resize', windowResize)
+  globalThis.removeEventListener('resize', setStereoCardRefParams)
+  globalThis.removeEventListener('scroll', setStereoCardRefParams)
 })
 </script>
 
