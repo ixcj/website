@@ -34,8 +34,7 @@ const resizeObserver = new ResizeObserver(entries => {
 function updateStereoCardRefParams(el: Element | HTMLElement) {
   const { top, left } = el.getBoundingClientRect()
   const width = el.clientWidth
-  const height = el.clientWidth
-  console.log(top, left)
+  const height = el.clientHeight
   stereoCardRefParams = { top, left, width, height }
 }
 
@@ -112,7 +111,7 @@ onUnmounted(() => {
     <div ref="cardWrapperRef" class="card-wrapper">
       <div class="card-3d">
         <div class="card-image-box">
-          <img class="card-image" src="http://allyourhtml.club/carousel/image.webp" alt="" />
+          <!-- <img class="card-image" src="http://allyourhtml.club/carousel/image.webp" alt="" /> -->
         </div>
         <div class="card-layer1"></div>
         <div class="card-layer2"></div>
