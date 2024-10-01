@@ -1,29 +1,53 @@
+<!-- 参考地址：https://codepen.io/akella/pen/XWYrRmb -->
+
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// interface Props {
-//   data: any
-// }
+interface Props {
+  data: any,
+  speedX?: number,
+  speedY?: number,
+  bgSpeedX?: number,
+  bgSpeedY?: number,
+}
 
-// const props = withDefaults(defineProps<Props>(), {
-//   data: () => ({})
-// })
+const props = withDefaults(defineProps<Props>(), {
+  data: () => ({}),
+  speedX: 10,
+  speedY: 10,
+  bgSpeedX: 20,
+  bgSpeedY: 20,
+})
 
 const stereoCardRef = ref<HTMLElement | null>(null)
 const cardWrapperRef = ref<HTMLElement | null>(null)
 
-let myReq: number = 0
+let myReq = 0
+
+let stereoCardRefParams = { top: 0, left: 0, width: 0, height: 0 }
+const resizeObserver = new ResizeObserver(entries => {
+  for (const entry of entries) {
+    updateStereoCardRefParams(entry.target)
+  }
+})
+
+function updateStereoCardRefParams(el: Element | HTMLElement) {
+  const { top, left, width, height } = el.getBoundingClientRect()
+  stereoCardRefParams = { top, left, width, height }
+}
+
+function windowResize() {
+  stereoCardRef.value && updateStereoCardRefParams(stereoCardRef.value)
+}
 
 function onMousemove() {
   if (!stereoCardRef.value) return
-  
-  const w = stereoCardRef.value.clientWidth
-  const h = stereoCardRef.value.clientHeight
-  const b = stereoCardRef.value.getBoundingClientRect()
-  
+
   stereoCardRef.value.addEventListener('mousemove', (e) => {
-    let X = (e.clientX - b.left) / w
-    let Y = (e.clientY - b.top) / h
+    const { top, left, width, height } = stereoCardRefParams
+
+    let X = (e.clientX - left) / width
+    let Y = (e.clientY - top) / height
 
     setCardWrapperRefStyle({ X, Y })
   });
@@ -39,12 +63,14 @@ function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
   if (!cardWrapperRef.value) return
 
   cancelAnimationFrame(myReq)
-  
-  let rX = -(X - 0.5) * 8
-  let rY = (Y - 0.5) * 8
 
-  let bgX = 40 + 10 * X
-  let bgY = 40 + 10 * Y
+  const { speedX, speedY, bgSpeedX, bgSpeedY } = props
+  
+  let rX = -(X - 0.5) * speedX
+  let rY = (Y - 0.5) * speedY
+
+  let bgX = 40 + bgSpeedX * X
+  let bgY = 40 + bgSpeedY * Y
 
   myReq = requestAnimationFrame(() => {
     if (!cardWrapperRef.value) return
@@ -61,14 +87,18 @@ function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
 }
 
 onMounted(() => {
+  stereoCardRef.value && resizeObserver.observe(stereoCardRef.value)
   setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
   stereoCardRef.value?.addEventListener('mousemove', onMousemove)
   stereoCardRef.value?.addEventListener('mouseout', onMouseout)
+  globalThis.addEventListener('resize', windowResize)
 })
 
 onUnmounted(() => {
+  resizeObserver.disconnect()
   stereoCardRef.value?.removeEventListener('mousemove', onMousemove)
   stereoCardRef.value?.removeEventListener('mouseout', onMouseout)
+  globalThis.removeEventListener('resize', windowResize)
 })
 </script>
 
@@ -92,9 +122,10 @@ onUnmounted(() => {
   height: 100%;
   position: relative;
   
+  --aspectRatio: 3 / 4;
   --round: 18px;
   --step: 5%;
-  --pattern: url("http://allyourhtml.club/carousel/pattern.webp") center / 75%;
+  --pattern: url("http://allyourhtml.club/carousel/pattern.webp");
 
   --rainbow: repeating-linear-gradient(
       0deg,
@@ -124,7 +155,7 @@ onUnmounted(() => {
       rgba(255, 255, 255, 0.25) 120%
     )
     var(--bg-x, 0) var(--bg-y, 0) / 300%;
-  
+
   .card-wrapper {
     perspective: 600px;
     position: absolute;
@@ -137,11 +168,12 @@ onUnmounted(() => {
       inset: 0;
       clip-path: inset(0 0 0 0 round var(--round));
       overflow: hidden;
-      transition: transform calc(var(--transition-duration) / 2) linear;
+      transition: transform calc(var(--transition-duration) / 3) linear;
 
       &::after {
         content: '';
         position: absolute;
+        z-index: 999;
         inset: 0;
         border: 1px solid var(--foreground-color);
         border-radius: var(--round);
@@ -153,12 +185,13 @@ onUnmounted(() => {
       }
 
       .card-image-box {
+        width: 100%;
+        height: 100%;
         clip-path: inset(0 0 0 0 round var(--round));
 
         .card-image {
-          display: block;
+          height: 100%;
           width: 100%;
-          aspect-ratio: 3 / 4;
           object-fit: cover;
         }
       }
@@ -172,15 +205,18 @@ onUnmounted(() => {
     mix-blend-mode: soft-light;
     clip-path: inset(0 0 1px 0 round var(--round));
     background: radial-gradient(
-
       rgba(255, 255, 255, 0.8) 10%,
       rgba(255, 255, 255, 0.65) 20%,
-      rgba(255, 255, 255, 0) 90%
+      rgba(255, 255, 255, 0) 60%
     );
     background-size: 200% 200%;
     background-repeat: no-repeat;
     background-position: calc(100% - var(--x, 0)) calc(100% - var(--y, 0));
-    transition: background-position calc(var(--transition-duration) / 2) linear;
+    transition: background-position calc(var(--transition-duration) / 3) linear;
+
+    .dark & {
+      filter: brightness(0.75);
+    }
   }
   
   .card-layer2 {
@@ -202,11 +238,11 @@ onUnmounted(() => {
       inset: 0;
       background: var(--pattern), var(--rainbow), var(--diagonal), var(--shade);
       mix-blend-mode: exclusion;
-      background-size: 75%, 200% 400%, 800%, 200%;
+      background-size: cover, 200% 400%, 800%, 200%;
       background-position: center, 0% var(--bg-y, 0),
         calc(var(--bg-x, 0) * -1) calc(var(--bg-y, 0) * -1), var(--bg-x, 0) var(--bg-y, 0);
       background-blend-mode: soft-light, hue, hard-light;
-      transition: background-position calc(var(--transition-duration) / 2) linear;
+      transition: background-position calc(var(--transition-duration) / 3) linear;
     }
   }
 }
