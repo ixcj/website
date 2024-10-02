@@ -1,7 +1,11 @@
 <!-- 参考地址：https://codepen.io/akella/pen/XWYrRmb -->
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+} from 'vue'
 
 interface Props {
   data: any,
@@ -32,9 +36,7 @@ const resizeObserver = new ResizeObserver(entries => {
 })
 
 function updateStereoCardRefParams(el: Element | HTMLElement) {
-  const { top, left } = el.getBoundingClientRect()
-  const width = el.clientWidth
-  const height = el.clientHeight
+  const { top, left, width, height } = el.getBoundingClientRect()
   stereoCardRefParams = { top, left, width, height }
 }
 
@@ -111,7 +113,7 @@ onUnmounted(() => {
     <div ref="cardWrapperRef" class="card-wrapper">
       <div class="card-3d">
         <div class="card-image-box">
-          <!-- <img class="card-image" src="http://allyourhtml.club/carousel/image.webp" alt="" /> -->
+          <img class="card-image" src="http://allyourhtml.club/carousel/image.webp" alt="" />
         </div>
         <div class="card-layer1"></div>
         <div class="card-layer2"></div>
@@ -127,7 +129,7 @@ onUnmounted(() => {
   position: relative;
   
   --aspectRatio: 3 / 4;
-  --round: 18px;
+  --round: 16px;
   --step: 5%;
   --pattern: url("http://allyourhtml.club/carousel/pattern.webp");
 
