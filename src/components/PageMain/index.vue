@@ -55,6 +55,12 @@ const contentWidthString = computed(() => {
         font-size: 28px;
         text-align: center;
       }
+
+      .text-type-box {
+        max-width: 750px;
+        margin-left: auto;
+        margin-right: auto;
+      }
     }
   }
 }

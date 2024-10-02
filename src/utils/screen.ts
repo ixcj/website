@@ -13,7 +13,7 @@ export const { width: windowWidth } = useWindowSize()
 export const breakpointsName = ref('xl')
 export const mobile = ref(windowWidth.value <= mobileThresholdValue)
 export const scrollBarWidth = ref(0)
-export const contentWidth = ref<number | string>(800)
+export const contentWidth = ref<number | string>(900)
 
 const haveMatchMedia = 'matchMedia' in globalThis
 export const touch = ref(haveMatchMedia && Boolean(globalThis.matchMedia('(pointer: coarse)')?.matches))
@@ -27,7 +27,7 @@ watchDebounced(
     })
     
     breakpointsName.value = currentBreakpointsConfig?.name ?? 'xl'
-    contentWidth.value = currentBreakpointsConfig?.contentWidth ?? 800
+    contentWidth.value = currentBreakpointsConfig?.contentWidth ?? 900
   
     mobile.value = (newWidth <= mobileThresholdValue)
     globalThis?.document?.documentElement.style

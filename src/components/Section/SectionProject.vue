@@ -44,13 +44,12 @@ const projects = computed(() => {
     .project-item {
       width: calc((100% - 40px) / 3);
       aspect-ratio: 3 / 4;
-      transition: width var(--transition-duration);
 
       .sm & {
         width: calc((100% - 20px) / 2);
       }
 
-      .xs & {
+      .xs &  {
         width: 100%;
         max-width: 350px;
       }

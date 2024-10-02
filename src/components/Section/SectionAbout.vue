@@ -5,7 +5,7 @@ const { locale } = useI18n()
 </script>
 
 <template>
-  <div class="section-about">
+  <div class="section-about text-type-box">
     <h2 class="section-title">{{ $t('SectionTitle.about') }}</h2>
 
     <div class="section-about-introduce">

@@ -54,40 +54,28 @@ watchEffect(() => {
         />
       </div>
 
-      <nav class="page-header-nav" v-if="!mobile">
+      <nav class="page-header-nav" :class="{ 'mobile-nav': mobile }">
         <Transition name="nav">
           <ul
             v-show="showMenu"
             ref="navList"
             class="page-header-nav-list"
+            :class="{ 'column': mobile }"
           >
-            <li class="page-header-nav-item" v-for="section in sectionList">
+            <li class="page-header-nav-item" v-for="section in sectionList" @click="menuHamburgerActive = false">
               <a class="page-header-link" :href="`#${section}`">{{ $t(`SectionText.${section}`) }}</a>
+            </li>
+            <li v-if="mobile" class="page-header-nav-item">
+              <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
+              <ThemeSwitch class="page-header-link" />
             </li>
           </ul>
         </Transition>
+        <Transition name="opacity">
+          <div v-show="showMenu" class="overlay" @click.stop="menuHamburgerActive = false"></div>
+        </Transition>
       </nav>
     </div>
-
-    <nav class="page-header-nav mobile-nav" v-if="mobile">
-      <Transition name="nav">
-        <ul
-          v-show="showMenu"
-          ref="navList"
-          class="page-header-nav-list column"
-        >
-          <li class="page-header-nav-item" v-for="section in sectionList" @click="menuHamburgerActive = false">
-            <a class="page-header-link" :href="`#${section}`">{{ $t(`SectionText.${section}`) }}</a>
-          </li>
-          <li class="page-header-nav-item">
-            <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
-            <ThemeSwitch class="page-header-link" />
-          </li>
-
-          <div class="overlay" @click.stop="menuHamburgerActive = false"></div>
-        </ul>
-      </Transition>
-    </nav>
   </header>
 </template>
 
@@ -96,6 +84,11 @@ watchEffect(() => {
 .nav-leave-to {
   opacity: 0;
   transform: translateY(-100%);
+}
+
+.opacity-enter-from,
+.opacity-leave-to {
+  opacity: 0;
 }
 
 .page-header {
@@ -144,7 +137,6 @@ watchEffect(() => {
 
       .page-header-nav-list {
         background-color: rgba($color: #aaa, $alpha: .1);
-        backdrop-filter: blur(10px);
       }
     }
   }
@@ -213,6 +205,7 @@ watchEffect(() => {
         left: 0;
         width: 100vw;
         height: 100vh;
+        backdrop-filter: blur(10px);
       }
     }
 
@@ -252,6 +245,8 @@ watchEffect(() => {
           color: var(--foreground-color);
           transition: color var(--transition-duration);
           text-align: center;
+          position: relative;
+          z-index: 1;
         }
       }
     }
