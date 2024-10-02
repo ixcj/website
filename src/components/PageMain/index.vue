@@ -40,13 +40,13 @@ const contentWidthString = computed(() => {
 .main {
   .first {
     padding-top: calc(var(--header-height) + 20px) !important;
+    margin-top: 0 !important;
     transition: padding-top var(--transition-duration);
     position: relative;
   }
   
   .section-item {
-    padding: 20px 0;
-    margin: 0 auto;
+    margin: 20px auto var(--header-height);
     max-width: v-bind(contentWidthString);
     transition: max-width var(--transition-duration);
 

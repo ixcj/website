@@ -30,6 +30,8 @@ watchDebounced(
     contentWidth.value = currentBreakpointsConfig?.contentWidth ?? 800
   
     mobile.value = (newWidth <= mobileThresholdValue)
+    globalThis?.document?.documentElement.style
+      .setProperty('--mobile-extra-scroll-padding-top', `${mobile.value ? 20 : 0}px`)
 
     setScrollBarWidth()
   },
@@ -42,7 +44,8 @@ export function setScrollBarWidth() {
     || globalThis?.document?.documentElement.clientWidth || 0
 
   scrollBarWidth.value = iWidth - cWidth
-  globalThis?.document?.documentElement.style.setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
+  globalThis?.document?.documentElement.style
+    .setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
 }
 
 haveMatchMedia &&
