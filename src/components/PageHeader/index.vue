@@ -178,6 +178,7 @@ watchEffect(() => {
       align-items: center;
       pointer-events: none;
       padding: 0 var(--inside);
+      filter: drop-shadow(var(--background-color) 0px 0px 5px);
 
       & > * {
         pointer-events: all;
