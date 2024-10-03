@@ -46,7 +46,7 @@ const contentWidthString = computed(() => {
   }
   
   .section-item {
-    margin: 20px auto var(--header-height);
+    margin: 20px auto calc(var(--header-height) + var(--mobile-extra-scroll-padding-top, 0px));
     max-width: v-bind(contentWidthString);
     transition: max-width var(--transition-duration);
 
