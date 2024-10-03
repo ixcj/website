@@ -1,4 +1,4 @@
-import { Github, Blog } from '@vicons/fa'
+import { Github, Blog, Envelope } from '@vicons/fa'
 
 // 网站URL
 export const siteUrl = import.meta.env.VITE_SITE_URL || 'https://xcj.pw'
@@ -17,6 +17,11 @@ export const socialLinks = [
     name: 'Blog',
     link: 'https://blog.xcj.pw',
     icon: Blog,
+  },
+  {
+    name: 'Email',
+    link: 'mailto:i@xcj.im',
+    icon: Envelope,
   },
 ]
 
