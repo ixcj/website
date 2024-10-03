@@ -71,7 +71,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="section-home">
+  <div class="section-home text-type-box">
     <div class="personal-info">
       <a :href="avatarLink || 'javascript: void(0);'" target="_blank">
         <img class="avatar" src="/avatar.png" alt="Avatar" loading="lazy">

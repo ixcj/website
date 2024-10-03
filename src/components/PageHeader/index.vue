@@ -54,40 +54,28 @@ watchEffect(() => {
         />
       </div>
 
-      <nav class="page-header-nav" v-if="!mobile">
+      <nav class="page-header-nav" :class="{ 'mobile-nav': mobile }">
         <Transition name="nav">
           <ul
             v-show="showMenu"
             ref="navList"
             class="page-header-nav-list"
+            :class="{ 'column': mobile }"
           >
-            <li class="page-header-nav-item" v-for="section in sectionList">
+            <li class="page-header-nav-item" v-for="section in sectionList" @click="menuHamburgerActive = false">
               <a class="page-header-link" :href="`#${section}`">{{ $t(`SectionText.${section}`) }}</a>
+            </li>
+            <li v-if="mobile" class="page-header-nav-item">
+              <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
+              <ThemeSwitch class="page-header-link" />
             </li>
           </ul>
         </Transition>
       </nav>
     </div>
-
-    <nav class="page-header-nav mobile-nav" v-if="mobile">
-      <Transition name="nav">
-        <ul
-          v-show="showMenu"
-          ref="navList"
-          class="page-header-nav-list column"
-        >
-          <li class="page-header-nav-item" v-for="section in sectionList" @click="menuHamburgerActive = false">
-            <a class="page-header-link" :href="`#${section}`">{{ $t(`SectionText.${section}`) }}</a>
-          </li>
-          <li class="page-header-nav-item">
-            <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
-            <ThemeSwitch class="page-header-link" />
-          </li>
-
-          <div class="overlay" @click.stop="menuHamburgerActive = false"></div>
-        </ul>
-      </Transition>
-    </nav>
+    <Transition name="opacity">
+      <div v-show="mobile && showMenu" class="overlay" @click.stop="menuHamburgerActive = false"></div>
+    </Transition>
   </header>
 </template>
 
@@ -96,6 +84,11 @@ watchEffect(() => {
 .nav-leave-to {
   opacity: 0;
   transform: translateY(-100%);
+}
+
+.opacity-enter-from,
+.opacity-leave-to {
+  opacity: 0;
 }
 
 .page-header {
@@ -144,7 +137,6 @@ watchEffect(() => {
 
       .page-header-nav-list {
         background-color: rgba($color: #aaa, $alpha: .1);
-        backdrop-filter: blur(10px);
       }
     }
   }
@@ -160,11 +152,15 @@ watchEffect(() => {
     max-width: calc(v-bind(mobileThresholdValue) * 1px);
     min-width: 100px;
     box-sizing: border-box;
-    border: 1px solid rgba($color: #aaa, $alpha: .3);
-    border-bottom-color: rgba($color: #aaa, $alpha: .3) !important;
-    background-color: rgba($color: #aaa, $alpha: .1);
+    border: 1px solid rgba($color: #999, $alpha: .3);
+    border-bottom-color: rgba($color: #999, $alpha: .3) !important;
+    background-color: rgba($color: #fff, $alpha: .35);
     backdrop-filter: blur(10px);
     transition: var(--transition-duration);
+
+    .dark & {
+      background-color: rgba($color: #999, $alpha: .1);
+    }
     
     .page-header-title {
       position: absolute;
@@ -186,6 +182,7 @@ watchEffect(() => {
       align-items: center;
       pointer-events: none;
       padding: 0 var(--inside);
+      filter: drop-shadow(var(--background-color) 0px 0px 5px);
 
       & > * {
         pointer-events: all;
@@ -205,17 +202,6 @@ watchEffect(() => {
     margin: 0 auto;
     z-index: 0;
 
-    &.mobile-nav {
-      .overlay {
-        position: fixed;
-        z-index: -1;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-      }
-    }
-
     .page-header-nav-list {
       height: 100%;
       display: flex;
@@ -227,15 +213,20 @@ watchEffect(() => {
 
       &.column {
         flex-direction: column;
-        border-bottom: 1px solid rgba($color: #aaa, $alpha: .3) !important;
+        border-bottom: 1px solid rgba($color: #999, $alpha: .3) !important;
         gap: 0px;
+        background-color: rgba($color: #fff, $alpha: .35);
+
+        .dark & {
+          background-color: rgba($color: #999, $alpha: .1);
+        }
 
         .page-header-nav-item {
           width: 90%;
-          border-bottom: 1px solid rgba($color: #aaa, $alpha: .3);
+          border-bottom: 1px solid rgba($color: #999, $alpha: .3);
 
           &:last-of-type {
-            border: none;
+            border: none !important;
           }
         }
       }
@@ -252,6 +243,8 @@ watchEffect(() => {
           color: var(--foreground-color);
           transition: color var(--transition-duration);
           text-align: center;
+          position: relative;
+          z-index: 1;
         }
       }
     }
@@ -262,6 +255,17 @@ watchEffect(() => {
     padding: 5px;
     font-size: 14px;
     line-height: 14px;
+  }
+
+  .overlay {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(8px);
+    transition: opacity var(--transition-duration);
   }
 }
 </style>

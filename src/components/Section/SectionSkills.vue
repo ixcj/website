@@ -3,7 +3,7 @@ import { skillList } from '@/config'
 </script>
 
 <template>
-  <div class="section-skills">
+  <div class="section-skills text-type-box">
     <h2 class="section-title">{{ $t('SectionTitle.skills') }}</h2>
     <div class="section-skill-box">
       <div v-for="item in skillList" class="section-skill-item">

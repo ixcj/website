@@ -36,12 +36,23 @@ const projects = computed(() => {
   .project-box {
     margin-top: 20px;
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 20px;
     padding: 0 20px;
     
     .project-item {
-      width: calc((100% - 20px) / 2);
+      width: calc((100% - 40px) / 3);
       aspect-ratio: 3 / 4;
+
+      .sm & {
+        width: calc((100% - 20px) / 2);
+      }
+
+      .xs &  {
+        width: 100%;
+        max-width: 300px;
+      }
     }
   }
 }

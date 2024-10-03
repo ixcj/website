@@ -24,21 +24,21 @@ export const breakpointsConfig: BreakpointsConfigItem[] = [
   {
     name: 'md',
     range: [960, 1280],
-    contentWidth: 800,
+    contentWidth: 960,
   },
   {
     name: 'lg',
     range: [1280, 1920],
-    contentWidth: 800,
+    contentWidth: 960,
   },
   {
     name: 'xl',
     range: [1920, 2560],
-    contentWidth: 800,
+    contentWidth: 960,
   },
   {
     name: 'xxl',
     range: [2560, Infinity],
-    contentWidth: 800,
+    contentWidth: 960,
   },
 ]
