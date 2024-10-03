@@ -71,11 +71,11 @@ watchEffect(() => {
             </li>
           </ul>
         </Transition>
-        <Transition name="opacity">
-          <div v-show="showMenu" class="overlay" @click.stop="menuHamburgerActive = false"></div>
-        </Transition>
       </nav>
     </div>
+    <Transition name="opacity">
+      <div v-show="mobile && showMenu" class="overlay" @click.stop="menuHamburgerActive = false"></div>
+    </Transition>
   </header>
 </template>
 
@@ -197,18 +197,6 @@ watchEffect(() => {
     margin: 0 auto;
     z-index: 0;
 
-    &.mobile-nav {
-      .overlay {
-        position: fixed;
-        z-index: -1;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        backdrop-filter: blur(10px);
-      }
-    }
-
     .page-header-nav-list {
       height: 100%;
       display: flex;
@@ -257,6 +245,17 @@ watchEffect(() => {
     padding: 5px;
     font-size: 14px;
     line-height: 14px;
+  }
+
+  .overlay {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(8px);
+    transition: opacity var(--transition-duration);
   }
 }
 </style>
