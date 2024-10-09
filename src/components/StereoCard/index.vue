@@ -30,7 +30,8 @@ const cardWrapperRef = ref<HTMLElement | null>(null)
 let myReq = 0
 
 let stereoCardRefParams = { top: 0, left: 0, width: 0, height: 0 }
-const resizeObserver = new ResizeObserver(entries => {
+const ResizeObserver = globalThis?.ResizeObserver
+const resizeObserver = ResizeObserver && new ResizeObserver(entries => {
   for (const entry of entries) {
     updateStereoCardRefParams(entry.target)
   }
@@ -92,7 +93,7 @@ function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
 }
 
 onMounted(() => {
-  stereoCardRef.value && resizeObserver.observe(stereoCardRef.value)
+  stereoCardRef.value && resizeObserver?.observe(stereoCardRef.value)
   setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
   stereoCardRef.value?.addEventListener('mousemove', onMousemove)
   stereoCardRef.value?.addEventListener('mouseout', onMouseout)
@@ -101,7 +102,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  resizeObserver.disconnect()
+  resizeObserver?.disconnect()
   stereoCardRef.value?.removeEventListener('mousemove', onMousemove)
   stereoCardRef.value?.removeEventListener('mouseout', onMouseout)
   globalThis.removeEventListener('resize', setStereoCardRefParams)
