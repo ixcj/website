@@ -6,6 +6,7 @@ import {
   onMounted,
   onUnmounted,
 } from 'vue'
+import defaultBackground from '@/assets/images/stereo-card-bg.webp'
 
 interface Props {
   data: any,
@@ -113,7 +114,7 @@ onUnmounted(() => {
     <div ref="cardWrapperRef" class="card-wrapper">
       <div class="card-3d">
         <div class="card-image-box">
-          <img class="card-image" src="http://allyourhtml.club/carousel/image.webp" alt="" />
+          <img class="card-image" :src="data?.backgroundImage || defaultBackground" alt="" />
         </div>
         <div class="card-layer1"></div>
         <div class="card-layer2"></div>
