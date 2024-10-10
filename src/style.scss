@@ -8,11 +8,10 @@
 }
 
 :root {
-  color: var(--text-color);
-  background-color: var(--bg-color);
+  color: var(--foreground-color);
+  background-color: var(--background-color);
   scroll-behavior: smooth;
-  scroll-padding-top: var(--header-height);
-  font-family: 'MiSans';
+  scroll-padding-top: calc(var(--header-height) + var(--mobile-extra-scroll-padding-top, 0px) - 1px);
 
   &::view-transition-old(root),
   &::view-transition-new(root) {
@@ -28,4 +27,14 @@
     overflow-y: hidden;
     padding-right: var(--scroll-bar-width);
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }

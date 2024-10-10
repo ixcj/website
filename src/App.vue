@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import { ref, nextTick } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
 import { siteUrl } from '@/config'
-import { breakpointsName, mobile, touch } from '@/utils/screen'
+import { breakpointsName, mobile, touch, setScrollBarWidth } from '@/utils/screen'
+import { githubContributionUser } from '@/config'
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
+import PageFooter from '@/components/PageFooter/index.vue'
+import { css } from '@/assets/font/MiSans-Normal.ttf?subsets'
 
 const { t } = useI18n()
 
@@ -19,7 +23,6 @@ useHead({
   meta: [
     // HTML Meta Tags
     { name: 'description', content: description },
-    { name: 'keywords', content: t('keywords') },
     { name: 'author', content: t('author') },
 
     // Open Graph Meta Tags
@@ -37,23 +40,109 @@ useHead({
     { name: 'twitter:description', content: description },
     { name: 'twitter:image', content: ogImage },
   ],
+  link: [
+    // 设置了 githubContributionUser 则引入样式
+    githubContributionUser ? {
+      href: '/css/github-calendar-responsive.css',
+      rel: "stylesheet",
+      type: "text/css"
+    } : {},
+  ]
 })
+
+const loading = ref(false)
+
+globalThis.onload = () => {
+  loading.value = true
+  nextTick(() => {
+    setScrollBarWidth()
+  })
+}
 </script>
 
 <template>
-  <div class="container" :class="[breakpointsName, mobile ? 'mobile' : '']">
-    <PageHeader />
-    <PageMain />
+  <Transition name="fade">
+    <div
+      v-show="loading"
+      class="container"
+      :class="[breakpointsName, mobile ? 'mobile' : '']"
+      :style="{ fontFamily: css.family }"
+    >
+      <PageHeader />
+      <PageMain />
+      <PageFooter />
+    </div>
+  </Transition>
 
-    <PageCursor v-if="!touch" />
-  </div>
+  <PageCursor v-if="!touch" />
 </template>
 
 <style lang="scss">
 .container {
-  min-height: 200vh;
+  min-height: 100vh;
   box-sizing: border-box;
-  background-color: var(--bg-color);
+  background-color: var(--background-color);
   transition: background-color var(--transition-duration);
+  position: relative;
+  overflow-x: hidden;
+
+  &::after,
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    filter: blur(150px);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  &::after {
+    top: 100px;
+    left: 60%;
+    width: 750px;
+    height: 750px;
+    background-color: rgba($color: #C850C0, $alpha: 0.1);
+  }
+
+  &::before {
+    top: 200px;
+    left: 40%;
+    width: 750px;
+    height: 750px;
+    background-color: rgba($color: #80D0C7, $alpha: 0.125);
+  }
+
+  a.page-link {
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--foreground-color);
+    position: relative;
+    z-index: 0;
+    transition: color var(--transition-duration);
+    
+    &:hover {
+      color: var(--background-color);
+
+      &::before {
+        opacity: 1;
+        height: 100%;
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 33%;
+      background-color: var(--foreground-color);
+      opacity: 0.33;
+      z-index: -1;
+      transition: var(--transition-duration);
+    }
+  }
 }
 </style>

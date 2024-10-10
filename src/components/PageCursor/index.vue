@@ -1,24 +1,45 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import {
+  ref,
+  computed,
+  onMounted,
+  onUnmounted,
+} from 'vue'
+
+const props = withDefaults(defineProps<{
+  hideCursorSelector?: string | string[]
+}>(), {
+  hideCursorSelector: '.hide-page-cursor'
+})
 
 const cursor = ref<HTMLElement | null>(null)
 const cursorType = ref('auto')
 const cursorState = ref('')
 
+const cursorStyle = computed<CSSStyleDeclaration>(() => {
+  return cursor.value?.style || {} as CSSStyleDeclaration
+})
+
+let myReq: number = 0
+
 function onMousemove(event: MouseEvent) {
   if(!cursor.value) return
+
+  cancelAnimationFrame(myReq)
 
   const { clientX, clientY } = event
   const target = event.target as HTMLElement
 
-  requestAnimationFrame(() => {
-    const style = cursor.value!.style
-    style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`
+  myReq = requestAnimationFrame(() => {
+    cursorStyle.value.transform = `translate3d(${clientX}px, ${clientY}px, 0)`
     cursorType.value = getComputedStyle(target)?.cursor || 'auto'
 
-    const hideCursor = target.classList.contains('hide-cursor') || target.parentElement?.classList.contains('hide-cursor')
-    style.opacity = hideCursor ? '0' : '1'
-    style.transition = hideCursor ? '0.2s ease-out' : '0.125s ease-out'
+    const hideCursorSelectorList = Array.isArray(props.hideCursorSelector)
+      ? props.hideCursorSelector
+      : [props.hideCursorSelector]
+    const hideCursor = hideCursorSelectorList.some(item => target.closest(item) !== null)
+    cursorStyle.value.opacity = hideCursor ? '0' : '1'
+    cursorStyle.value.transition = hideCursor ? '0.2s ease-out' : '0.125s ease-out'
   })
 }
 
@@ -30,16 +51,37 @@ function onMouseup() {
   cursorState.value = ''
 }
 
+function onMouseenter() {
+  cancelAnimationFrame(myReq)
+  
+  requestAnimationFrame(() => {
+    cursorStyle.value.transition = 'none'
+    cursorStyle.value.opacity = '1'
+  })
+}
+
+function onMouseleave() {
+  cancelAnimationFrame(myReq)
+  
+  requestAnimationFrame(() => {
+    cursorStyle.value.opacity = '0'
+  })
+}
+
 onMounted(() => {
   globalThis.document.addEventListener('mousemove', onMousemove)
   globalThis.document.addEventListener('mousedown', onMousedown)
   globalThis.document.addEventListener('mouseup', onMouseup)
+  globalThis.document.addEventListener('mouseleave', onMouseleave)
+  globalThis.document.addEventListener('mouseenter', onMouseenter)
 })
 
 onUnmounted(() => {
   globalThis.document.removeEventListener('mousemove', onMousemove)
   globalThis.document.removeEventListener('mousedown', onMousedown)
   globalThis.document.removeEventListener('mouseup', onMouseup)
+  globalThis.document.removeEventListener('mouseleave', onMouseleave)
+  globalThis.document.removeEventListener('mouseenter', onMouseenter)
 })
 </script>
 

@@ -3,22 +3,26 @@ import { skillList } from '@/config'
 </script>
 
 <template>
-  <div class="section-skills">
-    <p class="section-title">{{ $t('SectionTitle.skills') }}</p>
+  <div class="section-skills text-type-box">
+    <h2 class="section-title">{{ $t('SectionTitle.skills') }}</h2>
     <div class="section-skill-box">
       <div v-for="item in skillList" class="section-skill-item">
-        <component
-          v-if="item.type !== 'image' && item.icon"
-          :is="item.icon"
-          :style="{ color: item.color }"
-          class="section-skill-item-icon"
-        />
-        <img
-          v-if="item.type === 'image' && item.icon"
-          :src="item.icon"
-          :alt="item.name"
-          class="section-skill-item-icon"
-        >
+        <template v-if="item.icon">
+          <img
+            v-if="item.type === 'image'"
+            :src="item.icon"
+            :alt="item.name"
+            class="section-skill-item-icon"
+            loading="lazy"
+          >
+          <component
+            v-else
+            :is="item.icon"
+            :style="{ color: item.color }"
+            class="section-skill-item-icon"
+          />
+        </template>
+        
         <span>{{ item.name }}</span>
       </div>
     </div>
@@ -33,6 +37,7 @@ import { skillList } from '@/config'
     justify-content: center;
     gap: 10px;
     margin-top: 20px;
+    padding: 0 20px;
 
     .section-skill-item {
       font-size: 16px;
@@ -41,8 +46,8 @@ import { skillList } from '@/config'
       justify-content: center;
       align-items: center;
       padding: 8px 12px;
-      background-color: var(--text-color);
-      color: var(--bg-color);
+      background-color: var(--foreground-color);
+      color: var(--background-color);
       border-radius: 10px;
 
       .section-skill-item-icon {

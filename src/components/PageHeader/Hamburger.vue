@@ -53,7 +53,7 @@ defineProps({
   .hamburger-2,
   .hamburger-3 {
     width: 100%;
-    background-color: var(--text-color);
+    background-color: var(--foreground-color);
     border-radius: 10px;
     height: 2px;
     margin: 2px 0;

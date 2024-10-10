@@ -3,12 +3,18 @@ import { defineConfig } from 'vite'
 import { createI18n } from 'vue-i18n'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
+import Font from 'vite-plugin-font'
 
 const { messages, defaultLanguage } = require('./src/language/index.ts')
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    Font.vite({
+      scanFiles: ['src/**/*.{vue,ts,tsx,js,jsx}'],
+    }),
+  ],
   ssgOptions: {
     includedRoutes() {
       return Object.keys(messages).map(language => {

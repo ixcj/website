@@ -2,6 +2,8 @@ import { ref } from 'vue'
 import { useWindowSize, watchDebounced } from '@vueuse/core'
 import { breakpointsConfig, mobileBreakpoint } from '@/config'
 
+export const isStartViewTransition = ref(false)
+
 export const mobileThresholdValue =
   typeof mobileBreakpoint === 'number'
     ? mobileBreakpoint
@@ -11,6 +13,7 @@ export const { width: windowWidth } = useWindowSize()
 export const breakpointsName = ref('xl')
 export const mobile = ref(windowWidth.value <= mobileThresholdValue)
 export const scrollBarWidth = ref(0)
+export const contentWidth = ref<number | string>(900)
 
 const haveMatchMedia = 'matchMedia' in globalThis
 export const touch = ref(haveMatchMedia && Boolean(globalThis.matchMedia('(pointer: coarse)')?.matches))
@@ -18,25 +21,31 @@ export const touch = ref(haveMatchMedia && Boolean(globalThis.matchMedia('(point
 watchDebounced(
   windowWidth,
   (newWidth) => {
-    breakpointsName.value = breakpointsConfig.find(({ range }) => {
+    const currentBreakpointsConfig = breakpointsConfig.find(({ range }) => {
       const [min, max] = range
       return newWidth >= min && newWidth < max
-    })?.name ?? 'xl'
+    })
+    
+    breakpointsName.value = currentBreakpointsConfig?.name ?? 'xl'
+    contentWidth.value = currentBreakpointsConfig?.contentWidth ?? 900
   
     mobile.value = (newWidth <= mobileThresholdValue)
+    globalThis?.document?.documentElement.style
+      .setProperty('--mobile-extra-scroll-padding-top', `${mobile.value ? 20 : 0}px`)
 
     setScrollBarWidth()
   },
-  { immediate: true, debounce: 16 }
+  { immediate: true, debounce: 33 }
 )
 
-function setScrollBarWidth() {
+export function setScrollBarWidth() {
   const iWidth = globalThis?.innerWidth || 0
   const cWidth = globalThis?.document?.body.clientWidth
     || globalThis?.document?.documentElement.clientWidth || 0
 
   scrollBarWidth.value = iWidth - cWidth
-  globalThis?.document?.documentElement.style.setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
+  globalThis?.document?.documentElement.style
+    .setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
 }
 
 haveMatchMedia &&

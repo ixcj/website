@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
+import { type Component, computed } from 'vue'
+import { contentWidth } from '@/utils/screen'
 import { sectionList, type Section } from '@/config'
-import { mobileThresholdValue } from '@/utils/screen'
 import SectionHome from '@/components/Section/SectionHome.vue'
 import SectionAbout from '@/components/Section/SectionAbout.vue'
 import SectionSkills from '@/components/Section/SectionSkills.vue'
@@ -15,6 +15,12 @@ const sectionMap: { [section in Section]: Component } = {
   project: SectionProject,
   experience: SectionExperience,
 }
+
+const contentWidthString = computed(() => {
+  return typeof contentWidth.value === 'number'
+    ? `${contentWidth.value}px`
+    : contentWidth.value
+})
 </script>
 
 <template>
@@ -34,19 +40,26 @@ const sectionMap: { [section in Section]: Component } = {
 .main {
   .first {
     padding-top: calc(var(--header-height) + 20px) !important;
+    margin-top: 0 !important;
     transition: padding-top var(--transition-duration);
     position: relative;
   }
   
   .section-item {
-    padding: 20px 0;
-    margin: 0 auto;
-    max-width: calc(v-bind(mobileThresholdValue) * 1px);
+    margin: 20px auto calc(var(--header-height) + var(--mobile-extra-scroll-padding-top, 0px));
+    max-width: v-bind(contentWidthString);
+    transition: max-width var(--transition-duration);
 
     ::v-deep() {
       .section-title {
         font-size: 28px;
         text-align: center;
+      }
+
+      .text-type-box {
+        max-width: 750px;
+        margin-left: auto;
+        margin-right: auto;
       }
     }
   }

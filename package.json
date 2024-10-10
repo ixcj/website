@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
+    "github-calendar": "^2.3.4",
     "gsap": "^3.12.5",
     "sass": "^1.77.1",
     "vue": "^3.4.21",
@@ -23,6 +24,7 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vite-plugin-font": "^2.1.5",
     "vite-ssg": "^0.23.7",
     "vue-router": "^4.3.2",
     "vue-tsc": "^2.0.6"
