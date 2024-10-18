@@ -32,3 +32,12 @@ export const footerLinks = [
     link: 'https://github.com/ixcj/website',
   },
 ]
+
+// 根据条件显示备案信息
+const _siteUrl = siteUrl.replace(/\/$/g, '')
+if (_siteUrl.endsWith('//xcj.pw') || _siteUrl.endsWith('.xcj.pw')) {
+  footerLinks.push({
+    name: '渝ICP备2021011542号-3',
+    link: 'https://beian.miit.gov.cn',
+  })
+}
