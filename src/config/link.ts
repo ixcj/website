@@ -4,7 +4,7 @@ import { Github, Blog, Envelope } from '@vicons/fa'
 export const siteUrl = import.meta.env.VITE_SITE_URL || 'https://xcj.pw'
 
 // 点击头像的跳转路径
-export const avatarLink = 'https://blog.xcj.pw'
+export const avatarLink = 'https://github.com/ixcj'
 
 // 社交链接
 export const socialLinks = [
