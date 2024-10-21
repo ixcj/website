@@ -15,7 +15,7 @@ export const projects = [
     icon: '/avatar.png',
     links: [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
-      { href: 'https://new.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'DEMO' },
+      { href: 'https://new.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'Live Demo' },
     ],
     description: `
       <p>This website is my digital portfolio, showcasing my work and skills to give visitors a clear understanding of who I am.</p>
@@ -30,7 +30,7 @@ export const projects = [
     icon: 'https://music.xcj.im/img/icons/android-chrome-192x192.png',
     links: [
       { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
-      { href: 'https://music.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'DEMO' },
+      { href: 'https://music.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'Live Demo' },
     ],
     description: `
       <p>Caiji Music is an online music app offering song search, free online listening, MV playback, and more.</p>
