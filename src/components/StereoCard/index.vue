@@ -108,9 +108,7 @@ function judgeDescriptionContentHeight() {
 
   const { scrollHeight, clientHeight } = contentDescriptionRef.value
 
-  if (scrollHeight > clientHeight) {
-    contentDescriptionRef.value.classList.add('gradation-bottom')
-  }
+  contentDescriptionRef.value.classList.toggle('gradation-bottom', (scrollHeight - clientHeight) > 5)
 }
 
 function getIconComponent(iconName: string) {
