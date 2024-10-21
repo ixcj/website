@@ -1,4 +1,4 @@
-<!-- 参考地址：https://codepen.io/akella/pen/XWYrRmb -->
+<!-- 效果是'借鉴'的，借鉴地址：https://codepen.io/akella/pen/XWYrRmb -->
 
 <script setup lang="ts">
 import {
@@ -6,6 +6,9 @@ import {
   onMounted,
   onUnmounted,
 } from 'vue'
+import defaultBackground from '@/assets/images/stereo-card-bg.webp'
+import { Github } from '@vicons/fa'
+import { ArrowUpRight } from '@vicons/tabler'
 
 interface Props {
   data: any,
@@ -13,6 +16,7 @@ interface Props {
   speedY?: number,
   bgSpeedX?: number,
   bgSpeedY?: number,
+  iconMap?: Record<string, any>,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -21,15 +25,22 @@ const props = withDefaults(defineProps<Props>(), {
   speedY: 10,
   bgSpeedX: 20,
   bgSpeedY: 20,
+  iconMap: () => ({
+    '_GITHUB_': Github,
+    '_ARROW_UP_RIGHT_': ArrowUpRight,
+  })
 })
 
 const stereoCardRef = ref<HTMLElement | null>(null)
 const cardWrapperRef = ref<HTMLElement | null>(null)
 
+const contentDescriptionRef = ref<HTMLElement | null>(null)
+
 let myReq = 0
 
 let stereoCardRefParams = { top: 0, left: 0, width: 0, height: 0 }
-const resizeObserver = new ResizeObserver(entries => {
+const ResizeObserver = globalThis?.ResizeObserver
+const resizeObserver = ResizeObserver && new ResizeObserver(entries => {
   for (const entry of entries) {
     updateStereoCardRefParams(entry.target)
   }
@@ -42,6 +53,8 @@ function updateStereoCardRefParams(el: Element | HTMLElement) {
 
 function setStereoCardRefParams() {
   stereoCardRef.value && updateStereoCardRefParams(stereoCardRef.value)
+
+  judgeDescriptionContentHeight()
 }
 
 function onMousemove() {
@@ -90,8 +103,22 @@ function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
   })
 }
 
+function judgeDescriptionContentHeight() {
+  if (!contentDescriptionRef.value) return
+
+  const { scrollHeight, clientHeight } = contentDescriptionRef.value
+
+  if (scrollHeight > clientHeight) {
+    contentDescriptionRef.value.classList.add('gradation-bottom')
+  }
+}
+
+function getIconComponent(iconName: string) {
+  return props.iconMap[iconName]
+}
+
 onMounted(() => {
-  stereoCardRef.value && resizeObserver.observe(stereoCardRef.value)
+  stereoCardRef.value && resizeObserver?.observe(stereoCardRef.value)
   setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
   stereoCardRef.value?.addEventListener('mousemove', onMousemove)
   stereoCardRef.value?.addEventListener('mouseout', onMouseout)
@@ -100,7 +127,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  resizeObserver.disconnect()
+  resizeObserver?.disconnect()
   stereoCardRef.value?.removeEventListener('mousemove', onMousemove)
   stereoCardRef.value?.removeEventListener('mouseout', onMouseout)
   globalThis.removeEventListener('resize', setStereoCardRefParams)
@@ -113,10 +140,43 @@ onUnmounted(() => {
     <div ref="cardWrapperRef" class="card-wrapper">
       <div class="card-3d">
         <div class="card-image-box">
-          <img class="card-image" src="http://allyourhtml.club/carousel/image.webp" alt="" />
+          <img class="card-image" :src="data?.backgroundImage || defaultBackground" alt="" />
         </div>
         <div class="card-layer1"></div>
         <div class="card-layer2"></div>
+
+        <div class="content-wrapper">
+          <img v-if="data.icon" :src="data.icon" class="content-icon" alt="">
+          <p class="content-name">{{ data.name }}</p>
+          <p ref="contentDescriptionRef" class="content-description" v-html="data.description"></p>
+          
+          <div v-if="data.links.length" class="content-link-box">
+            <a
+              v-for="link, in data.links"
+              class="content-link-item"
+              target="_blank"
+              rel="noopener noreferrer"
+              :href="link.href"
+              :title="link.title"
+            >
+              <component
+                v-if="getIconComponent(link.content)"
+                class="content-link-item-icon"
+                :is="getIconComponent(link.content)"
+              />
+              <span v-else>{{ link.content }}</span>
+            </a>
+          </div>
+
+          <div v-if="data.tags.length" class="content-tag-box">
+            <div
+              v-for="tag in data.tags"
+              class="content-tag-item"
+              :class="tag.type || ''"
+              :style="tag.style || {}"
+            >{{ tag.content }}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -175,6 +235,7 @@ onUnmounted(() => {
       clip-path: inset(0 0 0 0 round var(--round));
       overflow: hidden;
       transition: transform calc(var(--transition-duration) / 3) linear;
+      pointer-events: none;
 
       &::after {
         content: '';
@@ -249,6 +310,114 @@ onUnmounted(() => {
         calc(var(--bg-x, 0) * -1) calc(var(--bg-y, 0) * -1), var(--bg-x, 0) var(--bg-y, 0);
       background-blend-mode: soft-light, hue, hard-light;
       transition: background-position calc(var(--transition-duration) / 3) linear;
+    }
+  }
+
+  .content-wrapper {
+    overflow: hidden;
+    position: absolute;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+    border-radius: var(--round);
+    color: #f7f8f8;
+
+    .content-icon {
+      width: 80px;
+    }
+
+    .content-name {
+      max-width: 90%;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .content-description {
+      font-size: 16px;
+      max-width: 90%;
+      text-align: center;
+      overflow-y: auto;
+      max-height: calc(100% - var(--round) - 180px);
+      scrollbar-width: none;
+      
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      &.gradation-bottom {
+        mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
+        -webkit-mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
+        padding-bottom: 50px;
+        box-sizing: border-box;
+      }
+
+      ::v-deep(p) {
+        margin-bottom: 5px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .content-link-box {
+      display: flex;
+      gap: 8px;
+      position: absolute;
+      top: calc(var(--round) / 2);
+      right: calc(var(--round) / 2);
+
+      .content-link-item {
+        padding: 3px;
+
+        .content-link-item-icon {
+          width: 20px;
+          height: 20px;
+          object-fit: cover;
+          color: #f7f8f8;
+          transition: color var(--transition-duration);
+        }
+      }
+    }
+
+    .content-tag-box {
+      display: flex;
+      gap: 4px;
+      position: absolute;
+      bottom: calc(var(--round) / 2);
+      left: calc(var(--round) / 2);
+      
+      .content-tag-item {
+        font-size: 12px;
+        padding: 2px 6px;
+        border: 1px solid #f7f8f8;
+        color: #f7f8f8;
+        border-radius: 12px;
+
+        &.success {
+          color: #67c23a;
+          border-color: #67c23a;
+        }
+
+        &.warning {
+          color: #e6a23c;
+          border-color: #e6a23c;
+        }
+
+        &.danger {
+          color: #f56c6c;
+          border-color: #f56c6c;
+        }
+      }
     }
   }
 }

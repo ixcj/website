@@ -31,14 +31,12 @@ const { locale } = useI18n()
     margin-top: 20px;
     padding: 0 20px;
 
-    ::v-deep() {
-      p {
-        margin-bottom: 0.75em;
-        line-height: 1.4;
-        
-        &:last-child {
-          margin-bottom: 0;
-        }
+    ::v-deep(p) {
+      margin-bottom: 0.75em;
+      line-height: 1.4;
+      
+      &:last-child {
+        margin-bottom: 0;
       }
     }
   }

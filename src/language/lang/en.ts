@@ -10,7 +10,36 @@ export const mottos = [
 ]
 
 export const projects = [
-
+  {
+    name: 'Personal Website',
+    icon: '/avatar.png',
+    links: [
+      { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
+      { href: 'https://new.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'DEMO' },
+    ],
+    description: `
+      <p>This website is my digital portfolio, showcasing my work and skills to give visitors a clear understanding of who I am.</p>
+      <p>This project is built with Vue 3 and Vite, utilizing vite-ssg for static site generation to gain SEO advantages.</p>
+    `,
+    tags: [
+      { content: 'In active development', type: 'success' },
+    ],
+  },
+  {
+    name: 'Caiji Music',
+    icon: 'https://music.xcj.im/img/icons/android-chrome-192x192.png',
+    links: [
+      { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
+      { href: 'https://music.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'DEMO' },
+    ],
+    description: `
+      <p>Caiji Music is an online music app offering song search, free online listening, MV playback, and more.</p>
+      <p>This project will not be maintained due to reliance on the NeteaseCloudMusicApi, which is no longer supported on GitHub.</p>
+    `,
+    tags: [
+      { content: 'No longer maintained', type: 'warning' },
+    ],
+  },
 ]
 
 export default {
@@ -40,7 +69,7 @@ export default {
     experience: 'My Experience',
   },
 
-  projects: JSON.stringify(projects),
+  projects: encodeURIComponent(JSON.stringify(projects)),
 
   contributionCalendar: 'Contribution calendar',
 }
