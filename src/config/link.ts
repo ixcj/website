@@ -4,7 +4,7 @@ import { Github, Blog, Envelope } from '@vicons/fa'
 export const siteUrl = import.meta.env.VITE_SITE_URL || 'https://xcj.pw'
 
 // 点击头像的跳转路径
-export const avatarLink = 'https://blog.xcj.pw'
+export const avatarLink = 'https://github.com/ixcj'
 
 // 社交链接
 export const socialLinks = [
@@ -32,3 +32,12 @@ export const footerLinks = [
     link: 'https://github.com/ixcj/website',
   },
 ]
+
+// 根据条件显示备案信息
+const _siteUrl = siteUrl.replace(/\/$/g, '')
+if (_siteUrl.endsWith('//xcj.pw') || _siteUrl.endsWith('.xcj.pw')) {
+  footerLinks.push({
+    name: '渝ICP备2021011542号-3',
+    link: 'https://beian.miit.gov.cn',
+  })
+}
