@@ -343,7 +343,6 @@ onUnmounted(() => {
       font-size: 16px;
       max-width: 90%;
       text-align: center;
-      overflow-y: auto;
       max-height: calc(100% - var(--round) - 180px);
       scrollbar-width: none;
       
@@ -352,6 +351,7 @@ onUnmounted(() => {
       }
 
       &.gradation-bottom {
+        overflow-y: auto;
         mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
         -webkit-mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
         padding-bottom: 50px;
