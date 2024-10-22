@@ -1,3 +1,5 @@
+import type { StereoCardItem } from '@/types/StereoCard'
+
 export const name = 'XCJ'
 export const intro = 'A Frontend Developer'
 
@@ -9,7 +11,7 @@ export const mottos = [
   'In fact, The more people go up the height like trees, The more its roots will reach the dark ground.',
 ]
 
-export const projects = [
+export const projects: StereoCardItem[] = [
   {
     name: 'Personal Website',
     icon: '/avatar.png',

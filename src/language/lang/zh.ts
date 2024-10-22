@@ -1,3 +1,5 @@
+import type { StereoCardItem } from '@/types/StereoCard'
+
 export const name = 'XCJ'
 export const intro = '一个前端'
 
@@ -9,7 +11,7 @@ export const mottos = [
   '其实人跟树一样，越是往高处走，它的根就越要伸向黑暗的地底。',
 ]
 
-export const projects = [
+export const projects: StereoCardItem[] = [
   {
     name: '个人网站',
     icon: '/avatar.png',

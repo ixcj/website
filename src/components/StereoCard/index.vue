@@ -9,9 +9,10 @@ import {
 import defaultBackground from '@/assets/images/stereo-card-bg.webp'
 import { Github } from '@vicons/fa'
 import { ArrowUpRight } from '@vicons/tabler'
+import type { StereoCardItem } from '@/types/StereoCard'
 
 interface Props {
-  data: any,
+  data: StereoCardItem,
   speedX?: number,
   speedY?: number,
   bgSpeedX?: number,
@@ -20,7 +21,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  data: () => ({}),
   speedX: 10,
   speedY: 10,
   bgSpeedX: 20,
@@ -171,7 +171,7 @@ onUnmounted(() => {
               v-for="tag in data.tags"
               class="content-tag-item"
               :class="tag.type || ''"
-              :style="tag.style || {}"
+              :style="tag?.style || {}"
             >{{ tag.content }}</div>
           </div>
         </div>
