@@ -2,15 +2,19 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import Turntable from './Turntable.vue'
 
-// interface Props {
-//   data: any,
-// }
+interface Props {
+  data: any,
+  slidingSpeed?: number
+}
 
-// const props = withDefaults(defineProps<Props>(), {
-//   data: () => ({})
-// })
+const props = withDefaults(defineProps<Props>(), {
+  data: () => ({}),
+  slidingSpeed: 0.1
+})
 
 const timelineTurntableRef = ref<HTMLElement | null>(null)
+const timelineTurntableRotateBoxRef = ref<HTMLElement | null>(null)
+
 const isPressed = ref(false)
 const rotateZ = ref(0)
 
@@ -36,10 +40,10 @@ function onMousemove(e: MouseEvent) {
     const { clientX, clientY } = e
     
     requestAnimationFrame(() => {
-      if (timelineTurntableRef.value) {
+      if (timelineTurntableRef.value && timelineTurntableRotateBoxRef.value) {
         const { clientWidth } = timelineTurntableRef.value
-        const widthScale = document.documentElement.clientWidth / clientWidth
-        const scale = (4400 * widthScale * 0.6) / clientWidth
+        const { clientWidth: rotateBoxClientWidth } = timelineTurntableRotateBoxRef.value
+        const scale = clientWidth / (rotateBoxClientWidth * props.slidingSpeed)
         
         const theta = Math.atan2(y, x)
         const mouseTheta = Math.atan2(clientY, clientX)
@@ -49,7 +53,7 @@ function onMousemove(e: MouseEvent) {
         oldPosition.x = clientX
         oldPosition.y = clientY
 
-        rotateZ.value += (deltaThetaDegrees * scale) % 360
+        rotateZ.value = (deltaThetaDegrees * scale + rotateZ.value) % 360
       }
     })
   }
@@ -71,7 +75,7 @@ onUnmounted(() => {})
     :class="{ pressed: isPressed }"
   >
     <div class="turntable-box">
-      <div class="turntable-rotate-box">
+      <div class="turntable-rotate-box" ref="timelineTurntableRotateBoxRef">
         <Turntable class="turntable-image" />
 
         <div class="turntable-content-box">
@@ -112,8 +116,6 @@ onUnmounted(() => {})
         width: 100%;
         height: 100%;
         object-fit: cover;
-        --color-text-primary: #f7f8f8;
-        --color-linear-plan: #f7f8f8;
       }
 
       .turntable-content-box {
