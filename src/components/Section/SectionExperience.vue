@@ -7,7 +7,7 @@ import TimelineTurntable from '@/components/TimelineTurntable/index.vue'
     <h2 class="section-title">{{ $t('SectionTitle.experience') }}</h2>
 
     <div class="section-experience-box hide-page-cursor">
-      <TimelineTurntable />
+      <TimelineTurntable :data="{}" />
     </div>
   </div>
 </template>
