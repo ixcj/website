@@ -1,4 +1,11 @@
+type TimelineTurntableItemChildren = {
+  title: string
+  describe: string
+  range: [number, number]
+}
+
 export interface TimelineTurntableItem {
-  name: string
   date: [string, string]
+  angleRange: [number, number]
+  children: TimelineTurntableItemChildren[]
 }

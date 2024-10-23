@@ -19,25 +19,19 @@ export const projects: StereoCardItem[] = [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
       { href: 'https://new.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'Live Demo' },
     ],
-    description: `
-      <p>This website is my digital portfolio, showcasing my work and skills to give visitors a clear understanding of who I am.</p>
-      <p>This project is built with Vue 3 and Vite, utilizing vite-ssg for static site generation to gain SEO advantages.</p>
-    `,
+    description: `This website is my digital portfolio, showcasing my work and skills to give visitors a clear understanding of who I am.`,
     tags: [
       { content: 'In active development', type: 'success' },
     ],
   },
   {
-    name: 'Caiji Music',
+    name: 'caiji-music',
     icon: 'https://music.xcj.im/img/icons/android-chrome-192x192.png',
     links: [
       { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
       { href: 'https://music.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'Live Demo' },
     ],
-    description: `
-      <p>Caiji Music is an online music app offering song search, free online listening, MV playback, and more.</p>
-      <p>This project will not be maintained due to reliance on the NeteaseCloudMusicApi, which is no longer supported on GitHub.</p>
-    `,
+    description: `caiji-music is an online music app offering song search, free online listening, MV playback, and more.`,
     tags: [
       { content: 'No longer maintained', type: 'warning' },
     ],
@@ -59,16 +53,16 @@ export default {
     home: 'Home',
     about: 'About',
     skills: 'Skills',
-    project: 'Project',
-    experience: 'Experience',
+    project: 'Projects',
+    experience: 'Experiences',
   },
 
   SectionTitle: {
     home: 'Home',
     about: 'About Me',
     skills: 'My Skills',
-    project: 'My Project',
-    experience: 'My Experience',
+    project: 'My Projects',
+    experience: 'My Experiences',
   },
 
   projects: encodeURIComponent(JSON.stringify(projects)),
