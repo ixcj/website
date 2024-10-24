@@ -18,7 +18,6 @@ export const projects: StereoCardItem[] = [
     icon: '/avatar.png',
     links: [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
-      { href: 'https://new.xcj.im', content: '_ARROW_UP_RIGHT_', title: '查看演示' },
     ],
     description: `这个网站是我展示个人作品和专业技能的数字名片，旨在为访客提供一个全面的了解我的平台。`,
     tags: [

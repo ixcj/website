@@ -17,7 +17,6 @@ export const projects: StereoCardItem[] = [
     icon: '/avatar.png',
     links: [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
-      { href: 'https://new.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'Live Demo' },
     ],
     description: `This website is my digital portfolio, showcasing my work and skills to give visitors a clear understanding of who I am.`,
     tags: [
