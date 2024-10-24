@@ -4,12 +4,22 @@ import Turntable from './Turntable.vue'
 
 interface Props {
   data: any,
+  /** 滑动速度 */
   slidingSpeed?: number
+  /** 启用惯性 */
+  enablingInertia?: boolean
+  /** 惯性衰减率 */
+  inertiaDecayRatio?: number
+  /** 惯性停止阈值 */
+  inertialStopThreshold?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
   data: () => ({}),
-  slidingSpeed: 0.1
+  slidingSpeed: 0.1,
+  enablingInertia: true,
+  inertiaDecayRatio: 0.95,
+  inertialStopThreshold: 0.01,
 })
 
 const timelineTurntableRef = ref<HTMLElement | null>(null)
@@ -19,17 +29,37 @@ const isPressed = ref(false)
 const rotateZ = ref(0)
 
 let myReq: number = 0
+let pressedDuration = 0
+let inertia = 0
+let inertiaDirection = 1
 
 const oldPosition: { x: number, y: number } = { x: 0, y: 0 }
 
 function onMousedown(e: MouseEvent) {
-  oldPosition.x = e.clientX
-  oldPosition.y = e.clientY
+  pressedDuration = new Date().getTime()
+  inertia = 0
+  
+  const { clientX, clientY } = e
+  oldPosition.x = clientX
+  oldPosition.y = clientY
   isPressed.value = true
 }
 
-function onMouseup() {
+function onMouseup(e: MouseEvent) {
   isPressed.value = false
+
+  if (props.enablingInertia) {
+    pressedDuration = new Date().getTime() - pressedDuration
+    const { clientX, clientY } = e
+    
+    const deltaX = clientX - oldPosition.x
+    const deltaY = clientY - oldPosition.y
+    
+    inertia = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * pressedDuration / 1000
+    inertiaDirection = deltaX > 0 ? -1 : 1
+    
+    requestAnimationFrame(applyInertia)
+  }
 }
 
 function onMousemove(e: MouseEvent) {
@@ -56,6 +86,14 @@ function onMousemove(e: MouseEvent) {
         rotateZ.value = (deltaThetaDegrees * scale + rotateZ.value) % 360
       }
     })
+  }
+}
+
+function applyInertia() {
+  if (Math.abs(inertia) > props.inertialStopThreshold) {
+    rotateZ.value = (rotateZ.value + inertia * inertiaDirection) % 360
+    inertia *= Math.min(props.inertiaDecayRatio, 1)
+    requestAnimationFrame(applyInertia)
   }
 }
 
