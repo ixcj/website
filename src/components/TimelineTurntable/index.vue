@@ -29,6 +29,7 @@ const isPressed = ref(false)
 const rotateZ = ref(0)
 
 let myReq: number = 0
+let inertiaReq: number = 0
 let pressedDuration = 0
 let inertia = 0
 let inertiaDirection = 1
@@ -58,7 +59,7 @@ function onMouseup(e: MouseEvent) {
     inertia = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * pressedDuration / 1000
     inertiaDirection = deltaX > 0 ? -1 : 1
     
-    requestAnimationFrame(applyInertia)
+    inertiaReq = requestAnimationFrame(applyInertia)
   }
 }
 
@@ -69,7 +70,7 @@ function onMousemove(e: MouseEvent) {
     const { x, y } = oldPosition
     const { clientX, clientY } = e
     
-    requestAnimationFrame(() => {
+    myReq = requestAnimationFrame(() => {
       if (timelineTurntableRef.value && timelineTurntableRotateBoxRef.value) {
         const { clientWidth } = timelineTurntableRef.value
         const { clientWidth: rotateBoxClientWidth } = timelineTurntableRotateBoxRef.value
@@ -90,10 +91,12 @@ function onMousemove(e: MouseEvent) {
 }
 
 function applyInertia() {
+  cancelAnimationFrame(inertiaReq)
+  
   if (Math.abs(inertia) > props.inertialStopThreshold) {
     rotateZ.value = (rotateZ.value + inertia * inertiaDirection) % 360
     inertia *= Math.min(props.inertiaDecayRatio, 1)
-    requestAnimationFrame(applyInertia)
+    inertiaReq = requestAnimationFrame(applyInertia)
   }
 }
 
