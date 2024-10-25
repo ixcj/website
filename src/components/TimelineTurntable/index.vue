@@ -8,6 +8,8 @@ interface Props {
   slidingSpeed?: number
   /** 启用惯性 */
   enablingInertia?: boolean
+  /** 惯性速度 */
+  inertiaSpeed?: number
   /** 惯性衰减率 */
   inertiaDecayRatio?: number
   /** 惯性停止阈值 */
@@ -18,8 +20,9 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   data: () => ({}),
-  slidingSpeed: 0.1,
+  slidingSpeed: 0.9,
   enablingInertia: true,
+  inertiaSpeed: 0.1,
   inertiaDecayRatio: 0.95,
   inertialStopThreshold: 0.01,
   frameInterval: 16.6666667,
@@ -80,7 +83,7 @@ function onMousemove(e: MouseEvent) {
       if (timelineTurntableRef.value && timelineTurntableRotateBoxRef.value) {
         const { clientWidth } = timelineTurntableRef.value
         const { clientWidth: rotateBoxClientWidth } = timelineTurntableRotateBoxRef.value
-        const scale = clientWidth / (rotateBoxClientWidth * props.slidingSpeed)
+        const scale = clientWidth / (rotateBoxClientWidth * (1 - Math.min(props.slidingSpeed, 0.9999)))
         
         const theta = Math.atan2(y, x)
         const mouseTheta = Math.atan2(clientY, clientX)
@@ -90,7 +93,8 @@ function onMousemove(e: MouseEvent) {
         oldPosition.x = clientX
         oldPosition.y = clientY
 
-        rotateZ.value = (deltaThetaDegrees * scale + rotateZ.value) % 360
+        const rotateZValue = deltaThetaDegrees * scale + rotateZ.value
+        rotateZ.value = isNaN(rotateZValue) ? 0 : rotateZValue
       }
     })
   }
@@ -103,10 +107,12 @@ function applyInertia() {
     const now = new Date().getTime()
     const deltaTime = now - inertiaFrameTaskCompletionTime
     const frameRateRatio = deltaTime / props.frameInterval
-    const inertiaValue = inertia * inertiaDirection / frameRateRatio
+    const inertiaValue = inertia * inertiaDirection / frameRateRatio * props.inertiaSpeed
     const inertiaAttenuationValue = inertia * (1 - Math.min(props.inertiaDecayRatio, 1)) * frameRateRatio
     
-    rotateZ.value = (rotateZ.value + inertiaValue) % 360
+    const rotateZValue = rotateZ.value + inertiaValue
+    rotateZ.value = isNaN(rotateZValue) ? 0 : rotateZValue
+
     inertia -= inertiaAttenuationValue
     inertiaFrameTaskCompletionTime = now
     
@@ -166,6 +172,7 @@ onUnmounted(() => {})
 
     .turntable-rotate-box {
       transform: rotateZ(var(--rotateZ)) translateZ(0);
+      transition: transform calc(var(--transition-duration) / 3) linear;
 
       .turntable-image {
         width: 100%;
