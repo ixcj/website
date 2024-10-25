@@ -7,6 +7,7 @@ import {
   onUnmounted,
 } from 'vue'
 import defaultBackground from '@/assets/images/stereo-card-bg.webp'
+import defaultPattern from '@/assets/images/stereo-card-pattern.png'
 import { Github } from '@vicons/fa'
 import { ArrowUpRight } from '@vicons/tabler'
 import type { StereoCardItem } from '@/types/StereoCard'
@@ -134,7 +135,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="stereoCardRef" class="stereo-card">
+  <div ref="stereoCardRef" class="stereo-card" :style="{ '--pattern': `url(${data?.patternImage || defaultPattern})` }">
     <div ref="cardWrapperRef" class="card-wrapper">
       <div class="card-3d">
         <div class="card-image-box">
@@ -189,7 +190,6 @@ onUnmounted(() => {
   --aspectRatio: 3 / 4;
   --round: 16px;
   --step: 5%;
-  --pattern: url("http://allyourhtml.club/carousel/pattern.webp");
 
   --rainbow: repeating-linear-gradient(
       0deg,
