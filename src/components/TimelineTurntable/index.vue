@@ -12,6 +12,8 @@ interface Props {
   inertiaDecayRatio?: number
   /** 惯性停止阈值 */
   inertialStopThreshold?: number
+  /** 帧间隔 默认按16.6666667毫秒为一帧 */
+  frameInterval?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -20,6 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   enablingInertia: true,
   inertiaDecayRatio: 0.95,
   inertialStopThreshold: 0.01,
+  frameInterval: 16.6666667,
 })
 
 const timelineTurntableRef = ref<HTMLElement | null>(null)
@@ -30,9 +33,11 @@ const rotateZ = ref(0)
 
 let myReq: number = 0
 let inertiaReq: number = 0
+
 let pressedDuration = 0
 let inertia = 0
 let inertiaDirection = 1
+let inertiaFrameTaskCompletionTime = 0
 
 const oldPosition: { x: number, y: number } = { x: 0, y: 0 }
 
@@ -59,6 +64,7 @@ function onMouseup(e: MouseEvent) {
     inertia = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * pressedDuration / 1000
     inertiaDirection = deltaX > 0 ? -1 : 1
     
+    inertiaFrameTaskCompletionTime = new Date().getTime()
     inertiaReq = requestAnimationFrame(applyInertia)
   }
 }
@@ -94,8 +100,16 @@ function applyInertia() {
   cancelAnimationFrame(inertiaReq)
   
   if (Math.abs(inertia) > props.inertialStopThreshold) {
-    rotateZ.value = (rotateZ.value + inertia * inertiaDirection) % 360
-    inertia *= Math.min(props.inertiaDecayRatio, 1)
+    const now = new Date().getTime()
+    const deltaTime = now - inertiaFrameTaskCompletionTime
+    const frameRateRatio = deltaTime / props.frameInterval
+    const inertiaValue = inertia * inertiaDirection / frameRateRatio
+    const inertiaAttenuationValue = inertia * (1 - Math.min(props.inertiaDecayRatio, 1)) * frameRateRatio
+    
+    rotateZ.value = (rotateZ.value + inertiaValue) % 360
+    inertia -= inertiaAttenuationValue
+    inertiaFrameTaskCompletionTime = now
+    
     inertiaReq = requestAnimationFrame(applyInertia)
   }
 }
