@@ -112,37 +112,5 @@ globalThis.onload = () => {
     height: 750px;
     background-color: rgba($color: #80D0C7, $alpha: 0.125);
   }
-
-  a.page-link {
-    text-decoration: none;
-    white-space: nowrap;
-    color: var(--foreground-color);
-    position: relative;
-    z-index: 0;
-    transition: color var(--transition-duration);
-    
-    &:hover {
-      color: var(--background-color);
-
-      &::before {
-        opacity: 1;
-        height: 100%;
-      }
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      display: block;
-      width: 100%;
-      height: 33%;
-      background-color: var(--foreground-color);
-      opacity: 0.33;
-      z-index: -1;
-      transition: var(--transition-duration);
-    }
-  }
 }
 </style>

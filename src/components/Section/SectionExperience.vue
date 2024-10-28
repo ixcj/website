@@ -1,9 +1,21 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import TimelineTurntable from '@/components/TimelineTurntable/index.vue'
+</script>
 
 <template>
-  <div class="section-experience text-type-box">
+  <div class="section-experience">
     <h2 class="section-title">{{ $t('SectionTitle.experience') }}</h2>
+
+    <div class="section-experience-box hide-page-cursor">
+      <TimelineTurntable :data="{}" />
+    </div>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.section-experience {
+  .section-experience-box {
+    margin-top: 20px;
+  }
+}
+</style>
