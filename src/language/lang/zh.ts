@@ -31,8 +31,7 @@ export const projects: StereoCardItem[] = [
       { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
       { href: 'https://music.ixcj.cn', content: '_ARROW_UP_RIGHT_', title: '查看演示' },
     ],
-    description: `菜鸡音乐是一款在线音乐应用，提供歌曲搜索、免费歌曲在线试听、MV播放等功能。  <p></p>
-    `,
+    description: `菜鸡音乐是一款在线音乐应用，提供歌曲搜索、免费歌曲在线试听、MV播放等功能。`,
     tags: [
       { content: '不再维护', type: 'warning' },
     ],
@@ -41,7 +40,7 @@ export const projects: StereoCardItem[] = [
 
 export const experiences: TimelineTurntableItem[] = [
   {
-    date: ['2020年1月', '2021年1月'],
+    date: ['2020年1月', '2021年12月'],
     angleRange: [0, 90],
     children: [
       {
@@ -57,17 +56,17 @@ export const experiences: TimelineTurntableItem[] = [
     ],
   },
   {
-    date: ['2020年1月', '2021年1月'],
+    date: ['2021年1月', '2021年12月'],
     angleRange: [90, 180],
     children: [],
   },
   {
-    date: ['2020年1月', '2021年1月'],
+    date: ['2022年1月', '2022年12月'],
     angleRange: [180, 270],
     children: [],
   },
   {
-    date: ['2020年1月', '2021年1月'],
+    date: ['2023年1月', '2023年12月'],
     angleRange: [270, 360],
     children: [],
   },

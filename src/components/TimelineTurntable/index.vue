@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import Turntable from './Turntable.vue'
+import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
 
 interface Props {
-  data: any,
+  data: TimelineTurntableItem[],
   /** 滑动速度 */
   slidingSpeed?: number
   /** 启用惯性 */
@@ -19,7 +20,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  data: () => ({}),
   slidingSpeed: 0.9,
   enablingInertia: true,
   inertiaSpeed: 0.1,
@@ -33,6 +33,22 @@ const timelineTurntableRotateBoxRef = ref<HTMLElement | null>(null)
 
 const isPressed = ref(false)
 const rotateZ = ref(0)
+
+const absRotateZ = computed(() => Math.abs((rotateZ.value >= 0 ? 0 : 360) - (Math.abs(rotateZ.value) % 360)))
+
+const currentAngleData = computed(() => {
+  return props.data.find(item => {
+    const [min, max] = item.angleRange
+    return absRotateZ.value >= min && absRotateZ.value < max
+  })
+})
+
+const dateProgress = computed(() => {
+  const [min = 0, max = 0] = currentAngleData.value?.angleRange || []
+  const progress = (absRotateZ.value - min) / Math.abs(max - min)
+
+  return progress
+})
 
 let myReq: number = 0
 let inertiaReq: number = 0
@@ -55,6 +71,8 @@ function onMousedown(e: MouseEvent) {
 }
 
 function onMouseup(e: MouseEvent) {
+  if (!isPressed.value) return
+  
   isPressed.value = false
 
   if (props.enablingInertia) {
@@ -122,7 +140,7 @@ function applyInertia() {
 
 onMounted(() => {
   globalThis.document.addEventListener('mousemove', onMousemove)
-  globalThis.document.addEventListener('mousedown', onMousedown)
+  timelineTurntableRef.value?.addEventListener('mousedown', onMousedown)
   globalThis.document.addEventListener('mouseup', onMouseup)
 })
 
@@ -139,8 +157,17 @@ onUnmounted(() => {})
       <div class="turntable-rotate-box" ref="timelineTurntableRotateBoxRef">
         <Turntable class="turntable-image" />
 
-        <div class="turntable-content-box">
+        <div class="turntable-rotate-content-box">
         
+        </div>
+      </div>
+    </div>
+
+    <div class="turntable-content-box">
+      <div class="turntable-content-date-box">
+        <div class="turntable-content-date" :style="{ '--date-progress': dateProgress * 100 + '%' }">
+          <span>{{ currentAngleData?.date[0] }}</span>
+          <span>{{ currentAngleData?.date[1] }}</span>
         </div>
       </div>
     </div>
@@ -152,16 +179,18 @@ onUnmounted(() => {})
   --rotateZ: calc(v-bind(rotateZ) * 1deg);
   width: 100%;
   height: 500px;
+  position: relative;
   overflow: hidden;
   cursor: grab;
-  -webkit-mask-image: linear-gradient(90deg, transparent 5%, #000 20%, #000 80%, transparent 95%);
-  mask-image: linear-gradient(90deg, transparent 5%, #000 20%, #000 80%, transparent 95%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 5%, #000 15%, #000 85%, transparent 95%);
+  mask-image: linear-gradient(90deg, transparent 5%, #000 15%, #000 85%, transparent 95%);
 
   &.pressed {
     cursor: grabbing;
   }
   
   .turntable-box {
+    pointer-events: none;
     position: relative;
     top: -100%;
     left: 50%;
@@ -180,9 +209,64 @@ onUnmounted(() => {})
         object-fit: cover;
       }
 
-      .turntable-content-box {
+      .turntable-rotate-content-box {
         position: absolute;
         inset: 0;
+      }
+    }
+  }
+
+  .turntable-content-box {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    padding: 0 15%;
+
+    .turntable-content-date-box {
+      font-size: 24px;
+      display: flex;
+      justify-content: center;
+
+      .turntable-content-date {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        padding-bottom: 10px;
+        position: relative;
+
+        &::after,
+        &::before {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          display: block;
+          height: 3px;
+          border-radius: 3px;
+          background-color: var(--foreground-color);
+        }
+
+        &::after {
+          width: 100%;
+          opacity: .3;
+        }
+
+        &::before {
+          width: var(--date-progress, 0%);
+        }
+
+        span {
+          position: relative;
+
+          &:last-of-type {
+            &::before {
+              content: '-';
+              position: absolute;
+              left: -25px;
+              transform: translateX(-50%);
+            }
+          }
+        }
       }
     }
   }
