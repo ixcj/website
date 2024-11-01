@@ -34,20 +34,20 @@ const timelineTurntableRotateBoxRef = ref<HTMLElement | null>(null)
 const isPressed = ref(false)
 const rotateZ = ref(0)
 
-const currentAngleData = computed(() => {
-  const rotate = Math.abs(rotateZ.value) % 360
+const absRotateZ = computed(() => Math.abs((rotateZ.value >= 0 ? 0 : 360) - (Math.abs(rotateZ.value) % 360)))
 
+const currentAngleData = computed(() => {
   return props.data.find(item => {
     const [min, max] = item.angleRange
-    return rotate >= min && rotate < max
+    return absRotateZ.value >= min && absRotateZ.value < max
   })
 })
 
 const dateProgress = computed(() => {
   const [min = 0, max = 0] = currentAngleData.value?.angleRange || []
-  const rotate = Math.abs(rotateZ.value) % 360
+  const progress = (absRotateZ.value - min) / Math.abs(max - min)
 
-  return (rotate - min) / Math.abs(max - min)
+  return progress
 })
 
 let myReq: number = 0
