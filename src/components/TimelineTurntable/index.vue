@@ -55,6 +55,8 @@ function onMousedown(e: MouseEvent) {
 }
 
 function onMouseup(e: MouseEvent) {
+  if (!isPressed.value) return
+  
   isPressed.value = false
 
   if (props.enablingInertia) {
@@ -122,7 +124,7 @@ function applyInertia() {
 
 onMounted(() => {
   globalThis.document.addEventListener('mousemove', onMousemove)
-  globalThis.document.addEventListener('mousedown', onMousedown)
+  timelineTurntableRef.value?.addEventListener('mousedown', onMousedown)
   globalThis.document.addEventListener('mouseup', onMouseup)
 })
 
