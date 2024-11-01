@@ -1,4 +1,5 @@
 import type { StereoCardItem } from '@/types/StereoCard'
+import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
 
 export const name = 'XCJ'
 export const intro = 'A Frontend Developer'
@@ -37,6 +38,8 @@ export const projects: StereoCardItem[] = [
   },
 ]
 
+export const experiences: TimelineTurntableItem[] = []
+
 export default {
   lang: 'en-US',
   language: 'EN',
@@ -65,6 +68,8 @@ export default {
   },
 
   projects: encodeURIComponent(JSON.stringify(projects)),
+
+  experiences: encodeURIComponent(JSON.stringify(experiences)),
 
   contributionCalendar: 'Contribution calendar',
 }

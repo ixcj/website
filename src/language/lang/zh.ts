@@ -40,7 +40,7 @@ export const projects: StereoCardItem[] = [
 
 export const experiences: TimelineTurntableItem[] = [
   {
-    date: ['2020年1月', '2021年1月'],
+    date: ['2020年1月', '2021年12月'],
     angleRange: [0, 90],
     children: [
       {
@@ -56,17 +56,17 @@ export const experiences: TimelineTurntableItem[] = [
     ],
   },
   {
-    date: ['2020年1月', '2021年1月'],
+    date: ['2021年1月', '2021年12月'],
     angleRange: [90, 180],
     children: [],
   },
   {
-    date: ['2020年1月', '2021年1月'],
+    date: ['2022年1月', '2022年12月'],
     angleRange: [180, 270],
     children: [],
   },
   {
-    date: ['2020年1月', '2021年1月'],
+    date: ['2023年1月', '2023年12月'],
     angleRange: [270, 360],
     children: [],
   },
