@@ -7,7 +7,7 @@ import {
   onUnmounted,
 } from 'vue'
 import defaultBackground from '@/assets/images/stereo-card-bg.webp'
-import defaultPattern from '@/assets/images/stereo-card-pattern.png'
+import defaultPattern from '@/assets/images/stereo-card-pattern.webp'
 import { Github } from '@vicons/fa'
 import { ArrowUpRight } from '@vicons/tabler'
 import type { StereoCardItem } from '@/types/StereoCard'
