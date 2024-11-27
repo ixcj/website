@@ -125,7 +125,7 @@ function applyInertia() {
     const now = new Date().getTime()
     const deltaTime = now - inertiaFrameTaskCompletionTime
     const frameRateRatio = deltaTime / props.frameInterval
-    const inertiaValue = inertia * inertiaDirection / frameRateRatio * props.inertiaSpeed
+    const inertiaValue = inertia * inertiaDirection * props.inertiaSpeed
     const inertiaAttenuationValue = inertia * (1 - Math.min(props.inertiaDecayRatio, 1)) * frameRateRatio
     
     const rotateZValue = rotateZ.value + inertiaValue
