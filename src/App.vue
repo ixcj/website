@@ -2,9 +2,18 @@
 import { ref, nextTick } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
-import { siteUrl } from '@/config'
-import { breakpointsName, mobile, touch, setScrollBarWidth } from '@/utils/screen'
-import { githubContributionUser } from '@/config'
+import { useCheatCode } from '@/hooks/useCheatCode'
+import {
+  siteUrl,
+  githubContributionUser,
+  cheatsKeys,
+} from '@/config'
+import {
+  breakpointsName,
+  mobile,
+  touch,
+  setScrollBarWidth,
+} from '@/utils/screen'
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
@@ -58,6 +67,10 @@ globalThis.onload = () => {
     setScrollBarWidth()
   })
 }
+
+useCheatCode(cheatsKeys, () => {
+  console.log('暂时还没用彩蛋!')
+})
 </script>
 
 <template>
