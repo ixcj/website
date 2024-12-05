@@ -139,13 +139,26 @@ onUnmounted(() => {
     <div ref="cardWrapperRef" class="card-wrapper">
       <div class="card-3d">
         <div class="card-image-box">
-          <img class="card-image" :src="data?.backgroundImage || defaultBackground" alt="" />
+          <img
+            class="card-image"
+            :src="data?.backgroundImage || defaultBackground"
+            alt=""
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+          />
         </div>
         <div class="card-layer1"></div>
         <div class="card-layer2"></div>
 
         <div class="content-wrapper">
-          <img v-if="data.icon" :src="data.icon" class="content-icon" alt="">
+          <img
+            v-if="data.icon"
+            :src="data.icon"
+            class="content-icon"
+            alt=""
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+          />
           <p class="content-name">{{ data.name }}</p>
           <p ref="contentDescriptionRef" class="content-description" v-html="data.description"></p>
           
