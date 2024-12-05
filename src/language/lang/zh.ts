@@ -1,3 +1,6 @@
+import type { StereoCardItem } from '@/types/StereoCard'
+import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
+
 export const name = 'XCJ'
 export const intro = '一个前端'
 
@@ -9,18 +12,14 @@ export const mottos = [
   '其实人跟树一样，越是往高处走，它的根就越要伸向黑暗的地底。',
 ]
 
-export const projects = [
+export const projects: StereoCardItem[] = [
   {
     name: '个人网站',
     icon: '/avatar.png',
     links: [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
-      { href: 'https://new.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'DEMO' },
     ],
-    description: `
-      <p>这个网站是我展示个人作品和专业技能的数字名片，旨在为访客提供一个全面的了解我的平台。</p>
-      <p>本项目使用 <strong>Vue3</strong> 和 <strong>Vite</strong> 构建，利用 <strong>vite-ssg</strong> 进行静态站点生成以获得 SEO 优势。</p>
-    `,
+    description: `这个网站是我展示个人作品和专业技能的数字名片，旨在为访客提供一个全面的了解我的平台。`,
     tags: [
       { content: '积极开发中', type: 'success' },
     ],
@@ -30,15 +29,46 @@ export const projects = [
     icon: 'https://music.xcj.im/img/icons/android-chrome-192x192.png',
     links: [
       { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
-      { href: 'https://music.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'DEMO' },
+      { href: 'https://music.ixcj.cn', content: '_ARROW_UP_RIGHT_', title: '查看演示' },
     ],
-    description: `
-      <p>菜鸡音乐是一款在线音乐应用，提供歌曲搜索、免费歌曲在线试听、MV播放等功能。</p>
-      <p>由于依赖 NeteaseCloudMusicApi 作为 API，且 NeteaseCloudMusicApi 在 GitHub 上不再维护，故本项目不再维护。</p>
-    `,
+    description: `菜鸡音乐是一款在线音乐应用，提供歌曲搜索、免费歌曲在线试听、MV播放等功能。`,
     tags: [
       { content: '不再维护', type: 'warning' },
     ],
+  },
+]
+
+export const experiences: TimelineTurntableItem[] = [
+  {
+    date: ['2020年1月', '2021年12月'],
+    angleRange: [0, 90],
+    children: [
+      {
+        title: 'title',
+        describe: 'describe',
+        range: [0, 0.5],
+      },
+      {
+        title: '',
+        describe: '',
+        range: [0.5, 1],
+      },
+    ],
+  },
+  {
+    date: ['2021年1月', '2021年12月'],
+    angleRange: [90, 180],
+    children: [],
+  },
+  {
+    date: ['2022年1月', '2022年12月'],
+    angleRange: [180, 270],
+    children: [],
+  },
+  {
+    date: ['2023年1月', '2023年12月'],
+    angleRange: [270, 360],
+    children: [],
   },
 ]
 
@@ -70,6 +100,8 @@ export default {
   },
 
   projects: encodeURIComponent(JSON.stringify(projects)),
+
+  experiences: encodeURIComponent(JSON.stringify(experiences)),
 
   contributionCalendar: '贡献日历',
 }

@@ -7,11 +7,13 @@ import {
   onUnmounted,
 } from 'vue'
 import defaultBackground from '@/assets/images/stereo-card-bg.webp'
+import defaultPattern from '@/assets/images/stereo-card-pattern.webp'
 import { Github } from '@vicons/fa'
 import { ArrowUpRight } from '@vicons/tabler'
+import type { StereoCardItem } from '@/types/StereoCard'
 
 interface Props {
-  data: any,
+  data: StereoCardItem,
   speedX?: number,
   speedY?: number,
   bgSpeedX?: number,
@@ -20,7 +22,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  data: () => ({}),
   speedX: 10,
   speedY: 10,
   bgSpeedX: 20,
@@ -108,9 +109,7 @@ function judgeDescriptionContentHeight() {
 
   const { scrollHeight, clientHeight } = contentDescriptionRef.value
 
-  if (scrollHeight > clientHeight) {
-    contentDescriptionRef.value.classList.add('gradation-bottom')
-  }
+  contentDescriptionRef.value.classList.toggle('gradation-bottom', (scrollHeight - clientHeight) > 5)
 }
 
 function getIconComponent(iconName: string) {
@@ -136,7 +135,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="stereoCardRef" class="stereo-card">
+  <div ref="stereoCardRef" class="stereo-card" :style="{ '--pattern': `url(${data?.patternImage || defaultPattern})` }">
     <div ref="cardWrapperRef" class="card-wrapper">
       <div class="card-3d">
         <div class="card-image-box">
@@ -173,7 +172,7 @@ onUnmounted(() => {
               v-for="tag in data.tags"
               class="content-tag-item"
               :class="tag.type || ''"
-              :style="tag.style || {}"
+              :style="tag?.style || {}"
             >{{ tag.content }}</div>
           </div>
         </div>
@@ -191,7 +190,6 @@ onUnmounted(() => {
   --aspectRatio: 3 / 4;
   --round: 16px;
   --step: 5%;
-  --pattern: url("http://allyourhtml.club/carousel/pattern.webp");
 
   --rainbow: repeating-linear-gradient(
       0deg,
@@ -345,7 +343,6 @@ onUnmounted(() => {
       font-size: 16px;
       max-width: 90%;
       text-align: center;
-      overflow-y: auto;
       max-height: calc(100% - var(--round) - 180px);
       scrollbar-width: none;
       
@@ -354,6 +351,7 @@ onUnmounted(() => {
       }
 
       &.gradation-bottom {
+        overflow-y: auto;
         mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
         -webkit-mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
         padding-bottom: 50px;

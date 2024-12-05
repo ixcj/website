@@ -2,9 +2,19 @@
 import { ref, nextTick } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
-import { siteUrl } from '@/config'
-import { breakpointsName, mobile, touch, setScrollBarWidth } from '@/utils/screen'
-import { githubContributionUser } from '@/config'
+import { useCheatCode } from '@/hooks/useCheatCode'
+import {
+  siteUrl,
+  githubContributionUser,
+  cheatsKeys,
+} from '@/config'
+import {
+  breakpointsName,
+  mobile,
+  touch,
+  setScrollBarWidth,
+} from '@/utils/screen'
+import { cheatsExecute } from '@/utils/cheats'
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
@@ -58,6 +68,8 @@ globalThis.onload = () => {
     setScrollBarWidth()
   })
 }
+
+useCheatCode(cheatsKeys, cheatsExecute)
 </script>
 
 <template>
@@ -111,38 +123,6 @@ globalThis.onload = () => {
     width: 750px;
     height: 750px;
     background-color: rgba($color: #80D0C7, $alpha: 0.125);
-  }
-
-  a.page-link {
-    text-decoration: none;
-    white-space: nowrap;
-    color: var(--foreground-color);
-    position: relative;
-    z-index: 0;
-    transition: color var(--transition-duration);
-    
-    &:hover {
-      color: var(--background-color);
-
-      &::before {
-        opacity: 1;
-        height: 100%;
-      }
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      display: block;
-      width: 100%;
-      height: 33%;
-      background-color: var(--foreground-color);
-      opacity: 0.33;
-      z-index: -1;
-      transition: var(--transition-duration);
-    }
   }
 }
 </style>
