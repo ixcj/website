@@ -7,11 +7,11 @@ import {
 } from 'vue'
 
 interface Options {
+  /** 默认值 */
+  defaultActivate?: boolean
+
   /** 监听事件 */
   listenerType?: 'keyup' | 'keydown'
-
-  /** 触发方法 */
-  fn?: (e: KeyboardEvent) => void
 }
 
 export function useCheatCode(
@@ -20,11 +20,12 @@ export function useCheatCode(
   options: Options = {}
 ) {
   const {
+    defaultActivate = true,
     listenerType = 'keydown',
   } = options
 
   const _keys = reactive<string[]>([])
-  const isPause = ref(false)
+  const activate = ref(defaultActivate)
 
   function setKeys(e: KeyboardEvent) {
     const { code } = e
@@ -36,21 +37,26 @@ export function useCheatCode(
   }
 
   watchEffect(() => {
-    if (isPause.value) return
+    if (!activate.value) return
 
     if (JSON.stringify(_keys) === JSON.stringify(keys)) {
       _keys.length = 0
-      fn && fn()
+
+      try {
+        fn && fn()
+      } catch (err) {
+        console.error(err)
+      }
     }
   })
 
   onMounted(() => {
-    globalThis?.document.addEventListener(listenerType, setKeys)
+    globalThis?.addEventListener(listenerType, setKeys)
   })
   
   onUnmounted(() => {
-    globalThis?.document.removeEventListener(listenerType, setKeys)
+    globalThis?.removeEventListener(listenerType, setKeys)
   })
 
-  return { isPause }
+  return { activate }
 }

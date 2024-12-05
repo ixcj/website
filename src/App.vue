@@ -14,6 +14,7 @@ import {
   touch,
   setScrollBarWidth,
 } from '@/utils/screen'
+import { cheatsExecute } from '@/utils/cheats'
 import PageCursor from '@/components/PageCursor/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
@@ -68,9 +69,7 @@ globalThis.onload = () => {
   })
 }
 
-useCheatCode(cheatsKeys, () => {
-  console.log('暂时还没用彩蛋!')
-})
+useCheatCode(cheatsKeys, cheatsExecute)
 </script>
 
 <template>
