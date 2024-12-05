@@ -10,6 +10,10 @@ const ASCII_Art = [
 ]
 
 export function cheatsExecute() {
+  console.log('暂时没有彩蛋！')
+}
+
+export function outputInfo() {
   const lableStyle = `color: #fff; font-weight: bold; background: #000; border-radius: 4px 0 0 4px; overflow: hidden; padding: 2px 4px 2px 6px;`
   const valueStyle = `color: #fff; font-weight: bold; background: #ffb003; border-radius: 0 4px 4px 0; overflow: hidden; padding: 2px 6px 2px 4px;`
 
