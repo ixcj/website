@@ -144,7 +144,11 @@ onMounted(() => {
   globalThis.document.addEventListener('mouseup', onMouseup)
 })
 
-onUnmounted(() => {})
+onUnmounted(() => {
+  globalThis.document.removeEventListener('mousemove', onMousemove)
+  timelineTurntableRef.value?.removeEventListener('mousedown', onMousedown)
+  globalThis.document.removeEventListener('mouseup', onMouseup)
+})
 </script>
 
 <template>
