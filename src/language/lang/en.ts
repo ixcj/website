@@ -15,7 +15,7 @@ export const mottos = [
 export const projects: StereoCardItem[] = [
   {
     name: 'Personal Website',
-    icon: '/avatar.png',
+    logo: '/avatar.png',
     links: [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
     ],
@@ -26,7 +26,7 @@ export const projects: StereoCardItem[] = [
   },
   {
     name: 'caiji-music',
-    icon: 'https://music.xcj.im/img/icons/android-chrome-192x192.png',
+    logo: 'https://file.xcj.im/website/images/caiji-music-logo.png',
     links: [
       { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
       { href: 'https://music.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'Live Demo' },

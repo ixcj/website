@@ -152,9 +152,9 @@ onUnmounted(() => {
 
         <div class="content-wrapper">
           <img
-            v-if="data.icon"
-            :src="data.icon"
-            class="content-icon"
+            v-if="data.logo"
+            :src="data.logo"
+            class="content-logo"
             alt=""
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
@@ -338,7 +338,7 @@ onUnmounted(() => {
     border-radius: var(--round);
     color: #f7f8f8;
 
-    .content-icon {
+    .content-logo {
       width: 80px;
     }
 
