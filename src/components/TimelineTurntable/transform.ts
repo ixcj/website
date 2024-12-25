@@ -78,7 +78,6 @@ function getAngleRatio(
 
   const monthSpan = getMonthSpan(start, end)
   const angleRatio = monthSpan / monthSpanSum * 360
-  console.log(monthSpan, monthSpanSum)
 
   return Number(angleRatio.toFixed(decimals))
 }
