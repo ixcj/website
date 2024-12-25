@@ -38,7 +38,40 @@ export const projects: StereoCardItem[] = [
   },
 ]
 
-export const experiences: TimelineTurntableItem[] = []
+export const experiences: TimelineTurntableItem[] = [
+  {
+    date: [
+      { year: 2020, month: 7 },
+      { year: 2021, month: 12 }
+    ],
+    children: [
+      {
+        title: 'title',
+        describe: 'describe',
+        range: [0, 0.5],
+      },
+      {
+        title: '',
+        describe: '',
+        range: [0.5, 1],
+      },
+    ],
+  },
+  {
+    date: [
+      { year: 2022, month: 1 },
+      { year: 2022, month: 12 }
+    ],
+    children: [],
+  },
+  {
+    date: [
+      { year: 2023, month: 5 }, 
+      'now'
+    ],
+    children: [],
+  },
+]
 
 export default {
   lang: 'en-US',

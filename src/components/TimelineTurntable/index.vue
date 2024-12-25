@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import Turntable from './Turntable.vue'
-import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
+import {
+  type TimelineTurntableTransformItem,
+  transformTimelineTurntableItem
+} from './transform'
 
 interface Props {
   data: TimelineTurntableItem[],
@@ -36,8 +40,9 @@ const rotateZ = ref(0)
 
 const absRotateZ = computed(() => Math.abs((rotateZ.value >= 0 ? 0 : 360) - (Math.abs(rotateZ.value) % 360)))
 
+const currentItem = computed<TimelineTurntableTransformItem[]>(() => transformTimelineTurntableItem(props.data))
 const currentAngleData = computed(() => {
-  return props.data.find(item => {
+  return currentItem.value.find(item => {
     const [min, max] = item.angleRange
     return absRotateZ.value >= min && absRotateZ.value < max
   })
@@ -111,8 +116,8 @@ function onMousemove(e: MouseEvent) {
         oldPosition.x = clientX
         oldPosition.y = clientY
 
-        const rotateZValue = deltaThetaDegrees * scale + rotateZ.value
-        rotateZ.value = isNaN(rotateZValue) ? 0 : rotateZValue
+        const _rotateZ = Number(deltaThetaDegrees * scale + rotateZ.value)
+        rotateZ.value = isNaN(_rotateZ) ? 0 : _rotateZ
       }
     })
   }
