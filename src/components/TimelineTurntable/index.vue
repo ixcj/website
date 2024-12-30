@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import {
+  ref,
+  computed,
+  onMounted,
+  onUnmounted,
+  watch,
+  nextTick,
+} from 'vue'
 import Turntable from './Turntable.vue'
 import {
   type TimelineTurntableTransformItem,
@@ -54,6 +61,34 @@ const dateProgress = computed(() => {
 
   return progress
 })
+
+const turntableContentTextBoxRef = ref<HTMLElement>()
+
+const currentAngleDataChildrenItem = computed(() => {
+  const { children } = currentAngleData.value || {}
+
+  const data = children?.find((item) => {
+    const [min = 0, max = 0] = item.range || []
+    const difference = Math.abs(max - min)
+    const progress = (absRotateZ.value - min) / difference
+
+    return progress >= 0 && progress <= 100
+  })
+
+  return data || { title: '', describe: '', range: [0, 0] }
+})
+
+watch(
+  currentAngleDataChildrenItem,
+  (val) => {
+    val && nextTick(() => {
+      if (!turntableContentTextBoxRef.value) return
+      const { scrollHeight, clientHeight } = turntableContentTextBoxRef.value
+      turntableContentTextBoxRef.value.classList.toggle('gradation-bottom', (scrollHeight - clientHeight) > 5)
+    })
+  },
+  { immediate: true }
+)
 
 let myReq: number = 0
 let inertiaReq: number = 0
@@ -179,6 +214,12 @@ onUnmounted(() => {
           <span>{{ currentAngleData?.date[1] }}</span>
         </div>
       </div>
+      <div class="turntable-content-text-box" ref="turntableContentTextBoxRef">
+        <div class="turntable-content-text" :key="currentAngleDataChildrenItem.title">
+          <div class="turntable-content-text-title">{{ currentAngleDataChildrenItem.title }}</div>
+          <div class="turntable-content-text-describe" v-html="currentAngleDataChildrenItem.describe"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -230,6 +271,7 @@ onUnmounted(() => {
     inset: 0;
     pointer-events: none;
     padding: 0 15%;
+    user-select: none;
 
     .turntable-content-date-box {
       font-size: 24px;
@@ -275,6 +317,37 @@ onUnmounted(() => {
               transform: translateX(-50%);
             }
           }
+        }
+      }
+    }
+
+    .turntable-content-text-box {
+      margin-top: 20px;
+      text-align: center;
+      max-height: calc(100% - 210px);
+      overflow: hidden;
+
+      &.gradation-bottom {
+        overflow-y: auto;
+        mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
+        -webkit-mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
+        padding-bottom: 30px;
+        box-sizing: border-box;
+        pointer-events: all;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
+      .turntable-content-text {
+        .turntable-content-text-title {
+          font-size: 28px;
+          margin-bottom: 10px;
+        }
+
+        .turntable-content-text-describe {
+          font-size: 18px;
         }
       }
     }

@@ -32,10 +32,10 @@ const props = withDefaults(defineProps<Props>(), {
   })
 })
 
-const stereoCardRef = ref<HTMLElement | null>(null)
-const cardWrapperRef = ref<HTMLElement | null>(null)
+const stereoCardRef = ref<HTMLElement>()
+const cardWrapperRef = ref<HTMLElement>()
 
-const contentDescriptionRef = ref<HTMLElement | null>(null)
+const contentDescriptionRef = ref<HTMLElement>()
 
 let myReq = 0
 
