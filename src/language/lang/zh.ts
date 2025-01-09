@@ -82,8 +82,39 @@ export const experiences: TimelineTurntableItem[] = [
         range: [0, 0.5],
       },
       {
-        title: '',
-        describe: '',
+        title: 'title2',
+        describe: `
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        `,
         range: [0.5, 1],
       },
     ],

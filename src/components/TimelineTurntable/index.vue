@@ -69,26 +69,25 @@ const currentAngleDataChildrenItem = computed(() => {
 
   const data = children?.find((item) => {
     const [min = 0, max = 0] = item.range || []
-    const difference = Math.abs(max - min)
-    const progress = (absRotateZ.value - min) / difference
-
-    return progress >= 0 && progress <= 100
+    return dateProgress.value >= min && dateProgress.value < max
   })
 
   return data || { title: '', describe: '', range: [0, 0] }
 })
 
-watch(
-  currentAngleDataChildrenItem,
-  (val) => {
-    val && nextTick(() => {
-      if (!turntableContentTextBoxRef.value) return
-      const { scrollHeight, clientHeight } = turntableContentTextBoxRef.value
-      turntableContentTextBoxRef.value.classList.toggle('gradation-bottom', (scrollHeight - clientHeight) > 5)
+const ResizeObserver = globalThis?.ResizeObserver
+const resizeObserver = ResizeObserver && new ResizeObserver(entries => {
+  for (const entry of entries) {
+    nextTick(() => {
+      overflowDetection(entry.target)
     })
-  },
-  { immediate: true }
-)
+  }
+})
+
+function overflowDetection(el: Element | HTMLElement) {
+  const { scrollHeight, clientHeight } = el
+  el.classList.toggle('gradation-bottom', (scrollHeight - clientHeight) > 5)
+}
 
 let myReq: number = 0
 let inertiaReq: number = 0
@@ -179,12 +178,14 @@ function applyInertia() {
 }
 
 onMounted(() => {
+  turntableContentTextBoxRef.value && resizeObserver?.observe(turntableContentTextBoxRef.value)
   globalThis.document.addEventListener('mousemove', onMousemove)
   timelineTurntableRef.value?.addEventListener('mousedown', onMousedown)
   globalThis.document.addEventListener('mouseup', onMouseup)
 })
 
 onUnmounted(() => {
+  resizeObserver?.disconnect()
   globalThis.document.removeEventListener('mousemove', onMousemove)
   timelineTurntableRef.value?.removeEventListener('mousedown', onMousedown)
   globalThis.document.removeEventListener('mouseup', onMouseup)
@@ -215,10 +216,12 @@ onUnmounted(() => {
         </div>
       </div>
       <div class="turntable-content-text-box" ref="turntableContentTextBoxRef">
-        <div class="turntable-content-text" :key="currentAngleDataChildrenItem.title">
-          <div class="turntable-content-text-title">{{ currentAngleDataChildrenItem.title }}</div>
-          <div class="turntable-content-text-describe" v-html="currentAngleDataChildrenItem.describe"></div>
-        </div>
+        <Transition name="fade" mode="out-in">
+          <div class="turntable-content-text" :key="JSON.stringify(currentAngleDataChildrenItem)">
+            <div class="turntable-content-text-title">{{ currentAngleDataChildrenItem.title }}</div>
+            <div class="turntable-content-text-describe" v-html="currentAngleDataChildrenItem.describe"></div>
+          </div>
+        </Transition>
       </div>
     </div>
   </div>

@@ -75,7 +75,7 @@ if(Array.isArray(cheatsKeys) && cheatsKeys.length) {
 </script>
 
 <template>
-  <Transition name="fade">
+  <Transition name="loading-fade">
     <div
       v-show="loading"
       class="container"
