@@ -5,7 +5,6 @@ import {
   computed,
   onMounted,
   onUnmounted,
-  watch,
   nextTick,
 } from 'vue'
 import Turntable from './Turntable.vue'
