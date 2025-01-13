@@ -15,6 +15,8 @@ import { skillList } from '@/config'
             :alt="item.name"
             class="section-skill-item-icon"
             loading="lazy"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
           >
           <component
             v-else

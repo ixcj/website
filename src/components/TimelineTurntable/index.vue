@@ -1,7 +1,17 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import Turntable from './Turntable.vue'
 import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
+import {
+  ref,
+  computed,
+  onMounted,
+  onUnmounted,
+  nextTick,
+} from 'vue'
+import Turntable from './Turntable.vue'
+import {
+  type TimelineTurntableTransformItem,
+  transformTimelineTurntableItem
+} from './transform'
 
 interface Props {
   data: TimelineTurntableItem[],
@@ -36,8 +46,9 @@ const rotateZ = ref(0)
 
 const absRotateZ = computed(() => Math.abs((rotateZ.value >= 0 ? 0 : 360) - (Math.abs(rotateZ.value) % 360)))
 
+const currentItem = computed<TimelineTurntableTransformItem[]>(() => transformTimelineTurntableItem(props.data))
 const currentAngleData = computed(() => {
-  return props.data.find(item => {
+  return currentItem.value.find(item => {
     const [min, max] = item.angleRange
     return absRotateZ.value >= min && absRotateZ.value < max
   })
@@ -49,6 +60,33 @@ const dateProgress = computed(() => {
 
   return progress
 })
+
+const turntableContentTextBoxRef = ref<HTMLElement>()
+
+const currentAngleDataChildrenItem = computed(() => {
+  const { children } = currentAngleData.value || {}
+
+  const data = children?.find((item) => {
+    const [min = 0, max = 0] = item.range || []
+    return dateProgress.value >= min && dateProgress.value < max
+  })
+
+  return data || { title: '', describe: '', range: [0, 0] }
+})
+
+const ResizeObserver = globalThis?.ResizeObserver
+const resizeObserver = ResizeObserver && new ResizeObserver(entries => {
+  for (const entry of entries) {
+    nextTick(() => {
+      overflowDetection(entry.target)
+    })
+  }
+})
+
+function overflowDetection(el: Element | HTMLElement) {
+  const { scrollHeight, clientHeight } = el
+  el.classList.toggle('gradation-bottom', (scrollHeight - clientHeight) > 5)
+}
 
 let myReq: number = 0
 let inertiaReq: number = 0
@@ -111,8 +149,8 @@ function onMousemove(e: MouseEvent) {
         oldPosition.x = clientX
         oldPosition.y = clientY
 
-        const rotateZValue = deltaThetaDegrees * scale + rotateZ.value
-        rotateZ.value = isNaN(rotateZValue) ? 0 : rotateZValue
+        const _rotateZ = Number(deltaThetaDegrees * scale + rotateZ.value)
+        rotateZ.value = isNaN(_rotateZ) ? 0 : _rotateZ
       }
     })
   }
@@ -139,12 +177,18 @@ function applyInertia() {
 }
 
 onMounted(() => {
+  turntableContentTextBoxRef.value && resizeObserver?.observe(turntableContentTextBoxRef.value)
   globalThis.document.addEventListener('mousemove', onMousemove)
   timelineTurntableRef.value?.addEventListener('mousedown', onMousedown)
   globalThis.document.addEventListener('mouseup', onMouseup)
 })
 
-onUnmounted(() => {})
+onUnmounted(() => {
+  resizeObserver?.disconnect()
+  globalThis.document.removeEventListener('mousemove', onMousemove)
+  timelineTurntableRef.value?.removeEventListener('mousedown', onMousedown)
+  globalThis.document.removeEventListener('mouseup', onMouseup)
+})
 </script>
 
 <template>
@@ -169,6 +213,14 @@ onUnmounted(() => {})
           <span>{{ currentAngleData?.date[0] }}</span>
           <span>{{ currentAngleData?.date[1] }}</span>
         </div>
+      </div>
+      <div class="turntable-content-text-box" ref="turntableContentTextBoxRef">
+        <Transition name="fade" mode="out-in">
+          <div class="turntable-content-text" :key="JSON.stringify(currentAngleDataChildrenItem)">
+            <div class="turntable-content-text-title">{{ currentAngleDataChildrenItem.title }}</div>
+            <div class="turntable-content-text-describe" v-html="currentAngleDataChildrenItem.describe"></div>
+          </div>
+        </Transition>
       </div>
     </div>
   </div>
@@ -221,6 +273,7 @@ onUnmounted(() => {})
     inset: 0;
     pointer-events: none;
     padding: 0 15%;
+    user-select: none;
 
     .turntable-content-date-box {
       font-size: 24px;
@@ -266,6 +319,37 @@ onUnmounted(() => {})
               transform: translateX(-50%);
             }
           }
+        }
+      }
+    }
+
+    .turntable-content-text-box {
+      margin-top: 20px;
+      text-align: center;
+      max-height: calc(100% - 210px);
+      overflow: hidden;
+
+      &.gradation-bottom {
+        overflow-y: auto;
+        mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
+        -webkit-mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
+        padding-bottom: 30px;
+        box-sizing: border-box;
+        pointer-events: all;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
+      .turntable-content-text {
+        .turntable-content-text-title {
+          font-size: 28px;
+          margin-bottom: 10px;
+        }
+
+        .turntable-content-text-describe {
+          font-size: 18px;
         }
       }
     }

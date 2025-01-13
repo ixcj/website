@@ -31,11 +31,18 @@
 
 .fade-enter-active,
 .fade-leave-active {
+  transition: var(--transition-duration, 0.25s) ease;
+}
+
+.loading-fade-enter-active,
+.loading-fade-leave-active {
   transition: 0.5s ease;
 }
 
 .fade-enter-from,
-.fade-leave-to {
+.fade-leave-to,
+.loading-fade-enter-from,
+.loading-fade-leave-to {
   opacity: 0;
 }
 

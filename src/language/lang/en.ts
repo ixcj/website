@@ -15,7 +15,7 @@ export const mottos = [
 export const projects: StereoCardItem[] = [
   {
     name: 'Personal Website',
-    icon: '/avatar.png',
+    logo: '/avatar.png',
     links: [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
     ],
@@ -26,7 +26,7 @@ export const projects: StereoCardItem[] = [
   },
   {
     name: 'caiji-music',
-    icon: 'https://music.xcj.im/img/icons/android-chrome-192x192.png',
+    logo: 'https://file.xcj.im/website/images/caiji-music-logo.png',
     links: [
       { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
       { href: 'https://music.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'Live Demo' },
@@ -38,7 +38,83 @@ export const projects: StereoCardItem[] = [
   },
 ]
 
-export const experiences: TimelineTurntableItem[] = []
+export const experiences: TimelineTurntableItem[] = [
+  {
+    date: [
+      { year: 2020, month: 7 },
+      { year: 2021, month: 12 }
+    ],
+    children: [
+      {
+        title: 'title',
+        describe: `
+        <div>describe</div>
+        <div>describe</div>
+        `,
+        range: [0, 0.5],
+      },
+      {
+        title: 'title2',
+        describe: `
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        `,
+        range: [0.5, 1],
+      },
+    ],
+  },
+  {
+    date: [
+      { year: 2022, month: 1 },
+      { year: 2022, month: 12 }
+    ],
+    children: [
+      {
+        title: 'title',
+        describe: `
+        <div>describe</div>
+        <div>describe</div>
+        `,
+        range: [0, 0.5],
+      },
+      {
+        title: 'title2',
+        describe: `
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        `,
+        range: [0.5, 1],
+      },
+    ],
+  },
+  {
+    date: [
+      { year: 2023, month: 5 }, 
+      'now'
+    ],
+    children: [
+      {
+        title: 'title',
+        describe: `
+        <div>describe</div>
+        <div>describe</div>
+        `,
+        range: [0, 0.5],
+      },
+      {
+        title: 'title2',
+        describe: `
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        `,
+        range: [0.5, 1],
+      },
+    ],
+  },
+]
 
 export default {
   lang: 'en-US',
