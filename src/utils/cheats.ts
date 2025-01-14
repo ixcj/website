@@ -35,7 +35,11 @@ type FlakeItem = {
   swingInc: number,
 }
 
+let isSnowingInit = false;
+
 function snowing() {
+  if (isSnowingInit) return;
+
   const numFlakes = 150;
   const flakes: FlakeItem[] = [];
   let width = window.innerWidth;
@@ -75,6 +79,7 @@ function snowing() {
       });
     }
     animate();
+    isSnowingInit = true;
   }
 
   // 重置雪花位置和属性
