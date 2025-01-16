@@ -74,6 +74,19 @@ const currentAngleDataChildrenItem = computed(() => {
   return data || { title: '', describe: '', range: [0, 0] }
 })
 
+const progressPartingLine = computed(() => {
+  const data: number[] = []
+  currentAngleData.value?.children.map(({ range }) => {
+    const [_, max = 1] = range || []
+
+    if (![0, 1].includes(max)) {
+      data.push(max)
+    }
+  })
+  
+  return data
+})
+
 const ResizeObserver = globalThis?.ResizeObserver
 const resizeObserver = ResizeObserver && new ResizeObserver(entries => {
   for (const entry of entries) {
@@ -212,6 +225,14 @@ onUnmounted(() => {
         <div class="turntable-content-date" :style="{ '--date-progress': dateProgress * 100 + '%' }">
           <span>{{ currentAngleData?.date[0] }}</span>
           <span>{{ currentAngleData?.date[1] }}</span>
+
+          <div v-if="progressPartingLine.length" class="turntable-content-date-parting-line">
+            <div
+              v-for="n in progressPartingLine"
+              class="turntable-content-date-parting-line-item"
+              :style="{ '--parting-line-left': n * 100 + '%' }"
+            ></div>
+          </div>
         </div>
       </div>
       <div class="turntable-content-text-box" ref="turntableContentTextBoxRef">
@@ -318,6 +339,25 @@ onUnmounted(() => {
               left: -25px;
               transform: translateX(-50%);
             }
+          }
+        }
+
+        .turntable-content-date-parting-line {
+          width: 100%;
+          height: 3px;
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          overflow: hidden;
+
+          .turntable-content-date-parting-line-item {
+            position: absolute;
+            height: 100%;
+            width: 2px;
+            transform: translateX(-1px);
+            border-radius: 2px;
+            background-color: red;
+            left: var(--parting-line-left, -999px);
           }
         }
       }
