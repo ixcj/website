@@ -111,24 +111,32 @@ let inertiaFrameTaskCompletionTime = 0
 
 const oldPosition: { x: number, y: number } = { x: 0, y: 0 }
 
-function onMousedown(e: MouseEvent) {
+function onMousedown(e: MouseEvent | TouchEvent) {
+  e.preventDefault()
+
   pressedDuration = new Date().getTime()
   inertia = 0
   
-  const { clientX, clientY } = e
+  const event = e.type === 'mousedown' ? (e as MouseEvent) : (e as TouchEvent).changedTouches[0]
+  const { clientX, clientY } = event
+
   oldPosition.x = clientX
   oldPosition.y = clientY
   isPressed.value = true
 }
 
-function onMouseup(e: MouseEvent) {
+function onMouseup(e: MouseEvent | TouchEvent) {
+  e.preventDefault()
+
   if (!isPressed.value) return
   
   isPressed.value = false
 
   if (props.enablingInertia) {
     pressedDuration = new Date().getTime() - pressedDuration
-    const { clientX, clientY } = e
+
+    const event = e.type === 'mouseup' ? (e as MouseEvent) : (e as TouchEvent).changedTouches[0]
+    const { clientX, clientY } = event
     
     const deltaX = clientX - oldPosition.x
     const deltaY = clientY - oldPosition.y
@@ -141,12 +149,16 @@ function onMouseup(e: MouseEvent) {
   }
 }
 
-function onMousemove(e: MouseEvent) {
+function onMousemove(e: MouseEvent | TouchEvent) {
+  e.preventDefault()
+
   cancelAnimationFrame(myReq)
   
   if (isPressed.value) {
     const { x, y } = oldPosition
-    const { clientX, clientY } = e
+
+    const event = e.type === 'mousemove' ? (e as MouseEvent) : (e as TouchEvent).changedTouches[0]
+    const { clientX, clientY } = event
     
     myReq = requestAnimationFrame(() => {
       if (timelineTurntableRef.value && timelineTurntableRotateBoxRef.value) {
@@ -191,16 +203,26 @@ function applyInertia() {
 
 onMounted(() => {
   turntableContentTextBoxRef.value && resizeObserver?.observe(turntableContentTextBoxRef.value)
+
   globalThis.document.addEventListener('mousemove', onMousemove)
   timelineTurntableRef.value?.addEventListener('mousedown', onMousedown)
   globalThis.document.addEventListener('mouseup', onMouseup)
+
+  globalThis.document.addEventListener('touchmove', onMousemove)
+  timelineTurntableRef.value?.addEventListener('touchstart', onMousedown)
+  globalThis.document.addEventListener('touchend', onMouseup)
 })
 
 onUnmounted(() => {
   resizeObserver?.disconnect()
+
   globalThis.document.removeEventListener('mousemove', onMousemove)
   timelineTurntableRef.value?.removeEventListener('mousedown', onMousedown)
   globalThis.document.removeEventListener('mouseup', onMouseup)
+
+  globalThis.document.removeEventListener('touchmove', onMousemove)
+  timelineTurntableRef.value?.removeEventListener('touchstart', onMousedown)
+  globalThis.document.removeEventListener('touchend', onMouseup)
 })
 </script>
 
