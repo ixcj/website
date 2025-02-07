@@ -36,6 +36,7 @@ type FlakeItem = {
 }
 
 let isSnowingInit = false;
+let myReq: number = 0;
 
 function snowing() {
   if (isSnowingInit) return;
@@ -99,6 +100,8 @@ function snowing() {
   // 动画效果
   function animate() {
     flakes.forEach(flake => {
+      cancelAnimationFrame(myReq);
+
       // 更新位置
       flake.y += parseFloat(String(flake.element.dataset.speed));
 
@@ -121,7 +124,7 @@ function snowing() {
       }
     });
 
-    requestAnimationFrame(animate);
+    myReq = requestAnimationFrame(animate);
   }
 
   // 调整窗口大小
