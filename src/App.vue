@@ -69,11 +69,13 @@ globalThis.onload = () => {
   })
 }
 
-useCheatCode(cheatsKeys, cheatsExecute)
+if(Array.isArray(cheatsKeys) && cheatsKeys.length) {
+  useCheatCode(cheatsKeys, cheatsExecute)
+}
 </script>
 
 <template>
-  <Transition name="fade">
+  <Transition name="loading-fade">
     <div
       v-show="loading"
       class="container"

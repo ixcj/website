@@ -15,7 +15,7 @@ export const mottos = [
 export const projects: StereoCardItem[] = [
   {
     name: '个人网站',
-    icon: '/avatar.png',
+    logo: '/avatar.png',
     links: [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
     ],
@@ -26,7 +26,7 @@ export const projects: StereoCardItem[] = [
   },
   {
     name: '菜鸡音乐',
-    icon: 'https://music.xcj.im/img/icons/android-chrome-192x192.png',
+    logo: 'https://file.xcj.im/website/images/caiji-music-logo.png',
     links: [
       { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
       { href: 'https://music.ixcj.cn', content: '_ARROW_UP_RIGHT_', title: '查看演示' },
@@ -40,35 +40,79 @@ export const projects: StereoCardItem[] = [
 
 export const experiences: TimelineTurntableItem[] = [
   {
-    date: ['2020年1月', '2021年12月'],
-    angleRange: [0, 90],
+    date: [
+      { year: 2020, month: 7 },
+      { year: 2021, month: 12 }
+    ],
     children: [
       {
-        title: 'title',
-        describe: 'describe',
+        title: '标题',
+        describe: `
+        <div>描述</div>
+        <div>描述</div>
+        `,
         range: [0, 0.5],
       },
       {
-        title: '',
-        describe: '',
+        title: '标题2',
+        describe: `
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        `,
         range: [0.5, 1],
       },
     ],
   },
   {
-    date: ['2021年1月', '2021年12月'],
-    angleRange: [90, 180],
-    children: [],
+    date: [
+      { year: 2022, month: 1 },
+      { year: 2022, month: 12 }
+    ],
+    children: [
+      {
+        title: '标题',
+        describe: `
+        <div>描述</div>
+        <div>描述</div>
+        `,
+        range: [0, 0.5],
+      },
+      {
+        title: '标题2',
+        describe: `
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        `,
+        range: [0.5, 1],
+      },
+    ],
   },
   {
-    date: ['2022年1月', '2022年12月'],
-    angleRange: [180, 270],
-    children: [],
-  },
-  {
-    date: ['2023年1月', '2023年12月'],
-    angleRange: [270, 360],
-    children: [],
+    date: [
+      { year: 2023, month: 5 }, 
+      'now'
+    ],
+    children: [
+      {
+        title: '标题',
+        describe: `
+        <div>描述</div>
+        <div>描述</div>
+        `,
+        range: [0, 0.5],
+      },
+      {
+        title: '标题2',
+        describe: `
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        `,
+        range: [0.5, 1],
+      },
+    ],
   },
 ]
 
