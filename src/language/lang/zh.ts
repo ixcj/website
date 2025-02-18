@@ -147,5 +147,5 @@ export default {
 
   experiences: encodeURIComponent(JSON.stringify(experiences)),
 
-  contributionCalendar: '贡献日历',
+  contributionCalendar: 'GitHub 贡献日历',
 }
