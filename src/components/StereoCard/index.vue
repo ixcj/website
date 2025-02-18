@@ -19,6 +19,11 @@ interface Props {
   bgSpeedX?: number,
   bgSpeedY?: number,
   iconMap?: Record<string, any>,
+  enableExternalData?: boolean,
+  externaData?: {
+    X: number,
+    Y: number,
+  },
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,7 +34,9 @@ const props = withDefaults(defineProps<Props>(), {
   iconMap: () => ({
     '_GITHUB_': Github,
     '_ARROW_UP_RIGHT_': ArrowUpRight,
-  })
+  }),
+  enableExternalData: false,
+  externaData: () => ({ X: 0, Y: 0 }),
 })
 
 const stereoCardRef = ref<HTMLElement>()
@@ -62,10 +69,12 @@ function onMousemove() {
   if (!stereoCardRef.value) return
 
   stereoCardRef.value.addEventListener('mousemove', (e) => {
+    if (props.enableExternalData) return
+
     const { top, left, width, height } = stereoCardRefParams
 
-    let X = (e.clientX - left) / width
-    let Y = (e.clientY - top) / height
+    const X = (e.clientX - left) / width
+    const Y = (e.clientY - top) / height
 
     setCardWrapperRefStyle({ X, Y })
   });
@@ -104,6 +113,17 @@ function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
   })
 }
 
+function loopSetCardWrapperRefStyle() {
+  if (!props.enableExternalData) return
+
+  requestAnimationFrame(() => {
+    const { X, Y } = props.externaData
+    setCardWrapperRefStyle({ X, Y })
+
+    if (props.enableExternalData) loopSetCardWrapperRefStyle()
+  })
+}
+
 function judgeDescriptionContentHeight() {
   if (!contentDescriptionRef.value) return
 
@@ -119,8 +139,13 @@ function getIconComponent(iconName: string) {
 onMounted(() => {
   stereoCardRef.value && resizeObserver?.observe(stereoCardRef.value)
   setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
-  stereoCardRef.value?.addEventListener('mousemove', onMousemove)
-  stereoCardRef.value?.addEventListener('mouseout', onMouseout)
+  if (props.enableExternalData) {
+    loopSetCardWrapperRefStyle()
+  } else {
+    stereoCardRef.value?.addEventListener('mousemove', onMousemove)
+    stereoCardRef.value?.addEventListener('mouseout', onMouseout)
+  }
+  
   globalThis.addEventListener('resize', setStereoCardRefParams)
   globalThis.addEventListener('scroll', setStereoCardRefParams)
 })
