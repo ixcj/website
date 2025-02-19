@@ -2,6 +2,23 @@
 
 基于 Vue3 开发的个人作品和专业技能的数字名片网站。
 
+## 技术栈
+
+- 🚀 [Vue 3](https://vuejs.org/) - 渐进式 JavaScript 框架
+- 🛠️ [TypeScript](https://www.typescriptlang.org/) - JavaScript 的超集
+- 📦 [Vite](https://vitejs.dev/) - 下一代前端构建工具
+- 🎨 [Sass](https://sass-lang.com/) - CSS 预处理器
+- 🌐 [Vue I18n](https://vue-i18n.intlify.dev/) - Vue.js 的国际化插件
+- 📅 [GitHub Calendar](https://github.com/Bloggify/github-calendar) - GitHub 贡献日历组件
+- 🎯 [@vueuse/core](https://vueuse.org/) - Vue Composition API 工具集
+
+## 在线预览
+
+- 演示地址：[https://new.xcj.im](https://new.xcj.im)
+- 预览截图：
+
+![Preview](https://file.xcj.im/website/images/preview.png)
+
 ## 功能&特性
 
 - [x] I18N
@@ -12,18 +29,38 @@
   - [x] 立体镭射卡片兼容移动端陀螺仪
 - [x] 时间轴转盘
 
-## 预览
+## 快速开始
 
-![Preview](https://file.xcj.im/website/images/preview.png)
+### 环境要求
 
-## 使用
+- Node.js >= 16
+- pnpm >= 8
+
+### 安装依赖
 
 ```bash
 pnpm i
+```
+
+### 开发环境
+
+```bash
 pnpm dev
 ```
 
-## 配置说明
+### 生产构建
+
+```bash
+pnpm build
+```
+
+### 预览构建结果
+
+```bash
+pnpm preview
+```
+
+## 项目配置
 
 配置类 -> `src/config/index.ts`
   - **sectionList**: 需要显示的板块
@@ -41,7 +78,15 @@ pnpm dev
   - **SectionTitle**: 板块 Title
   - **contributionCalendar**: GitHub 贡献日历显示名称
 
-## Star 曲线
+## 开发指南
+
+1. Fork 项目到自己的仓库
+2. 克隆项目到本地
+3. 创建新的功能分支
+4. 提交代码并推送到远程仓库
+5. 创建 Pull Request
+
+## Star 趋势
 
 ![Star History Chart](https://starchart.cc/ixcj/website.svg)
 
