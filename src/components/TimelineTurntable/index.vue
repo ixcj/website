@@ -126,8 +126,6 @@ function onMousedown(e: MouseEvent | TouchEvent) {
 }
 
 function onMouseup(e: MouseEvent | TouchEvent) {
-  e.preventDefault()
-
   if (!isPressed.value) return
   
   isPressed.value = false
@@ -150,8 +148,6 @@ function onMouseup(e: MouseEvent | TouchEvent) {
 }
 
 function onMousemove(e: MouseEvent | TouchEvent) {
-  e.preventDefault()
-
   cancelAnimationFrame(myReq)
   
   if (isPressed.value) {
