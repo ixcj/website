@@ -16,6 +16,13 @@
 
 ![Preview](https://file.xcj.im/website/images/preview.png)
 
+## 使用
+
+```bash
+pnpm i
+pnpm dev
+```
+
 ## 配置说明
 
 配置类 -> `src/config/index.ts`
