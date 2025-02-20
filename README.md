@@ -21,7 +21,7 @@
 
 ## 功能&特性
 
-- [x] I18N
+- [x] I18n
 - [x] 主题切换
 - [x] 打字机效果
 - [x] GitHub 贡献日历
@@ -77,14 +77,6 @@ pnpm preview
   - **SectionText**: Header 中显示的板块名称
   - **SectionTitle**: 板块 Title
   - **contributionCalendar**: GitHub 贡献日历显示名称
-
-## 开发指南
-
-1. Fork 项目到自己的仓库
-2. 克隆项目到本地
-3. 创建新的功能分支
-4. 提交代码并推送到远程仓库
-5. 创建 Pull Request
 
 ## Star 趋势
 
