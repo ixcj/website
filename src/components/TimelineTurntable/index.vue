@@ -163,10 +163,10 @@ function onMousemove(e: MouseEvent | TouchEvent) {
         const scale = clientWidth / (rotateBoxClientWidth * (1 - Math.min(props.slidingSpeed, 0.9999)))
         
         const theta = Math.atan2(y, x)
-        const mouseTheta = Math.atan2(clientY, clientX)
-
+        const mouseTheta = Math.atan2(y, clientX)
         const deltaTheta = mouseTheta - theta
         const deltaThetaDegrees = deltaTheta * (180 / Math.PI)
+
         oldPosition.x = clientX
         oldPosition.y = clientY
 
