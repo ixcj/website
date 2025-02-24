@@ -112,8 +112,6 @@ let inertiaFrameTaskCompletionTime = 0
 const oldPosition: { x: number, y: number } = { x: 0, y: 0 }
 
 function onMousedown(e: MouseEvent | TouchEvent) {
-  e.preventDefault()
-
   pressedDuration = new Date().getTime()
   inertia = 0
   
@@ -273,6 +271,7 @@ onUnmounted(() => {
   position: relative;
   overflow: hidden;
   cursor: grab;
+  touch-action: pan-y;
   -webkit-mask-image: linear-gradient(90deg, transparent 5%, #000 15%, #000 85%, transparent 95%);
   mask-image: linear-gradient(90deg, transparent 5%, #000 15%, #000 85%, transparent 95%);
 
