@@ -51,16 +51,7 @@ export const experiences: TimelineTurntableItem[] = [
         <div>描述</div>
         <div>描述</div>
         `,
-        range: [0, 0.5],
-      },
-      {
-        title: '标题2',
-        describe: `
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },
@@ -76,16 +67,7 @@ export const experiences: TimelineTurntableItem[] = [
         <div>描述</div>
         <div>描述</div>
         `,
-        range: [0, 0.5],
-      },
-      {
-        title: '标题2',
-        describe: `
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },
@@ -101,16 +83,7 @@ export const experiences: TimelineTurntableItem[] = [
         <div>描述</div>
         <div>描述</div>
         `,
-        range: [0, 0.5],
-      },
-      {
-        title: '标题2',
-        describe: `
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },

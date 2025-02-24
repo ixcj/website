@@ -51,16 +51,7 @@ export const experiences: TimelineTurntableItem[] = [
         <div>describe</div>
         <div>describe</div>
         `,
-        range: [0, 0.5],
-      },
-      {
-        title: 'title2',
-        describe: `
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },
@@ -76,16 +67,7 @@ export const experiences: TimelineTurntableItem[] = [
         <div>describe</div>
         <div>describe</div>
         `,
-        range: [0, 0.5],
-      },
-      {
-        title: 'title2',
-        describe: `
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },
@@ -101,16 +83,7 @@ export const experiences: TimelineTurntableItem[] = [
         <div>describe</div>
         <div>describe</div>
         `,
-        range: [0, 0.5],
-      },
-      {
-        title: 'title2',
-        describe: `
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },
