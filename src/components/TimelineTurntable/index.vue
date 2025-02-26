@@ -132,12 +132,11 @@ function onMouseup(e: MouseEvent | TouchEvent) {
     pressedDuration = new Date().getTime() - pressedDuration
 
     const event = e.type === 'mouseup' ? (e as MouseEvent) : (e as TouchEvent).changedTouches[0]
-    const { clientX, clientY } = event
+    const { clientX } = event
     
     const deltaX = clientX - oldPosition.x
-    const deltaY = clientY - oldPosition.y
     
-    inertia = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * pressedDuration / 1000
+    inertia = Math.sqrt(deltaX * deltaX) * pressedDuration / 1000
     inertiaDirection = deltaX > 0 ? -1 : 1
     
     inertiaFrameTaskCompletionTime = new Date().getTime()
