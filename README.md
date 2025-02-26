@@ -80,7 +80,7 @@ pnpm preview
 
 ## Star 趋势
 
-![Star History Chart](https://starchart.cc/ixcj/website.svg)
+[![Stargazers over time](https://starchart.cc/ixcj/website.svg?background=%23FFFFFF&axis=%23333333&line=%236b63ff)](https://starchart.cc/ixcj/website)
 
 ## 许可证
 
