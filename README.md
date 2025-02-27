@@ -78,10 +78,6 @@ pnpm preview
   - **SectionTitle**: 板块 Title
   - **contributionCalendar**: GitHub 贡献日历显示名称
 
-## Star 趋势
-
-[![Stargazers over time](https://starchart.cc/ixcj/website.svg?background=%23FFFFFF&axis=%23333333&line=%236b63ff)](https://starchart.cc/ixcj/website)
-
 ## 许可证
 
 [MIT](https://github.com/ixcj/website/blob/main/LICENSE) © 2024-PRESENT [XCJ](https://github.com/ixcj)
