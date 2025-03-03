@@ -18,15 +18,14 @@ const projects = computed(() => {
 })
 
 const { beta, gamma, ready, activate } = useGyroscope(false)
+watchEffect(() => {
+  activate.value = touch.value && ready.value
+})
 
 let initialBeta = 0
 let initialGamma = 0
 
 const stereoCardData = ref({ X: 0, Y: 0 })
-
-if (touch && ready) {
-  activate.value = true
-}
 
 function setXY() {
   if (!initialBeta) initialBeta = beta.value

@@ -53,7 +53,7 @@ export function useGyroscope(enable: boolean = true) {
 
   onUnmounted(() => {
     globalThis?.removeEventListener('deviceorientation', handleOrientation)
-    unwatch()
+    unwatch?.()
   })
 
   return {
