@@ -6,6 +6,7 @@ import type {
 
 export interface TimelineTurntableTransformItem {
   date: [string, string]
+  title?: string
   angleRange: [number, number]
   children: TimelineTurntableItemChildren[]
 }
@@ -30,7 +31,8 @@ export function transformTimelineTurntableItem(data: TimelineTurntableItem[]): T
     return {
       date: [getDateString(start), getDateString(end)],
       angleRange,
-      children: item.children,
+      title: item.title,
+      children: item?.children || [0, 1],
     }
   })
   return result

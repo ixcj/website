@@ -4,12 +4,13 @@ export type dateData = {
 } | 'now'
 
 export type TimelineTurntableItemChildren = {
-  title: string
+  title?: string
   describe: string
-  range: [number, number]
+  range?: [number, number]
 }
 
 export interface TimelineTurntableItem {
   date: [dateData, dateData]
+  title?: string
   children: TimelineTurntableItemChildren[]
 }

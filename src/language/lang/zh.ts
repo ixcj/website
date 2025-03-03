@@ -44,14 +44,42 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2020, month: 7 },
       { year: 2021, month: 12 }
     ],
+    title: '大标题',
     children: [
       {
-        title: '标题',
+        title: '小标题',
         describe: `
         <div>描述</div>
         <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
         `,
-        range: [0, 1],
+        range: [0, 0.5],
+      },
+      {
+        title: '小标题2',
+        describe: `
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        `,
+        range: [0.5, 1],
       },
     ],
   },
@@ -60,10 +88,15 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2022, month: 1 },
       { year: 2022, month: 12 }
     ],
+    title: '大标题2',
     children: [
       {
-        title: '标题',
+        title: '小标题',
         describe: `
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
+        <div>描述</div>
         <div>描述</div>
         <div>描述</div>
         `,
@@ -76,9 +109,10 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2023, month: 5 }, 
       'now'
     ],
+    title: '大标题23',
     children: [
       {
-        title: '标题',
+        title: '小标题',
         describe: `
         <div>描述</div>
         <div>描述</div>

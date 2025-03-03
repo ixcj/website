@@ -250,11 +250,12 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
+      <p class="turntable-content-title" v-if="currentAngleData?.title" @touchmove.stop @touchstart.stop>{{ currentAngleData?.title }}</p>
       <div class="turntable-content-text-box" ref="turntableContentTextBoxRef">
         <Transition name="fade" mode="out-in">
-          <div class="turntable-content-text" :key="JSON.stringify(currentAngleDataChildrenItem)">
-            <div class="turntable-content-text-title">{{ currentAngleDataChildrenItem.title }}</div>
-            <div class="turntable-content-text-describe" v-html="currentAngleDataChildrenItem.describe"></div>
+          <div class="turntable-content-text" :key="JSON.stringify(currentAngleDataChildrenItem)" @touchmove.stop @touchstart.stop>
+            <div v-if="currentAngleDataChildrenItem.title" class="turntable-content-text-title">{{ currentAngleDataChildrenItem.title }}</div>
+            <div v-if="currentAngleDataChildrenItem.describe" class="turntable-content-text-describe" v-html="currentAngleDataChildrenItem.describe"></div>
           </div>
         </Transition>
       </div>
@@ -379,11 +380,19 @@ onUnmounted(() => {
       }
     }
 
-    .turntable-content-text-box {
-      margin-top: 20px;
+    .turntable-content-title {
+      margin-top: 15px;
       text-align: center;
-      max-height: calc(100% - 210px);
+      font-size: 28px;
+      pointer-events: all;
+    }
+
+    .turntable-content-text-box {
+      margin-top: 10px;
+      text-align: center;
+      max-height: calc(100% - 240px);
       overflow: hidden;
+      pointer-events: all;
 
       &.gradation-bottom {
         overflow-y: auto;
@@ -391,7 +400,6 @@ onUnmounted(() => {
         -webkit-mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
         padding-bottom: 30px;
         box-sizing: border-box;
-        pointer-events: all;
 
         &::-webkit-scrollbar {
           display: none;
@@ -400,7 +408,7 @@ onUnmounted(() => {
 
       .turntable-content-text {
         .turntable-content-text-title {
-          font-size: 28px;
+          font-size: 24px;
           margin-bottom: 10px;
         }
 
