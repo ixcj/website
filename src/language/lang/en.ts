@@ -44,18 +44,37 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2020, month: 7 },
       { year: 2021, month: 12 }
     ],
+    title: 'main title',
     children: [
       {
-        title: 'title',
+        title: 'subtitle',
         describe: `
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
         <div>describe</div>
         <div>describe</div>
         `,
         range: [0, 0.5],
       },
       {
-        title: 'title2',
+        title: 'subtitle2',
         describe: `
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
         <div>describe</div>
         <div>describe</div>
         <div>describe</div>
@@ -69,23 +88,19 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2022, month: 1 },
       { year: 2022, month: 12 }
     ],
+    title: 'main title',
     children: [
       {
-        title: 'title',
-        describe: `
-        <div>describe</div>
-        <div>describe</div>
-        `,
-        range: [0, 0.5],
-      },
-      {
-        title: 'title2',
+        title: 'subtitle',
         describe: `
         <div>describe</div>
         <div>describe</div>
         <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
+        <div>describe</div>
         `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },
@@ -94,23 +109,15 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2023, month: 5 }, 
       'now'
     ],
+    title: 'main title',
     children: [
       {
-        title: 'title',
+        title: 'subtitle',
         describe: `
         <div>describe</div>
         <div>describe</div>
         `,
-        range: [0, 0.5],
-      },
-      {
-        title: 'title2',
-        describe: `
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },
@@ -147,5 +154,5 @@ export default {
 
   experiences: encodeURIComponent(JSON.stringify(experiences)),
 
-  contributionCalendar: 'Contribution calendar',
+  contributionCalendar: 'GitHub Contribution calendar',
 }

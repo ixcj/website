@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, watchEffect, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StereoCard from '@/components/StereoCard/index.vue'
+import { touch } from '@/utils/screen'
+import { useGyroscope } from '@/hooks/useGyroscope'
 
 const { t } = useI18n()
 
@@ -14,6 +16,46 @@ const projects = computed(() => {
     return []
   }
 })
+
+const { beta, gamma, ready, activate } = useGyroscope(false)
+watchEffect(() => {
+  activate.value = touch.value && ready.value
+})
+
+let initialBeta = 0
+let initialGamma = 0
+
+const stereoCardData = ref({ X: 0, Y: 0 })
+
+function setXY() {
+  if (!initialBeta) initialBeta = beta.value
+  if (!initialGamma) initialGamma = gamma.value
+
+  requestAnimationFrame(() => {
+    const { xPercentage, yPercentage } = calculatePerspective(beta.value, gamma.value)
+
+    stereoCardData.value.X = xPercentage
+    stereoCardData.value.Y = yPercentage
+
+    activate.value && setXY()
+  })
+}
+
+function calculatePerspective(beta = 0, gamma = 0) {
+  // 返回透视的 X 和 Y 百分比
+  return {
+    xPercentage: Math.sin((gamma - initialGamma) * Math.PI / 180) + 0.5,
+    yPercentage: Math.sin((beta - initialBeta) * Math.PI / 180) + 0.5,
+  };
+}
+
+onMounted(() => {
+  watchEffect(() => {
+    if (activate.value) {
+      setXY()
+    }
+  })
+})
 </script>
 
 <template>
@@ -25,7 +67,7 @@ const projects = computed(() => {
         v-for="item in projects"
         class="project-item"
       >
-        <StereoCard :data="item" />
+        <StereoCard :data="item" :enableExternalData="touch && ready" :externaData="stereoCardData" />
       </div>
     </div>
   </div>

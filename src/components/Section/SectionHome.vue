@@ -95,7 +95,7 @@ onMounted(() => {
     </div>
 
     <template v-if="githubContributionUser">
-      <p class="calendar-title">GitHub {{ $t('contributionCalendar') }}</p>
+      <p class="calendar-title">{{ $t('contributionCalendar') }}</p>
       <div
         class="calendar-container hide-page-cursor"
         ref="githubContributionCalendarContainer"

@@ -112,8 +112,6 @@ let inertiaFrameTaskCompletionTime = 0
 const oldPosition: { x: number, y: number } = { x: 0, y: 0 }
 
 function onMousedown(e: MouseEvent | TouchEvent) {
-  e.preventDefault()
-
   pressedDuration = new Date().getTime()
   inertia = 0
   
@@ -126,8 +124,6 @@ function onMousedown(e: MouseEvent | TouchEvent) {
 }
 
 function onMouseup(e: MouseEvent | TouchEvent) {
-  e.preventDefault()
-
   if (!isPressed.value) return
   
   isPressed.value = false
@@ -136,12 +132,11 @@ function onMouseup(e: MouseEvent | TouchEvent) {
     pressedDuration = new Date().getTime() - pressedDuration
 
     const event = e.type === 'mouseup' ? (e as MouseEvent) : (e as TouchEvent).changedTouches[0]
-    const { clientX, clientY } = event
+    const { clientX } = event
     
     const deltaX = clientX - oldPosition.x
-    const deltaY = clientY - oldPosition.y
     
-    inertia = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * pressedDuration / 1000
+    inertia = Math.sqrt(deltaX * deltaX) * pressedDuration / 1000
     inertiaDirection = deltaX > 0 ? -1 : 1
     
     inertiaFrameTaskCompletionTime = new Date().getTime()
@@ -150,8 +145,6 @@ function onMouseup(e: MouseEvent | TouchEvent) {
 }
 
 function onMousemove(e: MouseEvent | TouchEvent) {
-  e.preventDefault()
-
   cancelAnimationFrame(myReq)
   
   if (isPressed.value) {
@@ -167,10 +160,10 @@ function onMousemove(e: MouseEvent | TouchEvent) {
         const scale = clientWidth / (rotateBoxClientWidth * (1 - Math.min(props.slidingSpeed, 0.9999)))
         
         const theta = Math.atan2(y, x)
-        const mouseTheta = Math.atan2(clientY, clientX)
-
+        const mouseTheta = Math.atan2(y, clientX)
         const deltaTheta = mouseTheta - theta
         const deltaThetaDegrees = deltaTheta * (180 / Math.PI)
+
         oldPosition.x = clientX
         oldPosition.y = clientY
 
@@ -257,11 +250,12 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
+      <p class="turntable-content-title" v-if="currentAngleData?.title" @touchmove.stop @touchstart.stop>{{ currentAngleData?.title }}</p>
       <div class="turntable-content-text-box" ref="turntableContentTextBoxRef">
         <Transition name="fade" mode="out-in">
-          <div class="turntable-content-text" :key="JSON.stringify(currentAngleDataChildrenItem)">
-            <div class="turntable-content-text-title">{{ currentAngleDataChildrenItem.title }}</div>
-            <div class="turntable-content-text-describe" v-html="currentAngleDataChildrenItem.describe"></div>
+          <div class="turntable-content-text" :key="JSON.stringify(currentAngleDataChildrenItem)" @touchmove.stop @touchstart.stop>
+            <div v-if="currentAngleDataChildrenItem.title" class="turntable-content-text-title">{{ currentAngleDataChildrenItem.title }}</div>
+            <div v-if="currentAngleDataChildrenItem.describe" class="turntable-content-text-describe" v-html="currentAngleDataChildrenItem.describe"></div>
           </div>
         </Transition>
       </div>
@@ -277,6 +271,7 @@ onUnmounted(() => {
   position: relative;
   overflow: hidden;
   cursor: grab;
+  touch-action: pan-y;
   -webkit-mask-image: linear-gradient(90deg, transparent 5%, #000 15%, #000 85%, transparent 95%);
   mask-image: linear-gradient(90deg, transparent 5%, #000 15%, #000 85%, transparent 95%);
 
@@ -385,11 +380,19 @@ onUnmounted(() => {
       }
     }
 
-    .turntable-content-text-box {
-      margin-top: 20px;
+    .turntable-content-title {
+      margin-top: 15px;
       text-align: center;
-      max-height: calc(100% - 210px);
+      font-size: 28px;
+      pointer-events: all;
+    }
+
+    .turntable-content-text-box {
+      margin-top: 10px;
+      text-align: center;
+      max-height: calc(100% - 240px);
       overflow: hidden;
+      pointer-events: all;
 
       &.gradation-bottom {
         overflow-y: auto;
@@ -397,7 +400,6 @@ onUnmounted(() => {
         -webkit-mask-image: linear-gradient(180deg, #000, #000 calc(100% - 50px), transparent);
         padding-bottom: 30px;
         box-sizing: border-box;
-        pointer-events: all;
 
         &::-webkit-scrollbar {
           display: none;
@@ -406,7 +408,7 @@ onUnmounted(() => {
 
       .turntable-content-text {
         .turntable-content-text-title {
-          font-size: 28px;
+          font-size: 24px;
           margin-bottom: 10px;
         }
 
