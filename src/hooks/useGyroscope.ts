@@ -17,7 +17,7 @@ export function useGyroscope(enable: boolean = true) {
 
   if (globalThis?.DeviceOrientationEvent) {
     if (typeof (globalThis?.DeviceOrientationEvent as any)?.requestPermission === 'function') {
-      (globalThis?.DeviceOrientationEvent as any).requestPermission()
+      (globalThis!.DeviceOrientationEvent as any).requestPermission()
         .then((permission: 'granted' | Omit<any, 'granted'>) => {
           alert(permission)
           if (permission === 'granted') {
