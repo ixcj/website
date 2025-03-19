@@ -22,6 +22,7 @@ export const projects: StereoCardItem[] = [
     description: `这个网站是我展示个人作品和专业技能的数字名片，旨在为访客提供一个全面的了解我的平台。`,
     tags: [
       { content: '积极开发中', type: 'success' },
+      { content: '当前浏览的页面', type: 'warning' },
     ],
   },
   {
