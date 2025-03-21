@@ -12,6 +12,13 @@ export const mottos = [
   'In fact, The more people go up the height like trees, The more its roots will reach the dark ground.',
 ]
 
+export const introduce = [
+  `<p>Hi, I’m <a href="https://blog.xcj.pw/about" target="_blank" class="page-link hide-page-cursor">XCJ</a>！I am a front-end engineer skilled in using Vue.js and Three.js, as well as other modern JavaScript tools, to create amazing web pages and applications.</p>`,
+  `<p>In my work, I always strive to perfectly blend the elegance of code with the complexity of functionality, with a special focus on harmonizing visual effects and user experience.</p>`,
+  `<p>On my <a href="https://blog.xcj.pw" target="_blank" class="page-link hide-page-cursor">Blog</a>, I share my technical insights and professional experiences. If you're interested in front-end development, or just looking to see what's new, you might find something of interest there.</p>`,
+  `<p>If you'd like to learn more about me, feel free to visit my <a href="https://github.com/ixcj" target="_blank" class="page-link hide-page-cursor">GitHub</a> or check out my portfolio of <a href="https://demo.xcj.pw" target="_blank" class="page-link hide-page-cursor">Projects</a>.</p>`,
+].join('\n')
+
 export const projects: StereoCardItem[] = [
   {
     name: 'Personal Website',
@@ -150,6 +157,8 @@ export default {
     project: 'My Projects',
     experience: 'My Experiences',
   },
+
+  introduce: encodeURIComponent(JSON.stringify(introduce)),
 
   projects: encodeURIComponent(JSON.stringify(projects)),
 
