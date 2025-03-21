@@ -168,6 +168,7 @@ onUnmounted(() => {
             class="card-image"
             :src="data?.backgroundImage || defaultBackground"
             alt=""
+            loading="eager"
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
           />
@@ -181,6 +182,7 @@ onUnmounted(() => {
             :src="data.logo"
             class="content-logo"
             alt=""
+            loading="eager"
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
           />

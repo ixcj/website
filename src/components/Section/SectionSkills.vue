@@ -14,7 +14,7 @@ import { skillList } from '@/config'
             :src="item.icon"
             :alt="item.name"
             class="section-skill-item-icon"
-            loading="lazy"
+            loading="eager"
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
           >
