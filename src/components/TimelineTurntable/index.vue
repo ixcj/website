@@ -10,7 +10,9 @@ import {
 import Turntable from './Turntable.vue'
 import {
   type TimelineTurntableTransformItem,
-  transformTimelineTurntableItem
+  transformTimelineTurntableItem,
+  getDateString,
+  distinguishDateData,
 } from './transform'
 
 interface Props {
@@ -228,10 +230,6 @@ onUnmounted(() => {
     <div class="turntable-box">
       <div class="turntable-rotate-box" ref="timelineTurntableRotateBoxRef">
         <Turntable class="turntable-image" />
-
-        <div class="turntable-rotate-content-box">
-        
-        </div>
       </div>
     </div>
 
@@ -259,6 +257,26 @@ onUnmounted(() => {
           </div>
         </Transition>
       </div>
+    </div>
+
+    <div class="seo-data-box">
+      <template v-for="item in data.slice(1)">
+        <div class="turntable-content-box">
+          <div class="turntable-content-date-box">
+            <div class="turntable-content-date">
+              <span>{{ getDateString(distinguishDateData(item.date[0])) }}</span>
+              <span>{{ getDateString(distinguishDateData(item.date[1])) }}</span>
+            </div>
+          </div>
+          <p class="turntable-content-title" v-if="item?.title" @touchmove.stop @touchstart.stop>{{ item.title }}</p>
+          <div class="turntable-content-text-box" v-for="childrenItem in item.children">
+            <div class="turntable-content-text" :key="JSON.stringify(childrenItem)" @touchmove.stop @touchstart.stop>
+              <div v-if="childrenItem.title" class="turntable-content-text-title">{{ childrenItem.title }}</div>
+              <div v-if="childrenItem.describe" class="turntable-content-text-describe" v-html="childrenItem.describe"></div>
+            </div>
+          </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -417,6 +435,13 @@ onUnmounted(() => {
         }
       }
     }
+  }
+
+  .seo-data-box {
+    position: absolute;
+    z-index: -999;
+    opacity: 0;
+    pointer-events: all;
   }
 }
 </style>
