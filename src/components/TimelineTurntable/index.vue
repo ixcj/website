@@ -14,6 +14,7 @@ import {
   getDateString,
   distinguishDateData,
 } from './transform'
+import { ArrowLeft, ArrowRight } from '@vicons/fa'
 
 interface Props {
   data: TimelineTurntableItem[],
@@ -40,6 +41,8 @@ const props = withDefaults(defineProps<Props>(), {
   frameInterval: 16.6666667,
 })
 
+const seoData = computed(() => props.data.slice(1))
+
 const timelineTurntableRef = ref<HTMLElement | null>(null)
 const timelineTurntableRotateBoxRef = ref<HTMLElement | null>(null)
 
@@ -48,13 +51,14 @@ const rotateZ = ref(0)
 
 const absRotateZ = computed(() => Math.abs((rotateZ.value >= 0 ? 0 : 360) - (Math.abs(rotateZ.value) % 360)))
 
-const currentItem = computed<TimelineTurntableTransformItem[]>(() => transformTimelineTurntableItem(props.data))
-const currentAngleData = computed(() => {
-  return currentItem.value.find(item => {
+const transformData = computed<TimelineTurntableTransformItem[]>(() => transformTimelineTurntableItem(props.data))
+const currentAngleIndex = computed(() => {
+  return transformData.value.findIndex(item => {
     const [min, max] = item.angleRange
     return absRotateZ.value >= min && absRotateZ.value < max
   })
 })
+const currentAngleData = computed(() => transformData.value[currentAngleIndex.value])
 
 const dateProgress = computed(() => {
   const [min = 0, max = 0] = currentAngleData.value?.angleRange || []
@@ -196,6 +200,20 @@ function applyInertia() {
   }
 }
 
+function handleRotate(directional: 'left' | 'right') {
+  const len = transformData.value.length
+  if (len === 0) return
+
+  let index = currentAngleIndex.value
+  if (directional === 'left') {
+    index = (index - 1 + len) % len
+  } else {
+    index = (index + 1) % len
+  }
+
+  rotateZ.value = transformData.value[index].angleRange[0]
+}
+
 onMounted(() => {
   turntableContentTextBoxRef.value && resizeObserver?.observe(turntableContentTextBoxRef.value)
 
@@ -235,6 +253,10 @@ onUnmounted(() => {
 
     <div class="turntable-content-box">
       <div class="turntable-content-date-box">
+        <div v-if="data.length > 1" class="arrow" @click="handleRotate('left')">
+          <ArrowLeft />
+        </div>
+
         <div class="turntable-content-date" :style="{ '--date-progress': dateProgress * 100 + '%' }">
           <span>{{ currentAngleData?.date[0] }}</span>
           <span>{{ currentAngleData?.date[1] }}</span>
@@ -246,6 +268,10 @@ onUnmounted(() => {
               :style="{ '--parting-line-left': n * 100 + '%' }"
             ></div>
           </div>
+        </div>
+
+        <div v-if="data.length > 1" class="arrow" @click="handleRotate('right')">
+          <ArrowRight />
         </div>
       </div>
       <p class="turntable-content-title" v-if="currentAngleData?.title" @touchmove.stop @touchstart.stop>{{ currentAngleData?.title }}</p>
@@ -259,8 +285,8 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div class="seo-data-box">
-      <template v-for="item in data.slice(1)">
+    <div class="seo-data-box" v-if="seoData.length">
+      <template v-for="item in seoData">
         <div class="turntable-content-box">
           <div class="turntable-content-date-box">
             <div class="turntable-content-date">
@@ -328,18 +354,41 @@ onUnmounted(() => {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    padding: 0 15%;
     user-select: none;
 
     .turntable-content-date-box {
       font-size: 24px;
       display: flex;
       justify-content: center;
+      align-items: center;
+      gap: 20px;
+
+      .xs &  {
+        gap: 10px;
+      }
+
+      .arrow {
+        width: 24px;
+        display: flex;
+        pointer-events: all;
+        cursor: pointer;
+        position: relative;
+
+        .xs &  {
+          width: 18px;
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          inset: -10px;
+        }
+      }
 
       .turntable-content-date {
         display: flex;
         justify-content: center;
-        gap: 50px;
+        gap: 30px;
         padding-bottom: 10px;
         position: relative;
 
@@ -366,12 +415,13 @@ onUnmounted(() => {
 
         span {
           position: relative;
+          white-space: nowrap;
 
           &:last-of-type {
             &::before {
               content: '-';
               position: absolute;
-              left: -25px;
+              left: -15px;
               transform: translateX(-50%);
             }
           }
