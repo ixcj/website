@@ -235,7 +235,8 @@ h2.f4.text-normal.mb-3 {
   float: left;
 }
 
-#user-activity-overview {
+#user-activity-overview,
+.color-bg-accent-emphasis.color-fg-on-emphasis.show-on-focus {
   display: none;
 }
 

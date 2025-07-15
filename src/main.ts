@@ -2,6 +2,7 @@ import { ViteSSG } from 'vite-ssg/single-page'
 import App from './App.vue'
 import i18n from '@/language/index.ts'
 import { outputInfo } from '@/utils/cheats'
+import 'default-passive-events'
 import './style.scss'
 
 outputInfo()

@@ -12,6 +12,13 @@ export const mottos = [
   '其实人跟树一样，越是往高处走，它的根就越要伸向黑暗的地底。',
 ]
 
+export const introduce = [
+  `<p>嗨，我是 <a href="https://blog.xcj.pw/about" target="_blank" class="page-link hide-page-cursor">XCJ</a>！我是一名前端工程师，擅长使用 Vue.js 和 Three.js 以及其他现代 JavaScript 工具来构建酷炫的网页和应用。</p>`,
+  `<p>在我的工作中，我总是在寻找将代码的优雅和功能的复杂性完美结合的方法，尤其注重视觉效果与用户体验的和谐。</p>`,
+  `<p>在我的<a href="https://blog.xcj.pw" target="_blank" class="page-link hide-page-cursor">个人博客</a>上，我会把我的一些技术心得和职业经历分享给大家。如果你对前端开发感兴趣，或者只是想看看有什么新鲜事，这里可能会有你想要的东西。</p>`,
+  `<p>如果您想进一步了解我，欢迎访问我的 <a href="https://github.com/ixcj" target="_blank" class="page-link hide-page-cursor">GitHub</a> 或查看<a href="https://demo.xcj.pw" target="_blank" class="page-link hide-page-cursor">个人项目集</a>。</p>`,
+].join('\n')
+
 export const projects: StereoCardItem[] = [
   {
     name: '个人网站',
@@ -22,6 +29,7 @@ export const projects: StereoCardItem[] = [
     description: `这个网站是我展示个人作品和专业技能的数字名片，旨在为访客提供一个全面的了解我的平台。`,
     tags: [
       { content: '积极开发中', type: 'success' },
+      { content: '当前浏览的页面', type: 'warning' },
     ],
   },
   {
@@ -149,6 +157,8 @@ export default {
     project: '我的项目',
     experience: '我的经历',
   },
+
+  introduce: encodeURIComponent(JSON.stringify(introduce)),
 
   projects: encodeURIComponent(JSON.stringify(projects)),
 
