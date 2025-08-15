@@ -366,7 +366,7 @@ onUnmounted(() => {
     color: #f7f8f8;
 
     .content-logo {
-      width: 80px;
+      height: 80px;
     }
 
     .content-name {
