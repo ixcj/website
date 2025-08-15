@@ -4,7 +4,7 @@ import { footerLinks } from '@/config';
 
 <template>
   <footer class="page-footer">
-    <p>© 2024 XCJ. All rights reserved.</p>
+    <p>© 2024–Present XCJ. All rights reserved.</p>
     <div class="footer-links">
       <a
         v-for="item in footerLinks"
