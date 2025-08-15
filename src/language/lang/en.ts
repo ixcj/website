@@ -52,42 +52,15 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2020, month: 7 },
       { year: 2021, month: 12 }
     ],
-    title: 'main title',
+    title: 'Frozen Products Supply Chain Company',
     children: [
       {
-        title: 'subtitle',
+        title: 'Front-End Developer',
         describe: `
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
+        <div>Maintained the backend management system and developed new features to ensure system stability and efficiency.</div>
+        <div>Developed and maintained a supply chain management mini-program, enhancing user experience and optimizing business processes.</div>
         `,
-        range: [0, 0.5],
-      },
-      {
-        title: 'subtitle2',
-        describe: `
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },
@@ -96,17 +69,15 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2022, month: 1 },
       { year: 2022, month: 12 }
     ],
-    title: 'main title',
+    title: 'Digital Services Company',
     children: [
       {
-        title: 'subtitle',
+        title: 'Front-End Developer',
         describe: `
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
+        <div>Participated in requirement evaluations and worked closely with product and backend teams to ensure feasibility and project planning.</div>
+        <div>Responsible for ongoing optimization and new feature development for the backend management system to enhance system efficiency.</div>
+        <div>Developed and maintained a supply chain mini-program, ensuring its alignment with business needs.</div>
+        <div>Constantly improved user experience through detailed feedback and testing to enhance product quality.</div>
         `,
         range: [0, 1],
       },
@@ -117,13 +88,13 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2023, month: 5 }, 
       'now'
     ],
-    title: 'main title',
+    title: 'Digital Twin Company',
     children: [
       {
-        title: 'subtitle',
+        title: 'Front-End Developer',
         describe: `
-        <div>describe</div>
-        <div>describe</div>
+        <div>Involved in front-end development for the digital twin platform, creating efficient data interaction and real-time display features.</div>
+        <div>Optimized product performance using various technical methods, enhancing system stability and scalability.</div>
         `,
         range: [0, 1],
       },

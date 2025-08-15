@@ -52,42 +52,15 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2020, month: 7 },
       { year: 2021, month: 12 }
     ],
-    title: '大标题',
+    title: '某冻品供应链公司',
     children: [
       {
-        title: '小标题',
+        title: '前端开发',
         describe: `
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
+        <div>负责后台管理系统的维护与新功能开发，确保系统稳定性和高效性</div>
+        <div>开发并维护供应链管理小程序，提升用户体验并优化业务流程</div>
         `,
-        range: [0, 0.5],
-      },
-      {
-        title: '小标题2',
-        describe: `
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },
@@ -96,17 +69,15 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2022, month: 1 },
       { year: 2022, month: 12 }
     ],
-    title: '大标题2',
+    title: '某数字化服务公司',
     children: [
       {
-        title: '小标题',
+        title: '前端开发',
         describe: `
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
-        <div>描述</div>
+        <div>参与需求评估，与产品团队和后端团队密切合作，确保需求可行性与项目规划</div>
+        <div>负责后台管理系统的持续优化和新功能开发，以提升系统效率</div>
+        <div>负开发和维护供应链小程序，确保其与业务需求的高度契合</div>
+        <div>不断优化用户体验，通过细致的反馈和测试提升产品质量</div>
         `,
         range: [0, 1],
       },
@@ -117,13 +88,13 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2023, month: 5 }, 
       'now'
     ],
-    title: '大标题23',
+    title: '某数字孪生公司',
     children: [
       {
-        title: '小标题',
+        title: '前端开发',
         describe: `
-        <div>描述</div>
-        <div>描述</div>
+        <div>参与数字孪生平台的前端开发，打造高效的数据交互和实时展示功能</div>
+        <div>通过多种技术手段优化产品性能，提升系统的稳定性与可扩展性</div>
         `,
         range: [0, 1],
       },

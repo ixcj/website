@@ -456,11 +456,13 @@ onUnmounted(() => {
     }
 
     .turntable-content-text-box {
-      margin-top: 10px;
+      max-width: 420px;
+      margin: 10px auto 0;
       text-align: center;
       max-height: calc(100% - 240px);
       overflow: hidden;
       pointer-events: all;
+      padding: 0 30px;
 
       &.gradation-bottom {
         overflow-y: auto;
@@ -477,11 +479,15 @@ onUnmounted(() => {
       .turntable-content-text {
         .turntable-content-text-title {
           font-size: 24px;
-          margin-bottom: 10px;
+          margin: 5px 0 15px;
         }
 
         .turntable-content-text-describe {
           font-size: 18px;
+          line-height: 120%;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
         }
       }
     }
