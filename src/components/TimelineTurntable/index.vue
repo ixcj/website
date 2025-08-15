@@ -47,6 +47,7 @@ const timelineTurntableRef = ref<HTMLElement | null>(null)
 const timelineTurntableRotateBoxRef = ref<HTMLElement | null>(null)
 
 const isPressed = ref(false)
+const isScrolling = ref(false)
 const rotateZ = ref(0)
 
 const absRotateZ = computed(() => Math.abs((rotateZ.value >= 0 ? 0 : 360) - (Math.abs(rotateZ.value) % 360)))
@@ -118,6 +119,8 @@ let inertiaFrameTaskCompletionTime = 0
 const oldPosition: { x: number, y: number } = { x: 0, y: 0 }
 
 function onMousedown(e: MouseEvent | TouchEvent) {
+  cancelAnimationFrame(inertiaReq)
+
   pressedDuration = new Date().getTime()
   inertia = 0
   
@@ -126,6 +129,7 @@ function onMousedown(e: MouseEvent | TouchEvent) {
 
   oldPosition.x = clientX
   oldPosition.y = clientY
+
   isPressed.value = true
 }
 
@@ -135,6 +139,7 @@ function onMouseup(e: MouseEvent | TouchEvent) {
   isPressed.value = false
 
   if (props.enablingInertia) {
+    isScrolling.value = true
     pressedDuration = new Date().getTime() - pressedDuration
 
     const event = e.type === 'mouseup' ? (e as MouseEvent) : (e as TouchEvent).changedTouches[0]
@@ -147,6 +152,8 @@ function onMouseup(e: MouseEvent | TouchEvent) {
     
     inertiaFrameTaskCompletionTime = new Date().getTime()
     inertiaReq = requestAnimationFrame(applyInertia)
+  } else {
+    isScrolling.value = false
   }
 }
 
@@ -197,10 +204,15 @@ function applyInertia() {
     inertiaFrameTaskCompletionTime = now
     
     inertiaReq = requestAnimationFrame(applyInertia)
+  } else {
+    isScrolling.value = false
   }
 }
 
 function handleRotate(directional: 'left' | 'right') {
+  isScrolling.value = false
+  cancelAnimationFrame(inertiaReq)
+
   const len = transformData.value.length
   if (len === 0) return
 
@@ -243,7 +255,7 @@ onUnmounted(() => {
   <div
     class="timeline-turntable"
     ref="timelineTurntableRef"
-    :class="{ pressed: isPressed }"
+    :class="{ pressed: isPressed, scrolling: isScrolling }"
   >
     <div class="turntable-box">
       <div class="turntable-rotate-box" ref="timelineTurntableRotateBoxRef">
@@ -253,7 +265,15 @@ onUnmounted(() => {
 
     <div class="turntable-content-box">
       <div class="turntable-content-date-box">
-        <div v-if="data.length > 1" class="arrow" @click="handleRotate('left')">
+        <div
+          v-if="data.length > 1"
+          class="arrow"
+          @click.stop="handleRotate('left')"
+          @mousedown.stop
+          @mouseup.stop
+          @touchmove.stop
+          @touchstart.stop
+        >
           <ArrowLeft />
         </div>
 
@@ -270,7 +290,15 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <div v-if="data.length > 1" class="arrow" @click="handleRotate('right')">
+        <div
+          v-if="data.length > 1"
+          class="arrow"
+          @click.stop="handleRotate('right')"
+          @mousedown.stop
+          @mouseup.stop
+          @touchmove.stop
+          @touchstart.stop
+        >
           <ArrowRight />
         </div>
       </div>
@@ -322,6 +350,13 @@ onUnmounted(() => {
   &.pressed {
     cursor: grabbing;
   }
+
+  &.pressed,
+  &.scrolling {
+    .turntable-rotate-box {
+      transition: transform calc(var(--transition-duration) / 3) linear !important;
+    }
+  }
   
   .turntable-box {
     pointer-events: none;
@@ -335,7 +370,7 @@ onUnmounted(() => {
 
     .turntable-rotate-box {
       transform: rotateZ(var(--rotateZ)) translateZ(0);
-      transition: transform calc(var(--transition-duration) / 3) linear;
+      transition: transform calc(var(--transition-duration) * 3);
 
       .turntable-image {
         width: 100%;
@@ -456,13 +491,13 @@ onUnmounted(() => {
     }
 
     .turntable-content-text-box {
-      max-width: 420px;
+      max-width: min(420px, 90%);
       margin: 10px auto 0;
       text-align: center;
       max-height: calc(100% - 240px);
       overflow: hidden;
       pointer-events: all;
-      padding: 0 30px;
+      padding: 0 10%;
 
       &.gradation-bottom {
         overflow-y: auto;
