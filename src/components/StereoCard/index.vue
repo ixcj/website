@@ -168,6 +168,7 @@ onUnmounted(() => {
             class="card-image"
             :src="data?.backgroundImage || defaultBackground"
             alt=""
+            loading="eager"
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
           />
@@ -181,6 +182,7 @@ onUnmounted(() => {
             :src="data.logo"
             class="content-logo"
             alt=""
+            loading="eager"
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
           />
@@ -381,7 +383,7 @@ onUnmounted(() => {
       font-size: 16px;
       max-width: 90%;
       text-align: center;
-      max-height: calc(100% - var(--round) - 180px);
+      max-height: calc(100% - var(--round) - 200px);
       scrollbar-width: none;
       
       &::-webkit-scrollbar {
@@ -426,11 +428,19 @@ onUnmounted(() => {
     }
 
     .content-tag-box {
+      width: 100%;
       display: flex;
       gap: 4px;
       position: absolute;
-      bottom: calc(var(--round) / 2);
-      left: calc(var(--round) / 2);
+      padding: calc(var(--round) / 2);
+      box-sizing: border-box;
+      bottom: 0;
+      left: 0;
+      overflow-x: scroll;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
       
       .content-tag-item {
         font-size: 12px;
@@ -438,6 +448,7 @@ onUnmounted(() => {
         border: 1px solid #f7f8f8;
         color: #f7f8f8;
         border-radius: 12px;
+        white-space: nowrap;
 
         &.success {
           color: #67c23a;

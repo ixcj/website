@@ -11,10 +11,10 @@ export const messages = { zh, en }
 const locale = globalThis.location?.pathname.replace(/^\/|\/$/g, '')
   || defaultLanguage
 const i18n = createI18n({
-  legacy: false,
-  locale: locale,
-  fallbackLocale: defaultLanguage,
+  locale,
   messages,
+  legacy: false,
+  fallbackLocale: defaultLanguage,
 })
  
 export default i18n

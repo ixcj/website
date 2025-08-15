@@ -74,7 +74,7 @@ onMounted(() => {
   <div class="section-home text-type-box">
     <div class="personal-info">
       <a :href="avatarLink || 'javascript: void(0);'" target="_blank">
-        <img class="avatar" src="/avatar.png" alt="Avatar" loading="lazy">
+        <img class="avatar" src="/avatar.png" alt="Avatar" loading="eager">
       </a>
       <h1 class="name">{{ $t('name') }}</h1>
       <p class="intro">{{ $t('intro') }}</p>

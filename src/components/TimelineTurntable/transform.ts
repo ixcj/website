@@ -38,12 +38,12 @@ export function transformTimelineTurntableItem(data: TimelineTurntableItem[]): T
   return result
 }
 
-function getDateString(date: dateDataTransform): string {
+export function getDateString(date: dateDataTransform): string {
   const { year, month } = date
   return `${year}-${month < 10 ? '0' + month : month}`
 }
 
-function getMonthSpanSum(items: TimelineTurntableItem[]): number {
+export function getMonthSpanSum(items: TimelineTurntableItem[]): number {
   let spanSum = 0
 
   items.forEach(item => {
@@ -55,7 +55,7 @@ function getMonthSpanSum(items: TimelineTurntableItem[]): number {
   return spanSum
 }
 
-function getMonthSpan(startDate: dateData, endDate: dateData): number {
+export function getMonthSpan(startDate: dateData, endDate: dateData): number {
   const _startDate = distinguishDateData(startDate)
   const _endDate = distinguishDateData(endDate)
 
@@ -71,7 +71,7 @@ function getMonthSpan(startDate: dateData, endDate: dateData): number {
   return yearDiff * 12 + monthDiff
 }
 
-function getAngleRatio(
+export function getAngleRatio(
   dateRange: [dateDataTransform, dateDataTransform],
   monthSpanSum: number,
   decimals: number = 4
@@ -84,7 +84,7 @@ function getAngleRatio(
   return Number(angleRatio.toFixed(decimals))
 }
 
-function distinguishDateData(date: dateData) {
+export function distinguishDateData(date: dateData) {
   return date === 'now'
     ? { year: new Date().getFullYear(), month: new Date().getMonth() + 1 }
     : date

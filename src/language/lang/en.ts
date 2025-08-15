@@ -12,6 +12,13 @@ export const mottos = [
   'In fact, The more people go up the height like trees, The more its roots will reach the dark ground.',
 ]
 
+export const introduce = [
+  `<p>Hi, I’m <a href="https://blog.xcj.pw/about" target="_blank" class="page-link hide-page-cursor">XCJ</a>！I am a front-end engineer skilled in using Vue.js and Three.js, as well as other modern JavaScript tools, to create amazing web pages and applications.</p>`,
+  `<p>In my work, I always strive to perfectly blend the elegance of code with the complexity of functionality, with a special focus on harmonizing visual effects and user experience.</p>`,
+  `<p>On my <a href="https://blog.xcj.pw" target="_blank" class="page-link hide-page-cursor">Blog</a>, I share my technical insights and professional experiences. If you're interested in front-end development, or just looking to see what's new, you might find something of interest there.</p>`,
+  `<p>If you'd like to learn more about me, feel free to visit my <a href="https://github.com/ixcj" target="_blank" class="page-link hide-page-cursor">GitHub</a> or check out my portfolio of <a href="https://demo.xcj.pw" target="_blank" class="page-link hide-page-cursor">Projects</a>.</p>`,
+].join('\n')
+
 export const projects: StereoCardItem[] = [
   {
     name: 'Personal Website',
@@ -19,9 +26,10 @@ export const projects: StereoCardItem[] = [
     links: [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
     ],
-    description: `This website is my digital portfolio, showcasing my work and skills to give visitors a clear understanding of who I am.`,
+    description: `This website is my digital portfolio, showcasing my work and skills to give visitors a clear understanding of who I am. `,
     tags: [
       { content: 'In active development', type: 'success' },
+      { content: 'Current page', type: 'warning' },
     ],
   },
   {
@@ -44,42 +52,15 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2020, month: 7 },
       { year: 2021, month: 12 }
     ],
-    title: 'main title',
+    title: 'Frozen Products Supply Chain Company',
     children: [
       {
-        title: 'subtitle',
+        title: 'Front-End Developer',
         describe: `
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
+        <div>Maintained the backend management system and developed new features to ensure system stability and efficiency.</div>
+        <div>Developed and maintained a supply chain management mini-program, enhancing user experience and optimizing business processes.</div>
         `,
-        range: [0, 0.5],
-      },
-      {
-        title: 'subtitle2',
-        describe: `
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        `,
-        range: [0.5, 1],
+        range: [0, 1],
       },
     ],
   },
@@ -88,17 +69,15 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2022, month: 1 },
       { year: 2022, month: 12 }
     ],
-    title: 'main title',
+    title: 'Digital Services Company',
     children: [
       {
-        title: 'subtitle',
+        title: 'Front-End Developer',
         describe: `
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
-        <div>describe</div>
+        <div>Participated in requirement evaluations and worked closely with product and backend teams to ensure feasibility and project planning.</div>
+        <div>Responsible for ongoing optimization and new feature development for the backend management system to enhance system efficiency.</div>
+        <div>Developed and maintained a supply chain mini-program, ensuring its alignment with business needs.</div>
+        <div>Constantly improved user experience through detailed feedback and testing to enhance product quality.</div>
         `,
         range: [0, 1],
       },
@@ -109,13 +88,13 @@ export const experiences: TimelineTurntableItem[] = [
       { year: 2023, month: 5 }, 
       'now'
     ],
-    title: 'main title',
+    title: 'Digital Twin Company',
     children: [
       {
-        title: 'subtitle',
+        title: 'Front-End Developer',
         describe: `
-        <div>describe</div>
-        <div>describe</div>
+        <div>Involved in front-end development for the digital twin platform, creating efficient data interaction and real-time display features.</div>
+        <div>Optimized product performance using various technical methods, enhancing system stability and scalability.</div>
         `,
         range: [0, 1],
       },
@@ -149,6 +128,8 @@ export default {
     project: 'My Projects',
     experience: 'My Experiences',
   },
+
+  introduce: encodeURIComponent(JSON.stringify(introduce)),
 
   projects: encodeURIComponent(JSON.stringify(projects)),
 
