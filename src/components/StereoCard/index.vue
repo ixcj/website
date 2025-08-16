@@ -203,6 +203,7 @@ onUnmounted(() => {
                 class="content-link-item-icon"
                 :is="getIconComponent(link.content)"
               />
+              <img v-else-if="link.type === 'image'" :src="link.content" alt="">
               <span v-else>{{ link.content }}</span>
             </a>
           </div>

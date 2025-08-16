@@ -34,7 +34,7 @@ export const projects: StereoCardItem[] = [
   },
   {
     name: 'caiji-music',
-    logo: 'https://file.xcj.im/website/images/caiji-music-logo.png',
+    logo: 'https://file.xcj.pw/img/caiji-music-logo.png',
     links: [
       { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
       { href: 'https://music.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'Live Demo' },
