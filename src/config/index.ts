@@ -5,6 +5,9 @@ export type Section = typeof sectionList[number]
 // GitHub 显示贡献图表的用户名，为空则不显示
 export const githubContributionUser = 'ixcj'
 
+// onLoad 事件最大等待时间
+export const loadMaxWaitingTime = 1500
+
 // 彩蛋秘籍
 export const cheatsKeys: string[] = [
   'ArrowUp',
