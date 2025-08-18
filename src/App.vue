@@ -7,6 +7,7 @@ import {
   siteUrl,
   githubContributionUser,
   cheatsKeys,
+  loadMaxWaitingTime,
 } from '@/config'
 import {
   breakpointsName,
@@ -62,7 +63,11 @@ useHead({
 
 const loading = ref(false)
 
-globalThis.onload = () => {
+globalThis.onload = onLoad
+
+setTimeout(onLoad, loadMaxWaitingTime)
+
+function onLoad() {
   loading.value = true
   nextTick(() => {
     setScrollBarWidth()
