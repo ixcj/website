@@ -129,6 +129,7 @@ function onMousedown(e: MouseEvent | TouchEvent) {
 
   oldPosition.x = clientX
   oldPosition.y = clientY
+
   isPressed.value = true
 }
 

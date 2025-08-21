@@ -2,7 +2,7 @@ import type { StereoCardItem } from '@/types/StereoCard'
 import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
 
 export const name = 'XCJ'
-export const intro = 'A Frontend Developer'
+export const intro = 'A Front-end Developer'
 
 export const mottos = [
   'That which does not kill us makes us stronger.',
