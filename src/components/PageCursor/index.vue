@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import {
-  ref,
   computed,
   onMounted,
   onUnmounted,
+  ref,
 } from 'vue'
 
 const props = withDefaults(defineProps<{
   hideCursorSelector?: string | string[]
 }>(), {
-  hideCursorSelector: '.hide-page-cursor'
+  hideCursorSelector: '.hide-page-cursor',
 })
 
 const cursor = ref<HTMLElement | null>(null)
@@ -23,7 +23,8 @@ const cursorStyle = computed<CSSStyleDeclaration>(() => {
 let myReq: number = 0
 
 function onMousemove(event: MouseEvent) {
-  if(!cursor.value) return
+  if (!cursor.value)
+    return
 
   cancelAnimationFrame(myReq)
 
@@ -53,7 +54,7 @@ function onMouseup() {
 
 function onMouseenter() {
   cancelAnimationFrame(myReq)
-  
+
   requestAnimationFrame(() => {
     cursorStyle.value.transition = 'none'
     cursorStyle.value.opacity = '1'
@@ -62,7 +63,7 @@ function onMouseenter() {
 
 function onMouseleave() {
   cancelAnimationFrame(myReq)
-  
+
   requestAnimationFrame(() => {
     cursorStyle.value.opacity = '0'
   })
@@ -90,7 +91,7 @@ onUnmounted(() => {
     ref="cursor"
     class="page-cursor"
     :class="[cursorType, cursorState]"
-  ></div>
+  />
 </template>
 
 <style lang="scss" scoped>

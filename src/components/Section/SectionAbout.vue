@@ -8,7 +8,8 @@ const introduce = computed(() => {
   try {
     const jsonData = t('introduce')
     return JSON.parse(decodeURIComponent(jsonData))
-  } catch(err) {
+  }
+  catch (err) {
     console.error('An error occurred while getting the introduce configuration: ', err)
     return ''
   }
@@ -17,9 +18,11 @@ const introduce = computed(() => {
 
 <template>
   <div class="section-about text-type-box">
-    <h2 class="section-title">{{ $t('SectionTitle.about') }}</h2>
+    <h2 class="section-title">
+      {{ $t('SectionTitle.about') }}
+    </h2>
 
-    <div class="section-about-introduce" v-html="introduce"></div>
+    <div class="section-about-introduce" v-html="introduce" />
   </div>
 </template>
 
@@ -32,7 +35,7 @@ const introduce = computed(() => {
     ::v-deep(p) {
       margin-bottom: 0.75em;
       line-height: 1.4;
-      
+
       &:last-child {
         margin-bottom: 0;
       }

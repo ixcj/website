@@ -1,4 +1,4 @@
-import { StyleValue } from 'vue'
+import type { StyleValue } from 'vue'
 
 export interface StereoCardItem {
   name: string

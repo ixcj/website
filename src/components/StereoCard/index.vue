@@ -1,29 +1,29 @@
 <!-- 效果是'借鉴'的，借鉴地址：https://codepen.io/akella/pen/XWYrRmb -->
 
 <script setup lang="ts">
+import type { StereoCardItem } from '@/types/StereoCard'
+import { Github } from '@vicons/fa'
+import { ArrowUpRight } from '@vicons/tabler'
 import {
-  ref,
   onMounted,
   onUnmounted,
+  ref,
 } from 'vue'
 import defaultBackground from '@/assets/images/stereo-card-bg.webp'
 import defaultPattern from '@/assets/images/stereo-card-pattern.webp'
-import { Github } from '@vicons/fa'
-import { ArrowUpRight } from '@vicons/tabler'
-import type { StereoCardItem } from '@/types/StereoCard'
 
 interface Props {
-  data: StereoCardItem,
-  speedX?: number,
-  speedY?: number,
-  bgSpeedX?: number,
-  bgSpeedY?: number,
-  iconMap?: Record<string, any>,
-  enableExternalData?: boolean,
+  data: StereoCardItem
+  speedX?: number
+  speedY?: number
+  bgSpeedX?: number
+  bgSpeedY?: number
+  iconMap?: Record<string, any>
+  enableExternalData?: boolean
   externaData?: {
-    X: number,
-    Y: number,
-  },
+    X: number
+    Y: number
+  }
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,8 +32,8 @@ const props = withDefaults(defineProps<Props>(), {
   bgSpeedX: 20,
   bgSpeedY: 20,
   iconMap: () => ({
-    '_GITHUB_': Github,
-    '_ARROW_UP_RIGHT_': ArrowUpRight,
+    _GITHUB_: Github,
+    _ARROW_UP_RIGHT_: ArrowUpRight,
   }),
   enableExternalData: false,
   externaData: () => ({ X: 0, Y: 0 }),
@@ -48,7 +48,7 @@ let myReq = 0
 
 let stereoCardRefParams = { top: 0, left: 0, width: 0, height: 0 }
 const ResizeObserver = globalThis?.ResizeObserver
-const resizeObserver = ResizeObserver && new ResizeObserver(entries => {
+const resizeObserver = ResizeObserver && new ResizeObserver((entries) => {
   for (const entry of entries) {
     updateStereoCardRefParams(entry.target)
   }
@@ -66,10 +66,12 @@ function setStereoCardRefParams() {
 }
 
 function onMousemove() {
-  if (!stereoCardRef.value) return
+  if (!stereoCardRef.value)
+    return
 
   stereoCardRef.value.addEventListener('mousemove', (e) => {
-    if (props.enableExternalData) return
+    if (props.enableExternalData)
+      return
 
     const { top, left, width, height } = stereoCardRefParams
 
@@ -77,55 +79,61 @@ function onMousemove() {
     const Y = (e.clientY - top) / height
 
     setCardWrapperRefStyle({ X, Y })
-  });
+  })
 }
 
 function onMouseout() {
-  if (!cardWrapperRef.value) return
+  if (!cardWrapperRef.value)
+    return
 
   setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
 }
 
 function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
-  if (!cardWrapperRef.value) return
+  if (!cardWrapperRef.value)
+    return
 
   cancelAnimationFrame(myReq)
 
   const { speedX, speedY, bgSpeedX, bgSpeedY } = props
-  
-  let rX = -(X - 0.5) * speedX
-  let rY = (Y - 0.5) * speedY
 
-  let bgX = 40 + bgSpeedX * X
-  let bgY = 40 + bgSpeedY * Y
+  const rX = -(X - 0.5) * speedX
+  const rY = (Y - 0.5) * speedY
+
+  const bgX = 40 + bgSpeedX * X
+  const bgY = 40 + bgSpeedY * Y
 
   myReq = requestAnimationFrame(() => {
-    if (!cardWrapperRef.value) return
-    
-    cardWrapperRef.value.style.setProperty('--x', 100 * X + '%')
-    cardWrapperRef.value.style.setProperty('--y', 100 * Y + '%')
+    if (!cardWrapperRef.value)
+      return
 
-    cardWrapperRef.value.style.setProperty('--bg-x', bgX + '%')
-    cardWrapperRef.value.style.setProperty('--bg-y', bgY + '%')
+    cardWrapperRef.value.style.setProperty('--x', `${100 * X}%`)
+    cardWrapperRef.value.style.setProperty('--y', `${100 * Y}%`)
 
-    cardWrapperRef.value.style.setProperty('--r-x', rX + 'deg')
-    cardWrapperRef.value.style.setProperty('--r-y', rY + 'deg')
+    cardWrapperRef.value.style.setProperty('--bg-x', `${bgX}%`)
+    cardWrapperRef.value.style.setProperty('--bg-y', `${bgY}%`)
+
+    cardWrapperRef.value.style.setProperty('--r-x', `${rX}deg`)
+    cardWrapperRef.value.style.setProperty('--r-y', `${rY}deg`)
   })
 }
 
 function loopSetCardWrapperRefStyle() {
-  if (!props.enableExternalData) return
+  if (!props.enableExternalData)
+    return
 
   requestAnimationFrame(() => {
     const { X, Y } = props.externaData
     setCardWrapperRefStyle({ X, Y })
 
-    if (props.enableExternalData) loopSetCardWrapperRefStyle()
+    if (props.enableExternalData)
+      loopSetCardWrapperRefStyle()
   })
 }
 
 function judgeDescriptionContentHeight() {
-  if (!contentDescriptionRef.value) return
+  if (!contentDescriptionRef.value)
+    return
 
   const { scrollHeight, clientHeight } = contentDescriptionRef.value
 
@@ -141,11 +149,12 @@ onMounted(() => {
   setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
   if (props.enableExternalData) {
     loopSetCardWrapperRefStyle()
-  } else {
+  }
+  else {
     stereoCardRef.value?.addEventListener('mousemove', onMousemove)
     stereoCardRef.value?.addEventListener('mouseout', onMouseout)
   }
-  
+
   globalThis.addEventListener('resize', setStereoCardRefParams)
   globalThis.addEventListener('scroll', setStereoCardRefParams)
 })
@@ -171,10 +180,10 @@ onUnmounted(() => {
             loading="eager"
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
-          />
+          >
         </div>
-        <div class="card-layer1"></div>
-        <div class="card-layer2"></div>
+        <div class="card-layer1" />
+        <div class="card-layer2" />
 
         <div class="content-wrapper">
           <img
@@ -185,10 +194,12 @@ onUnmounted(() => {
             loading="eager"
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
-          />
-          <p class="content-name">{{ data.name }}</p>
-          <p ref="contentDescriptionRef" class="content-description" v-html="data.description"></p>
-          
+          >
+          <p class="content-name">
+            {{ data.name }}
+          </p>
+          <p ref="contentDescriptionRef" class="content-description" v-html="data.description" />
+
           <div v-if="data.links.length" class="content-link-box">
             <a
               v-for="link, in data.links"
@@ -199,9 +210,9 @@ onUnmounted(() => {
               :title="link.title"
             >
               <component
+                :is="getIconComponent(link.content)"
                 v-if="getIconComponent(link.content)"
                 class="content-link-item-icon"
-                :is="getIconComponent(link.content)"
               />
               <img v-else-if="link.type === 'image'" :src="link.content" alt="">
               <span v-else>{{ link.content }}</span>
@@ -214,7 +225,9 @@ onUnmounted(() => {
               class="content-tag-item"
               :class="tag.type || ''"
               :style="tag?.style || {}"
-            >{{ tag.content }}</div>
+            >
+              {{ tag.content }}
+            </div>
           </div>
         </div>
       </div>
@@ -227,7 +240,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   position: relative;
-  
+
   --aspectRatio: 3 / 4;
   --round: 16px;
   --step: 5%;
@@ -324,7 +337,7 @@ onUnmounted(() => {
       filter: brightness(0.75);
     }
   }
-  
+
   .card-layer2 {
     position: absolute;
     inset: 0;
@@ -386,7 +399,7 @@ onUnmounted(() => {
       text-align: center;
       max-height: calc(100% - var(--round) - 200px);
       scrollbar-width: none;
-      
+
       &::-webkit-scrollbar {
         display: none;
       }
@@ -442,7 +455,7 @@ onUnmounted(() => {
       &::-webkit-scrollbar {
         display: none;
       }
-      
+
       .content-tag-item {
         font-size: 12px;
         padding: 2px 6px;

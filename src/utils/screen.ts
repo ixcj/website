@@ -1,11 +1,11 @@
-import { ref } from 'vue'
 import { useWindowSize, watchDebounced } from '@vueuse/core'
+import { ref } from 'vue'
 import { breakpointsConfig, mobileBreakpoint } from '@/config'
 
 export const isStartViewTransition = ref(false)
 
-export const mobileThresholdValue =
-  typeof mobileBreakpoint === 'number'
+export const mobileThresholdValue
+  = typeof mobileBreakpoint === 'number'
     ? mobileBreakpoint
     : breakpointsConfig.find(item => item.name === mobileBreakpoint)?.range[1] ?? 600
 
@@ -25,17 +25,17 @@ watchDebounced(
       const [min, max] = range
       return newWidth >= min && newWidth < max
     })
-    
+
     breakpointsName.value = currentBreakpointsConfig?.name ?? 'xl'
     contentWidth.value = currentBreakpointsConfig?.contentWidth ?? 900
-  
+
     mobile.value = (newWidth <= mobileThresholdValue)
     globalThis?.document?.documentElement.style
       .setProperty('--mobile-extra-scroll-padding-top', `${mobile.value ? 20 : 0}px`)
 
     setScrollBarWidth()
   },
-  { immediate: true, debounce: 33 }
+  { immediate: true, debounce: 33 },
 )
 
 export function setScrollBarWidth() {
@@ -48,7 +48,7 @@ export function setScrollBarWidth() {
     .setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
 }
 
-haveMatchMedia &&
-  globalThis.matchMedia('(pointer: coarse)').addEventListener('change', () => {
-    touch.value = globalThis.matchMedia('(pointer: coarse)').matches
-  })
+haveMatchMedia
+&& globalThis.matchMedia('(pointer: coarse)').addEventListener('change', () => {
+  touch.value = globalThis.matchMedia('(pointer: coarse)').matches
+})

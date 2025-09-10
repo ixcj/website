@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, nextTick, watchEffect, onMounted } from 'vue'
-import { avatarLink, socialLinks, githubContributionUser } from '@/config'
-import { mottoLength } from '@/language'
-import { useI18n } from 'vue-i18n'
-import { useTypewriter } from '@/hooks/useTypewriter'
-import { isStartViewTransition } from '@/utils/screen'
-// @ts-ignore
+// @ts-expect-error 没有类型说明
 import GitHubCalendar from 'github-calendar'
+import { nextTick, onMounted, ref, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { avatarLink, githubContributionUser, socialLinks } from '@/config'
+import { useTypewriter } from '@/hooks/useTypewriter'
+import { mottoLength } from '@/language'
+import { isStartViewTransition } from '@/utils/screen'
 
 const GITHUB_CALENDAR_WIDTH = 690
 const TYPEWRITER_PARAGRAPH_INTERVAL = 5000
@@ -24,13 +24,14 @@ const { text, output: motto, pause } = useTypewriter(t(`mottos[${mottoIndex}]`),
       mottoIndex = getIndex(mottoLength, mottoIndex)
       text.value = t(`mottos[${mottoIndex}]`)
     }, TYPEWRITER_PARAGRAPH_INTERVAL)
-  }
+  },
 })
 
 function getIndex(length: number, exclude: number | undefined = undefined) {
-  const list = [...Array(length).keys()]
+  const list = [...Array.from({ length }).keys()]
 
-  if (length > 1 && exclude !== undefined) list.splice(exclude, 1)
+  if (length > 1 && exclude !== undefined)
+    list.splice(exclude, 1)
 
   return list[Math.floor(Math.random() * list.length)]
 }
@@ -40,7 +41,8 @@ watchEffect(() => pause(isStartViewTransition.value))
 const loading = ref(true)
 
 function setGithubContributionCalendar() {
-  if (!githubContributionUser) return
+  if (!githubContributionUser)
+    return
 
   loading.value = true
   GitHubCalendar('#github-contribution-calendar', githubContributionUser, {
@@ -76,9 +78,15 @@ onMounted(() => {
       <a :href="avatarLink || 'javascript: void(0);'" target="_blank">
         <img class="avatar" src="/avatar.png" alt="Avatar" loading="eager">
       </a>
-      <h1 class="name">{{ $t('name') }}</h1>
-      <p class="intro">{{ $t('intro') }}</p>
-      <p class="motto" :class="locale">{{ motto }}</p>
+      <h1 class="name">
+        {{ $t('name') }}
+      </h1>
+      <p class="intro">
+        {{ $t('intro') }}
+      </p>
+      <p class="motto" :class="locale">
+        {{ motto }}
+      </p>
     </div>
     <div class="social-links">
       <a
@@ -95,21 +103,22 @@ onMounted(() => {
     </div>
 
     <template v-if="githubContributionUser">
-      <p class="calendar-title">{{ $t('contributionCalendar') }}</p>
+      <p class="calendar-title">
+        {{ $t('contributionCalendar') }}
+      </p>
       <div
         class="calendar-container hide-page-cursor"
-        ref="githubContributionCalendarContainer"
-        :style="{ '--github-calendar-width': GITHUB_CALENDAR_WIDTH + 'px' }"
+        :style="{ '--github-calendar-width': `${GITHUB_CALENDAR_WIDTH}px` }"
       >
         <Transition name="fade">
           <div
             v-show="!loading"
             id="github-contribution-calendar"
             class="contribution-calendar"
-          ></div>
+          />
         </Transition>
         <Transition name="fade">
-          <div v-if="loading" class="contribution-calendar loading"></div>
+          <div v-if="loading" class="contribution-calendar loading" />
         </Transition>
       </div>
     </template>
@@ -171,7 +180,7 @@ onMounted(() => {
       height: 20px;
       padding: 4px;
       transition: transform var(--transition-duration);
-      
+
       &:hover {
         transform: scale(1.3);
       }
@@ -241,7 +250,7 @@ onMounted(() => {
       }
     }
   }
-  
+
   @keyframes motto-cursor {
     50% { opacity: 1; }
     100% { opacity: 0; }

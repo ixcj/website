@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { nextTick, watchEffect } from 'vue'
+import { Moon, Sun } from '@vicons/fa'
 import { useLocalStorage } from '@vueuse/core'
-import { mobile, isStartViewTransition } from '@/utils/screen'
-import { Sun, Moon } from '@vicons/fa'
+import { nextTick, watchEffect } from 'vue'
+import { isStartViewTransition, mobile } from '@/utils/screen'
 
 const isDark = useLocalStorage('isDark', true)
 watchEffect(() => {
@@ -23,7 +23,7 @@ function switchTheme(event: MouseEvent) {
   const { clientX, clientY } = event
   const radius = Math.hypot(
     Math.max(clientX, innerWidth - clientX),
-    Math.max(clientY, innerHeight - clientY)
+    Math.max(clientY, innerHeight - clientY),
   )
   const clipPath = [
     `circle(0% at ${clientX}px ${clientY}px)`,
@@ -35,10 +35,10 @@ function switchTheme(event: MouseEvent) {
     isStartViewTransition.value = true
     document.documentElement.classList.add('hide-scroll-bar')
     document.documentElement.animate({
-      clipPath: isDark.value ? clipPath.reverse() : clipPath
+      clipPath: isDark.value ? clipPath.reverse() : clipPath,
     }, {
       duration: 300,
-      easing: "ease-in",
+      easing: 'ease-in',
       pseudoElement: isDark.value
         ? '::view-transition-old(root)'
         : '::view-transition-new(root)',

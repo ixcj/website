@@ -49,7 +49,7 @@ export const experiences: TimelineTurntableItem[] = [
   {
     date: [
       { year: 2020, month: 7 },
-      { year: 2021, month: 12 }
+      { year: 2021, month: 12 },
     ],
     title: '某冻品供应链公司',
     children: [
@@ -66,7 +66,7 @@ export const experiences: TimelineTurntableItem[] = [
   {
     date: [
       { year: 2022, month: 1 },
-      { year: 2022, month: 12 }
+      { year: 2022, month: 12 },
     ],
     title: '某数字化服务公司',
     children: [
@@ -84,8 +84,8 @@ export const experiences: TimelineTurntableItem[] = [
   },
   {
     date: [
-      { year: 2023, month: 5 }, 
-      'now'
+      { year: 2023, month: 5 },
+      'now',
     ],
     title: '某数字孪生公司',
     children: [
@@ -104,7 +104,7 @@ export const experiences: TimelineTurntableItem[] = [
 export default {
   lang: 'zh-CN',
   language: '中',
-  
+
   name,
   intro,
   mottos,
