@@ -24,31 +24,32 @@ export function outputInfo() {
   console.log(`%c${'Project Git URL:'}%c${'https://github.com/ixcj/website'}`, lableStyle, valueStyle)
   console.log(`%c${'Blog URL:'}%c${'https://blog.xcj.pw'}`, lableStyle, valueStyle)
 
-  console.log("您好！今天是：" + new Date().toLocaleDateString() + "，希望你有个美好的一天！")
+  console.log(`您好！今天是：${new Date().toLocaleDateString()}，希望你有个美好的一天！`)
 }
 
-type FlakeItem = {
-  element: HTMLElement,
-  x: number,
-  y: number,
-  swing: number,
-  swingInc: number,
+interface FlakeItem {
+  element: HTMLElement
+  x: number
+  y: number
+  swing: number
+  swingInc: number
 }
 
-let isSnowingInit = false;
-let myReq: number = 0;
+let isSnowingInit = false
+let myReq: number = 0
 
 function snowing() {
-  if (isSnowingInit) return;
+  if (isSnowingInit)
+    return
 
-  const numFlakes = 150;
-  const flakes: FlakeItem[] = [];
-  let width = window.innerWidth;
-  let height = window.innerHeight;
+  const numFlakes = 150
+  const flakes: FlakeItem[] = []
+  let width = window.innerWidth
+  let height = window.innerHeight
 
   // 创建样式
-  const style = document.createElement('style');
-  document.head.appendChild(style);
+  const style = document.createElement('style')
+  document.head.appendChild(style)
   style.sheet!.insertRule(`
     .snowflake {
       position: fixed;
@@ -62,78 +63,79 @@ function snowing() {
       opacity: 0;
       transition: opacity 0.5s;
     }
-  `, 0);
+  `, 0)
 
   // 初始化雪花
   function init() {
     for (let i = 0; i < numFlakes; i++) {
-      const flake = document.createElement('div');
-      flake.className = 'snowflake';
-      resetFlake(flake);
-      document.body.appendChild(flake);
+      const flake = document.createElement('div')
+      flake.className = 'snowflake'
+      resetFlake(flake)
+      document.body.appendChild(flake)
       flakes.push({
         element: flake,
-        x: parseFloat(flake.style.left),
-        y: parseFloat(flake.style.top),
+        x: Number.parseFloat(flake.style.left),
+        y: Number.parseFloat(flake.style.top),
         swing: 0,
-        swingInc: Math.random() * 0.02 - 0.01
-      });
+        swingInc: Math.random() * 0.02 - 0.01,
+      })
     }
-    animate();
-    isSnowingInit = true;
+    animate()
+    isSnowingInit = true
   }
 
   // 重置雪花位置和属性
   function resetFlake(flake: HTMLElement) {
-    const size = Math.random() * 6 + 2; // 更大的尺寸范围
-    const startX = Math.random() * width;
-    const startY = Math.random() * -height;
+    const size = Math.random() * 6 + 2 // 更大的尺寸范围
+    const startX = Math.random() * width
+    const startY = Math.random() * -height
 
-    flake.style.width = `${size}px`;
-    flake.style.height = `${size}px`;
-    flake.style.left = `${startX}px`;
-    flake.style.top = `${startY}px`;
-    flake.style.opacity = String(Math.random() * 0.5 + 0.3); // 随机透明度
-    flake.dataset.speed = String(Math.random() * 2 + 0.5); // 调整下落速度
+    flake.style.width = `${size}px`
+    flake.style.height = `${size}px`
+    flake.style.left = `${startX}px`
+    flake.style.top = `${startY}px`
+    flake.style.opacity = String(Math.random() * 0.5 + 0.3) // 随机透明度
+    flake.dataset.speed = String(Math.random() * 2 + 0.5) // 调整下落速度
   }
 
   // 动画效果
   function animate() {
-    flakes.forEach(flake => {
-      cancelAnimationFrame(myReq);
+    flakes.forEach((flake) => {
+      cancelAnimationFrame(myReq)
 
       // 更新位置
-      flake.y += parseFloat(String(flake.element.dataset.speed));
+      flake.y += Number.parseFloat(String(flake.element.dataset.speed))
 
       // 添加摇摆效果
-      flake.swing += flake.swingInc;
-      flake.x += Math.sin(flake.swing) * 0.5;
+      flake.swing += flake.swingInc
+      flake.x += Math.sin(flake.swing) * 0.5
 
       // 检查边界
       if (flake.y > height || flake.x < 0 || flake.x > width) {
-        resetFlake(flake.element);
-        flake.x = parseFloat(flake.element.style.left);
-        flake.y = parseFloat(flake.element.style.top);
-        flake.swing = 0;
-      } else {
-        flake.element.style.top = `${flake.y}px`;
-        flake.element.style.left = `${flake.x}px`;
+        resetFlake(flake.element)
+        flake.x = Number.parseFloat(flake.element.style.left)
+        flake.y = Number.parseFloat(flake.element.style.top)
+        flake.swing = 0
+      }
+      else {
+        flake.element.style.top = `${flake.y}px`
+        flake.element.style.left = `${flake.x}px`
 
         // 添加旋转效果
-        flake.element.style.transform = `rotate(${flake.swing * 10}deg)`;
+        flake.element.style.transform = `rotate(${flake.swing * 10}deg)`
       }
-    });
+    })
 
-    myReq = requestAnimationFrame(animate);
+    myReq = requestAnimationFrame(animate)
   }
 
   // 调整窗口大小
   function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
+    width = window.innerWidth
+    height = window.innerHeight
   }
 
   // 初始化
-  init();
-  window.addEventListener('resize', resize);
+  init()
+  window.addEventListener('resize', resize)
 }

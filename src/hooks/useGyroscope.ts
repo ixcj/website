@@ -1,9 +1,10 @@
+import type { WatchStopHandle } from 'vue'
 import {
-  type WatchStopHandle,
-  ref,
-  watch,
   onMounted,
   onUnmounted,
+  ref,
+  watch,
+
 } from 'vue'
 
 export function useGyroscope(enable: boolean = true) {
@@ -17,16 +18,16 @@ export function useGyroscope(enable: boolean = true) {
 
   if (globalThis?.DeviceOrientationEvent) {
     if (typeof (globalThis?.DeviceOrientationEvent as any)?.requestPermission === 'function') {
-      (globalThis!.DeviceOrientationEvent as any).requestPermission()
-        .then((permission: 'granted' | Omit<any, 'granted'>) => {
-          alert(permission)
-          if (permission === 'granted') {
-            ready.value = true
-          } else {
-            ready.value = false
-          }
-        })
-    } else {
+      (globalThis!.DeviceOrientationEvent as any).requestPermission().then((permission: 'granted' | Omit<any, 'granted'>) => {
+        if (permission === 'granted') {
+          ready.value = true
+        }
+        else {
+          ready.value = false
+        }
+      })
+    }
+    else {
       ready.value = true
     }
   }
@@ -41,13 +42,14 @@ export function useGyroscope(enable: boolean = true) {
     unwatch = watch(
       activate,
       (value) => {
-        if (!ready.value) return
+        if (!ready.value)
+          return
 
         value
           ? globalThis?.addEventListener('deviceorientation', handleOrientation)
           : globalThis?.removeEventListener('deviceorientation', handleOrientation)
       },
-      { immediate: true }
+      { immediate: true },
     )
   })
 

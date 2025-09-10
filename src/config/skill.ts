@@ -1,9 +1,9 @@
-import { Html5, Css3Alt, JsSquare, GitAlt, Github } from '@vicons/fa'
+import { Css3Alt, GitAlt, Github, Html5, JsSquare } from '@vicons/fa'
+import Threejs from '@/assets/svg/Threejs-logo.svg'
 import Typescript from '@/assets/svg/Typescript-logo.svg'
+import Vite from '@/assets/svg/Vite-logo.svg'
 import Vue from '@/assets/svg/Vue-logo.svg'
 import VueUse from '@/assets/svg/VueUse-logo.svg'
-import Vite from '@/assets/svg/Vite-logo.svg'
-import Threejs from '@/assets/svg/Threejs-logo.svg'
 
 interface Skill {
   name: string

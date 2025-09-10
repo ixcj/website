@@ -1,8 +1,8 @@
 import {
-  ref,
-  reactive,
   onMounted,
   onUnmounted,
+  reactive,
+  ref,
   watchEffect,
 } from 'vue'
 
@@ -20,7 +20,7 @@ interface Options {
 export function useCheatCode(
   keys: string[],
   fn = () => {},
-  options: Options = {}
+  options: Options = {},
 ) {
   const {
     defaultActivate = true,
@@ -48,33 +48,38 @@ export function useCheatCode(
   function setKeys(e: KeyboardEvent) {
     try {
       const { code } = e
-      if (!code) return
+      if (!code)
+        return
 
       _keys.push(code)
 
       // 重置超时定时器
-      if (timeoutId) clearTimeout(timeoutId)
+      if (timeoutId)
+        clearTimeout(timeoutId)
       timeoutId = setTimeout(resetKeys, timeout)
 
       // 如果输入序列长度超过目标序列，移除最早的输入
       if (keys.length < _keys.length) {
         _keys.shift()
       }
-    } catch (err) {
+    }
+    catch (err) {
       console.error('Error in setKeys:', err)
       resetKeys()
     }
   }
 
   watchEffect(() => {
-    if (!activate.value) return
+    if (!activate.value)
+      return
 
     try {
       if (matcher(_keys, keys)) {
         resetKeys()
         fn()
       }
-    } catch (err) {
+    }
+    catch (err) {
       console.error('Error in watchEffect:', err)
       resetKeys()
     }
@@ -85,7 +90,7 @@ export function useCheatCode(
       window.addEventListener(listenerType, setKeys)
     }
   })
-  
+
   onUnmounted(() => {
     if (typeof window !== 'undefined') {
       window.removeEventListener(listenerType, setKeys)
@@ -93,7 +98,7 @@ export function useCheatCode(
     }
   })
 
-  return { 
+  return {
     activate,
     resetKeys,
   }

@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
 import { useHead } from '@unhead/vue'
+import { nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useCheatCode } from '@/hooks/useCheatCode'
+import { css } from '@/assets/font/MiSans-Normal.ttf?subsets'
+import PageCursor from '@/components/PageCursor/index.vue'
+import PageFooter from '@/components/PageFooter/index.vue'
+import PageHeader from '@/components/PageHeader/index.vue'
+import PageMain from '@/components/PageMain/index.vue'
 import {
-  siteUrl,
-  githubContributionUser,
   cheatsKeys,
+  githubContributionUser,
   loadMaxWaitingTime,
+  siteUrl,
 } from '@/config'
+import { useCheatCode } from '@/hooks/useCheatCode'
+import { cheatsExecute } from '@/utils/cheats'
 import {
   breakpointsName,
   mobile,
-  touch,
   setScrollBarWidth,
+  touch,
 } from '@/utils/screen'
-import { cheatsExecute } from '@/utils/cheats'
-import PageCursor from '@/components/PageCursor/index.vue'
-import PageHeader from '@/components/PageHeader/index.vue'
-import PageMain from '@/components/PageMain/index.vue'
-import PageFooter from '@/components/PageFooter/index.vue'
-import { css } from '@/assets/font/MiSans-Normal.ttf?subsets'
 
 const { t } = useI18n()
 
@@ -53,12 +53,14 @@ useHead({
   ],
   link: [
     // 设置了 githubContributionUser 则引入样式
-    githubContributionUser ? {
-      href: '/css/github-calendar-responsive.css',
-      rel: "stylesheet",
-      type: "text/css"
-    } : {},
-  ]
+    githubContributionUser
+      ? {
+          href: '/css/github-calendar-responsive.css',
+          rel: 'stylesheet',
+          type: 'text/css',
+        }
+      : {},
+  ],
 })
 
 const loading = ref(false)
@@ -74,7 +76,7 @@ function onLoad() {
   })
 }
 
-if(Array.isArray(cheatsKeys) && cheatsKeys.length) {
+if (Array.isArray(cheatsKeys) && cheatsKeys.length) {
   useCheatCode(cheatsKeys, cheatsExecute)
 }
 </script>

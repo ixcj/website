@@ -28,8 +28,7 @@ export const projects: StereoCardItem[] = [
     ],
     description: `This website is my digital portfolio, showcasing my work and skills to give visitors a clear understanding of who I am. `,
     tags: [
-      { content: 'In active development', type: 'success' },
-      { content: 'Current page', type: 'warning' },
+      { content: 'Current page', type: 'success' },
     ],
   },
   {
@@ -50,7 +49,7 @@ export const experiences: TimelineTurntableItem[] = [
   {
     date: [
       { year: 2020, month: 7 },
-      { year: 2021, month: 12 }
+      { year: 2021, month: 12 },
     ],
     title: 'Frozen Products Supply Chain Company',
     children: [
@@ -67,7 +66,7 @@ export const experiences: TimelineTurntableItem[] = [
   {
     date: [
       { year: 2022, month: 1 },
-      { year: 2022, month: 12 }
+      { year: 2022, month: 12 },
     ],
     title: 'Digital Services Company',
     children: [
@@ -85,8 +84,8 @@ export const experiences: TimelineTurntableItem[] = [
   },
   {
     date: [
-      { year: 2023, month: 5 }, 
-      'now'
+      { year: 2023, month: 5 },
+      'now',
     ],
     title: 'Digital Twin Company',
     children: [
@@ -105,7 +104,7 @@ export const experiences: TimelineTurntableItem[] = [
 export default {
   lang: 'en-US',
   language: 'EN',
-  
+
   name,
   intro,
   mottos,

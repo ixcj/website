@@ -1,9 +1,10 @@
+import type { WatchStopHandle } from 'vue'
 import {
-  type WatchStopHandle,
-  ref,
-  watch,
   onMounted,
   onUnmounted,
+  ref,
+  watch,
+
 } from 'vue'
 
 interface Options {
@@ -22,7 +23,7 @@ interface Options {
 
 export function useTypewriter(
   defaultText: string = '',
-  options: Options = {}
+  options: Options = {},
 ) {
   let isPause = false
 
@@ -39,13 +40,14 @@ export function useTypewriter(
   let timer: any
   let unwatch: WatchStopHandle
 
-  async function onOutput(fn?: Function) {
+  async function onOutput(fn?: () => void) {
     if (output.value.length < text.value.length) {
       await delayedTask(() => {
         !isPause && (output.value = text.value.substring(0, output.value.length + 1))
         onOutput(fn)
       }, interval)
-    } else {
+    }
+    else {
       callback && callback()
       fn && fn()
     }
@@ -57,12 +59,13 @@ export function useTypewriter(
         !isPause && (output.value = output.value.substring(0, output.value.length - 1))
         onBackspace()
       }, backInterval)
-    } else {
+    }
+    else {
       onOutput()
     }
   }
 
-  function delayedTask(task: Function, delay: number) {
+  function delayedTask(task: () => void, delay: number) {
     return new Promise((resolve) => {
       timer = setTimeout(() => {
         task()
@@ -82,7 +85,7 @@ export function useTypewriter(
         clearTimeout(timer)
         onBackspace()
       },
-      { immediate }
+      { immediate },
     )
   })
 

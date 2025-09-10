@@ -28,8 +28,7 @@ export const projects: StereoCardItem[] = [
     ],
     description: `这个网站是我展示个人作品和专业技能的数字名片，旨在为访客提供一个全面的了解我的平台。`,
     tags: [
-      { content: '积极开发中', type: 'success' },
-      { content: '当前浏览的页面', type: 'warning' },
+      { content: '当前浏览的页面', type: 'success' },
     ],
   },
   {
@@ -50,7 +49,7 @@ export const experiences: TimelineTurntableItem[] = [
   {
     date: [
       { year: 2020, month: 7 },
-      { year: 2021, month: 12 }
+      { year: 2021, month: 12 },
     ],
     title: '某冻品供应链公司',
     children: [
@@ -67,7 +66,7 @@ export const experiences: TimelineTurntableItem[] = [
   {
     date: [
       { year: 2022, month: 1 },
-      { year: 2022, month: 12 }
+      { year: 2022, month: 12 },
     ],
     title: '某数字化服务公司',
     children: [
@@ -85,8 +84,8 @@ export const experiences: TimelineTurntableItem[] = [
   },
   {
     date: [
-      { year: 2023, month: 5 }, 
-      'now'
+      { year: 2023, month: 5 },
+      'now',
     ],
     title: '某数字孪生公司',
     children: [
@@ -105,7 +104,7 @@ export const experiences: TimelineTurntableItem[] = [
 export default {
   lang: 'zh-CN',
   language: '中',
-  
+
   name,
   intro,
   mottos,
