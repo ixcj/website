@@ -1,12 +1,11 @@
 <script setup lang="ts">
 // @ts-expect-error 没有类型说明
 import GitHubCalendar from 'github-calendar'
-import { nextTick, onMounted, ref, watchEffect } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { avatarLink, githubContributionUser, socialLinks } from '@/config'
 import { useTypewriter } from '@/hooks/useTypewriter'
 import { mottoLength } from '@/language'
-import { isStartViewTransition } from '@/utils/screen'
 
 const GITHUB_CALENDAR_WIDTH = 690
 const TYPEWRITER_PARAGRAPH_INTERVAL = 5000
@@ -16,7 +15,7 @@ let mottoIndex = getIndex(mottoLength)
 const { t, locale } = useI18n()
 const TYPEWRITER_OUTPUT_INTERVAL = locale.value === 'zh' ? 50 : 25
 
-const { text, output: motto, pause } = useTypewriter(t(`mottos[${mottoIndex}]`), {
+const { text, output: motto } = useTypewriter(t(`mottos[${mottoIndex}]`), {
   interval: TYPEWRITER_OUTPUT_INTERVAL,
   backInterval: TYPEWRITER_OUTPUT_INTERVAL * 0.618,
   callback: () => {
@@ -35,8 +34,6 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
 
   return list[Math.floor(Math.random() * list.length)]
 }
-
-watchEffect(() => pause(isStartViewTransition.value))
 
 const loading = ref(true)
 
