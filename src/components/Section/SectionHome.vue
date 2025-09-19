@@ -1,15 +1,15 @@
 <script setup lang="ts">
 // @ts-expect-error 没有类型说明
 import GitHubCalendar from 'github-calendar'
-import { nextTick, onMounted, ref, watchEffect } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { avatarLink, githubContributionUser, socialLinks } from '@/config'
 import { useTypewriter } from '@/hooks/useTypewriter'
 import { mottoLength } from '@/language'
-import { isStartViewTransition } from '@/utils/screen'
 
 const GITHUB_CALENDAR_WIDTH = 690
 const TYPEWRITER_PARAGRAPH_INTERVAL = 5000
+const THEME_SWITCH_ANIMATION_NAME_LIST = ['light-to-dark', 'dark-to-light']
 
 let mottoIndex = getIndex(mottoLength)
 
@@ -35,8 +35,6 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
 
   return list[Math.floor(Math.random() * list.length)]
 }
-
-watchEffect(() => pause(isStartViewTransition.value))
 
 const loading = ref(true)
 
@@ -67,8 +65,30 @@ function setGithubContributionCalendar() {
   })
 }
 
+function handleAnimationStart(event: AnimationEvent) {
+  handleThemeSwitchAnimation(event, () => pause(true))
+}
+
+function handleAnimationEnd(event: AnimationEvent) {
+  handleThemeSwitchAnimation(event, () => pause(false))
+}
+
+function handleThemeSwitchAnimation(event: AnimationEvent, fn: () => void) {
+  const { animationName } = event
+  if (THEME_SWITCH_ANIMATION_NAME_LIST.includes(animationName)) {
+    fn?.()
+  }
+}
+
 onMounted(() => {
   setGithubContributionCalendar()
+  document.addEventListener('animationstart', handleAnimationStart)
+  document.addEventListener('animationend', handleAnimationEnd)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('animationstart', handleAnimationStart)
+  document.removeEventListener('animationend', handleAnimationEnd)
 })
 </script>
 
