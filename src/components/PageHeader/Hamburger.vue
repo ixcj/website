@@ -2,21 +2,20 @@
 defineProps({
   active: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 </script>
 
 <template>
   <div class="hamburger" :class="{ active }">
-    <span class="hamburger-1"></span>
-    <span class="hamburger-2"></span>
-    <span class="hamburger-3"></span>
+    <span class="hamburger-1" />
+    <span class="hamburger-2" />
+    <span class="hamburger-3" />
   </div>
-  
 </template>
 
-<style lang="scss"scoped>
+<style lang="scss" scoped>
 .hamburger {
   cursor: pointer;
   width: 20px;
@@ -24,7 +23,7 @@ defineProps({
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
+
   &.active {
     .hamburger-1,
     .hamburger-2,

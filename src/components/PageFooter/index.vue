@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { footerLinks } from '@/config';
+import { footerLinks } from '@/config'
 </script>
 
 <template>

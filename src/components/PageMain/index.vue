@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { type Component, computed } from 'vue'
-import { contentWidth } from '@/utils/screen'
-import { sectionList, type Section } from '@/config'
-import SectionHome from '@/components/Section/SectionHome.vue'
+import type { Component } from 'vue'
+import type { Section } from '@/config'
+import { computed } from 'vue'
 import SectionAbout from '@/components/Section/SectionAbout.vue'
-import SectionSkills from '@/components/Section/SectionSkills.vue'
-import SectionProject from '@/components/Section/SectionProject.vue'
 import SectionExperience from '@/components/Section/SectionExperience.vue'
+import SectionHome from '@/components/Section/SectionHome.vue'
+import SectionProject from '@/components/Section/SectionProject.vue'
+import SectionSkills from '@/components/Section/SectionSkills.vue'
+import { sectionList } from '@/config'
+import { contentWidth } from '@/utils/screen'
 
 const sectionMap: { [section in Section]: Component } = {
   home: SectionHome,
@@ -44,7 +46,7 @@ const contentWidthString = computed(() => {
     transition: padding-top var(--transition-duration);
     position: relative;
   }
-  
+
   .section-item {
     margin: 20px auto calc(var(--header-height) + var(--mobile-extra-scroll-padding-top, 0px));
     max-width: v-bind(contentWidthString);

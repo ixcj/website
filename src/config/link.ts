@@ -1,4 +1,4 @@
-import { Github, Blog, Envelope } from '@vicons/fa'
+import { Blog, Envelope, Github } from '@vicons/fa'
 
 // 网站URL
 export const siteUrl = import.meta.env.VITE_SITE_URL || 'https://xcj.pw'

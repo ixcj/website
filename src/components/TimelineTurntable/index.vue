@@ -1,23 +1,24 @@
 <script setup lang="ts">
+import type { TimelineTurntableTransformItem } from './transform'
 import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
+import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import {
-  ref,
   computed,
+  nextTick,
   onMounted,
   onUnmounted,
-  nextTick,
+  ref,
 } from 'vue'
-import Turntable from './Turntable.vue'
 import {
-  type TimelineTurntableTransformItem,
-  transformTimelineTurntableItem,
-  getDateString,
   distinguishDateData,
+  getDateString,
+
+  transformTimelineTurntableItem,
 } from './transform'
-import { ArrowLeft, ArrowRight } from '@vicons/fa'
+import Turntable from './Turntable.vue'
 
 interface Props {
-  data: TimelineTurntableItem[],
+  data: TimelineTurntableItem[]
   /** 滑动速度 */
   slidingSpeed?: number
   /** 启用惯性 */
@@ -54,7 +55,7 @@ const absRotateZ = computed(() => Math.abs((rotateZ.value >= 0 ? 0 : 360) - (Mat
 
 const transformData = computed<TimelineTurntableTransformItem[]>(() => transformTimelineTurntableItem(props.data))
 const currentAngleIndex = computed(() => {
-  return transformData.value.findIndex(item => {
+  return transformData.value.findIndex((item) => {
     const [min, max] = item.angleRange
     return absRotateZ.value >= min && absRotateZ.value < max
   })
@@ -83,19 +84,19 @@ const currentAngleDataChildrenItem = computed(() => {
 
 const progressPartingLine = computed(() => {
   const data: number[] = []
-  currentAngleData.value?.children.map(({ range }) => {
+  currentAngleData.value?.children.forEach(({ range }) => {
     const [_, max = 1] = range || []
 
     if (![0, 1].includes(max)) {
       data.push(max)
     }
   })
-  
+
   return data
 })
 
 const ResizeObserver = globalThis?.ResizeObserver
-const resizeObserver = ResizeObserver && new ResizeObserver(entries => {
+const resizeObserver = ResizeObserver && new ResizeObserver((entries) => {
   for (const entry of entries) {
     nextTick(() => {
       overflowDetection(entry.target)
@@ -123,7 +124,7 @@ function onMousedown(e: MouseEvent | TouchEvent) {
 
   pressedDuration = new Date().getTime()
   inertia = 0
-  
+
   const event = e.type === 'mousedown' ? (e as MouseEvent) : (e as TouchEvent).changedTouches[0]
   const { clientX, clientY } = event
 
@@ -134,8 +135,9 @@ function onMousedown(e: MouseEvent | TouchEvent) {
 }
 
 function onMouseup(e: MouseEvent | TouchEvent) {
-  if (!isPressed.value) return
-  
+  if (!isPressed.value)
+    return
+
   isPressed.value = false
 
   if (props.enablingInertia) {
@@ -144,34 +146,35 @@ function onMouseup(e: MouseEvent | TouchEvent) {
 
     const event = e.type === 'mouseup' ? (e as MouseEvent) : (e as TouchEvent).changedTouches[0]
     const { clientX } = event
-    
+
     const deltaX = clientX - oldPosition.x
-    
+
     inertia = Math.sqrt(deltaX * deltaX) * pressedDuration / 1000
     inertiaDirection = deltaX > 0 ? -1 : 1
-    
+
     inertiaFrameTaskCompletionTime = new Date().getTime()
     inertiaReq = requestAnimationFrame(applyInertia)
-  } else {
+  }
+  else {
     isScrolling.value = false
   }
 }
 
 function onMousemove(e: MouseEvent | TouchEvent) {
   cancelAnimationFrame(myReq)
-  
+
   if (isPressed.value) {
     const { x, y } = oldPosition
 
     const event = e.type === 'mousemove' ? (e as MouseEvent) : (e as TouchEvent).changedTouches[0]
     const { clientX, clientY } = event
-    
+
     myReq = requestAnimationFrame(() => {
       if (timelineTurntableRef.value && timelineTurntableRotateBoxRef.value) {
         const { clientWidth } = timelineTurntableRef.value
         const { clientWidth: rotateBoxClientWidth } = timelineTurntableRotateBoxRef.value
         const scale = clientWidth / (rotateBoxClientWidth * (1 - Math.min(props.slidingSpeed, 0.9999)))
-        
+
         const theta = Math.atan2(y, x)
         const mouseTheta = Math.atan2(y, clientX)
         const deltaTheta = mouseTheta - theta
@@ -181,7 +184,7 @@ function onMousemove(e: MouseEvent | TouchEvent) {
         oldPosition.y = clientY
 
         const _rotateZ = Number(deltaThetaDegrees * scale + rotateZ.value)
-        rotateZ.value = isNaN(_rotateZ) ? 0 : _rotateZ
+        rotateZ.value = Number.isNaN(_rotateZ) ? 0 : _rotateZ
       }
     })
   }
@@ -189,22 +192,23 @@ function onMousemove(e: MouseEvent | TouchEvent) {
 
 function applyInertia() {
   cancelAnimationFrame(inertiaReq)
-  
+
   if (Math.abs(inertia) > props.inertialStopThreshold) {
     const now = new Date().getTime()
     const deltaTime = now - inertiaFrameTaskCompletionTime
     const frameRateRatio = deltaTime / props.frameInterval
     const inertiaValue = inertia * inertiaDirection * props.inertiaSpeed
     const inertiaAttenuationValue = inertia * (1 - Math.min(props.inertiaDecayRatio, 1)) * frameRateRatio
-    
+
     const rotateZValue = rotateZ.value + inertiaValue
-    rotateZ.value = isNaN(rotateZValue) ? 0 : rotateZValue
+    rotateZ.value = Number.isNaN(rotateZValue) ? 0 : rotateZValue
 
     inertia -= inertiaAttenuationValue
     inertiaFrameTaskCompletionTime = now
-    
+
     inertiaReq = requestAnimationFrame(applyInertia)
-  } else {
+  }
+  else {
     isScrolling.value = false
   }
 }
@@ -214,12 +218,14 @@ function handleRotate(directional: 'left' | 'right') {
   cancelAnimationFrame(inertiaReq)
 
   const len = transformData.value.length
-  if (len === 0) return
+  if (len === 0)
+    return
 
   let index = currentAngleIndex.value
   if (directional === 'left') {
     index = (index - 1 + len) % len
-  } else {
+  }
+  else {
     index = (index + 1) % len
   }
 
@@ -253,12 +259,12 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="timeline-turntable"
     ref="timelineTurntableRef"
+    class="timeline-turntable"
     :class="{ pressed: isPressed, scrolling: isScrolling }"
   >
     <div class="turntable-box">
-      <div class="turntable-rotate-box" ref="timelineTurntableRotateBoxRef">
+      <div ref="timelineTurntableRotateBoxRef" class="turntable-rotate-box">
         <Turntable class="turntable-image" />
       </div>
     </div>
@@ -277,7 +283,7 @@ onUnmounted(() => {
           <ArrowLeft />
         </div>
 
-        <div class="turntable-content-date" :style="{ '--date-progress': dateProgress * 100 + '%' }">
+        <div class="turntable-content-date" :style="{ '--date-progress': `${dateProgress * 100}%` }">
           <span>{{ currentAngleData?.date[0] }}</span>
           <span>{{ currentAngleData?.date[1] }}</span>
 
@@ -285,8 +291,8 @@ onUnmounted(() => {
             <div
               v-for="n in progressPartingLine"
               class="turntable-content-date-parting-line-item"
-              :style="{ '--parting-line-left': n * 100 + '%' }"
-            ></div>
+              :style="{ '--parting-line-left': `${n * 100}%` }"
+            />
           </div>
         </div>
 
@@ -302,18 +308,22 @@ onUnmounted(() => {
           <ArrowRight />
         </div>
       </div>
-      <p class="turntable-content-title" v-if="currentAngleData?.title" @touchmove.stop @touchstart.stop>{{ currentAngleData?.title }}</p>
-      <div class="turntable-content-text-box" ref="turntableContentTextBoxRef">
+      <p v-if="currentAngleData?.title" class="turntable-content-title" @touchmove.stop @touchstart.stop>
+        {{ currentAngleData?.title }}
+      </p>
+      <div ref="turntableContentTextBoxRef" class="turntable-content-text-box">
         <Transition name="fade" mode="out-in">
-          <div class="turntable-content-text" :key="JSON.stringify(currentAngleDataChildrenItem)" @touchmove.stop @touchstart.stop>
-            <div v-if="currentAngleDataChildrenItem.title" class="turntable-content-text-title">{{ currentAngleDataChildrenItem.title }}</div>
-            <div v-if="currentAngleDataChildrenItem.describe" class="turntable-content-text-describe" v-html="currentAngleDataChildrenItem.describe"></div>
+          <div :key="JSON.stringify(currentAngleDataChildrenItem)" class="turntable-content-text" @touchmove.stop @touchstart.stop>
+            <div v-if="currentAngleDataChildrenItem.title" class="turntable-content-text-title">
+              {{ currentAngleDataChildrenItem.title }}
+            </div>
+            <div v-if="currentAngleDataChildrenItem.describe" class="turntable-content-text-describe" v-html="currentAngleDataChildrenItem.describe" />
           </div>
         </Transition>
       </div>
     </div>
 
-    <div class="seo-data-box" v-if="seoData.length">
+    <div v-if="seoData.length" class="seo-data-box">
       <template v-for="item in seoData">
         <div class="turntable-content-box">
           <div class="turntable-content-date-box">
@@ -322,11 +332,15 @@ onUnmounted(() => {
               <span>{{ getDateString(distinguishDateData(item.date[1])) }}</span>
             </div>
           </div>
-          <p class="turntable-content-title" v-if="item?.title" @touchmove.stop @touchstart.stop>{{ item.title }}</p>
-          <div class="turntable-content-text-box" v-for="childrenItem in item.children">
-            <div class="turntable-content-text" :key="JSON.stringify(childrenItem)" @touchmove.stop @touchstart.stop>
-              <div v-if="childrenItem.title" class="turntable-content-text-title">{{ childrenItem.title }}</div>
-              <div v-if="childrenItem.describe" class="turntable-content-text-describe" v-html="childrenItem.describe"></div>
+          <p v-if="item?.title" class="turntable-content-title" @touchmove.stop @touchstart.stop>
+            {{ item.title }}
+          </p>
+          <div v-for="childrenItem in item.children" class="turntable-content-text-box">
+            <div :key="JSON.stringify(childrenItem)" class="turntable-content-text" @touchmove.stop @touchstart.stop>
+              <div v-if="childrenItem.title" class="turntable-content-text-title">
+                {{ childrenItem.title }}
+              </div>
+              <div v-if="childrenItem.describe" class="turntable-content-text-describe" v-html="childrenItem.describe" />
             </div>
           </div>
         </div>
@@ -357,7 +371,7 @@ onUnmounted(() => {
       transition: transform calc(var(--transition-duration) / 3) linear !important;
     }
   }
-  
+
   .turntable-box {
     pointer-events: none;
     position: relative;

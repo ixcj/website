@@ -1,6 +1,38 @@
 @use '@/assets/style/normalize.css';
 @use '@/assets/style/theme.scss';
 
+@keyframes light-to-dark {
+  from {
+    clip-path: polygon(0 0,
+      0 0,
+      calc(tan(8deg) * -100vh) 100%,
+      calc(tan(8deg) * -100vh) 100%);
+  }
+
+  to {
+    clip-path: polygon(0 0,
+      calc((tan(8deg) * 100vh) + 100%) 0,
+      100% 100%,
+      calc(tan(8deg) * -100vh) 100%);
+  }
+}
+
+@keyframes dark-to-light {
+  from {
+    clip-path: polygon(calc((tan(8deg) * 100vh) + 100%) 0,
+      calc((tan(8deg) * 100vh) + 100%) 0,
+      100% 100%,
+      100% 100%);
+  }
+
+  to {
+    clip-path: polygon(0 0,
+      calc((tan(8deg) * 100vh) + 100%) 0,
+      100% 100%,
+      calc(tan(8deg) * -100vh) 100%);
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -13,14 +45,26 @@
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + var(--mobile-extra-scroll-padding-top, 0px) - 1px);
 
-  &::view-transition-old(root),
-  &::view-transition-new(root) {
-    animation: none;
+  &::view-transition-group(root) {
+    animation-duration: 1s;
+  }
+
+  &::view-transition-new(root),
+  &::view-transition-old(root) {
     mix-blend-mode: normal;
   }
 
+  &::view-transition-old(root),
   &.dark::view-transition-old(root) {
-    z-index: 1;
+    animation: none;
+  }
+
+  &::view-transition-new(root) {
+    animation-name: dark-to-light;
+  }
+
+  &.dark::view-transition-new(root) {
+    animation-name: light-to-dark;
   }
 
   &.hide-scroll-bar {

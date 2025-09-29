@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, watchEffect, computed } from 'vue'
-import { mobile, mobileThresholdValue } from '@/utils/screen'
-import { sectionList } from '@/config'
-import ThemeSwitch from './ThemeSwitch.vue'
-import Hamburger from './Hamburger.vue'
+import { computed, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { sectionList } from '@/config'
+import { mobile, mobileThresholdValue } from '@/utils/screen'
+import Hamburger from './Hamburger.vue'
+import ThemeSwitch from './ThemeSwitch.vue'
 
 const DEFAULT_HEADER_HEIGHT = 80
 const MOBILE_HEADER_HEIGHT = 50
@@ -28,7 +28,8 @@ watchEffect(() => {
 watchEffect(() => {
   if (mobile.value) {
     headerHeight.value = MOBILE_HEADER_HEIGHT
-  } else {
+  }
+  else {
     headerHeight.value = DEFAULT_HEADER_HEIGHT
     menuHamburgerActive.value = false
   }
@@ -58,11 +59,10 @@ watchEffect(() => {
         <Transition name="nav">
           <ul
             v-show="showMenu"
-            ref="navList"
             class="page-header-nav-list"
-            :class="{ 'column': mobile }"
+            :class="{ column: mobile }"
           >
-            <li class="page-header-nav-item" v-for="section in sectionList" @click="menuHamburgerActive = false">
+            <li v-for="section in sectionList" class="page-header-nav-item" @click="menuHamburgerActive = false">
               <a class="page-header-link" :href="`#${section}`">{{ $t(`SectionText.${section}`) }}</a>
             </li>
             <li v-if="mobile" class="page-header-nav-item">
@@ -74,7 +74,7 @@ watchEffect(() => {
       </nav>
     </div>
     <Transition name="opacity">
-      <div v-show="mobile && showMenu" class="overlay" @click.stop="menuHamburgerActive = false"></div>
+      <div v-show="mobile && showMenu" class="overlay" @click.stop="menuHamburgerActive = false" />
     </Transition>
   </header>
 </template>
@@ -161,7 +161,7 @@ watchEffect(() => {
     .dark & {
       background-color: rgba($color: #999, $alpha: .1);
     }
-    
+
     .page-header-title {
       position: absolute;
       top: 50%;
@@ -235,7 +235,7 @@ watchEffect(() => {
         display: flex;
         justify-content: center;
         align-items: center;
-        
+
         .page-header-link {
           width: 100%;
           padding: 15px;

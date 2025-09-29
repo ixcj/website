@@ -3,7 +3,7 @@ export type dateData = {
   month: number
 } | 'now'
 
-export type TimelineTurntableItemChildren = {
+export interface TimelineTurntableItemChildren {
   title?: string
   describe: string
   range?: [number, number]
