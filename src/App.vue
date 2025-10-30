@@ -55,7 +55,7 @@ useHead({
     // 设置了 githubContributionUser 则引入样式
     githubContributionUser
       ? {
-          href: '/css/github-calendar-responsive.css',
+          href: `${import.meta.env.BASE_URL}/css/github-calendar-responsive.css`,
           rel: 'stylesheet',
           type: 'text/css',
         }

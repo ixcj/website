@@ -9,7 +9,7 @@ const { messages, defaultLanguage } = require('./src/language/index.ts')
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => ({
-  base: command === 'serve' ? '/weisite/' : undefined,
+  base: command === 'serve' ? '/website/' : undefined,
   plugins: [
     vue(),
     Font.vite({
