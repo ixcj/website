@@ -22,7 +22,7 @@ export const introduce = [
 export const projects: StereoCardItem[] = [
   {
     name: 'Personal Website',
-    logo: `${import.meta.env.BASE_URL}/avatar.png`,
+    logo: './avatar.png',
     links: [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
     ],
