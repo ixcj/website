@@ -233,7 +233,8 @@ function handleRotate(directional: 'left' | 'right') {
 }
 
 onMounted(() => {
-  turntableContentTextBoxRef.value && resizeObserver?.observe(turntableContentTextBoxRef.value)
+  if (turntableContentTextBoxRef.value)
+    resizeObserver?.observe(turntableContentTextBoxRef.value)
 
   globalThis.document.addEventListener('mousemove', onMousemove)
   timelineTurntableRef.value?.addEventListener('mousedown', onMousedown)

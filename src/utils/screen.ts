@@ -46,7 +46,8 @@ export function setScrollBarWidth() {
     .setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
 }
 
-haveMatchMedia
-&& globalThis.matchMedia('(pointer: coarse)').addEventListener('change', () => {
-  touch.value = globalThis.matchMedia('(pointer: coarse)').matches
-})
+if (haveMatchMedia) {
+  globalThis.matchMedia('(pointer: coarse)').addEventListener('change', () => {
+    touch.value = globalThis.matchMedia('(pointer: coarse)').matches
+  })
+}
