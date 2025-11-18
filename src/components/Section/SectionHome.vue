@@ -11,7 +11,7 @@ const GITHUB_CALENDAR_WIDTH = 690
 const TYPEWRITER_PARAGRAPH_INTERVAL = 5000
 const THEME_SWITCH_ANIMATION_NAME_LIST = ['light-to-dark', 'dark-to-light']
 
-const avatar = `${import.meta.env.BASE_URL}/avatar.png`
+const avatar = `${import.meta.env.BASE_URL}avatar.png`
 
 let mottoIndex = getIndex(mottoLength)
 
