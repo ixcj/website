@@ -31,6 +31,10 @@ watchDebounced(
     globalThis?.document?.documentElement.style
       .setProperty('--mobile-extra-scroll-padding-top', `${mobile.value ? 20 : 0}px`)
 
+    const themeSwitchingAnimationDuration = Math.min((newWidth / 4) + 500, 1000)
+    globalThis?.document?.documentElement.style
+      .setProperty('--theme-switching-animation-duration', `${themeSwitchingAnimationDuration}ms`)
+
     setScrollBarWidth()
   },
   { immediate: true, debounce: 33 },
