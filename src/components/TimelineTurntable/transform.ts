@@ -1,7 +1,7 @@
 import type {
   dateData,
   TimelineTurntableItem,
-  TimelineTurntableItemChildren
+  TimelineTurntableItemChildren,
 } from '@/types/TimelineTurntable'
 
 export interface TimelineTurntableTransformItem {
@@ -11,7 +11,7 @@ export interface TimelineTurntableTransformItem {
   children: TimelineTurntableItemChildren[]
 }
 
-type dateDataTransform = {
+interface dateDataTransform {
   year: number
   month: number
 }
@@ -19,7 +19,7 @@ type dateDataTransform = {
 export function transformTimelineTurntableItem(data: TimelineTurntableItem[]): TimelineTurntableTransformItem[] {
   let angleSum = 0
   const monthSpanSum = getMonthSpanSum(data)
-  const result: TimelineTurntableTransformItem[] = data.map(item => {
+  const result: TimelineTurntableTransformItem[] = data.map((item) => {
     const [_start, _end] = item.date
     const start = distinguishDateData(_start)
     const end = distinguishDateData(_end)
@@ -40,13 +40,13 @@ export function transformTimelineTurntableItem(data: TimelineTurntableItem[]): T
 
 export function getDateString(date: dateDataTransform): string {
   const { year, month } = date
-  return `${year}-${month < 10 ? '0' + month : month}`
+  return `${year}-${month < 10 ? `0${month}` : month}`
 }
 
 export function getMonthSpanSum(items: TimelineTurntableItem[]): number {
   let spanSum = 0
 
-  items.forEach(item => {
+  items.forEach((item) => {
     const [startDate, endDate] = item.date
     const span = getMonthSpan(startDate, endDate)
     spanSum += span
@@ -74,7 +74,7 @@ export function getMonthSpan(startDate: dateData, endDate: dateData): number {
 export function getAngleRatio(
   dateRange: [dateDataTransform, dateDataTransform],
   monthSpanSum: number,
-  decimals: number = 4
+  decimals: number = 4,
 ): number {
   const [start, end] = dateRange
 

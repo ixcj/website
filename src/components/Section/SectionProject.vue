@@ -40,7 +40,8 @@ function setXY() {
     stereoCardData.value.X = xPercentage
     stereoCardData.value.Y = yPercentage
 
-    activate.value && setXY()
+    if (activate.value)
+      setXY()
   })
 }
 
@@ -54,9 +55,8 @@ function calculatePerspective(beta = 0, gamma = 0) {
 
 onMounted(() => {
   watchEffect(() => {
-    if (activate.value) {
+    if (activate.value)
       setXY()
-    }
   })
 })
 </script>

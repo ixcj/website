@@ -45,9 +45,12 @@ export function useGyroscope(enable: boolean = true) {
         if (!ready.value)
           return
 
-        value
-          ? globalThis?.addEventListener('deviceorientation', handleOrientation)
-          : globalThis?.removeEventListener('deviceorientation', handleOrientation)
+        if (value) {
+          globalThis?.addEventListener('deviceorientation', handleOrientation)
+        }
+        else {
+          globalThis?.removeEventListener('deviceorientation', handleOrientation)
+        }
       },
       { immediate: true },
     )
