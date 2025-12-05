@@ -11,6 +11,7 @@ import {
   cheatsKeys,
   githubContributionUser,
   loadMaxWaitingTime,
+  scriptList,
   siteUrl,
 } from '@/config'
 import { useCheatCode } from '@/hooks/useCheatCode'
@@ -61,6 +62,7 @@ useHead({
         }
       : {},
   ],
+  script: scriptList,
 })
 
 const loading = ref(false)

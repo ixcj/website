@@ -3,6 +3,9 @@ import { Blog, Envelope, Github } from '@vicons/fa'
 // 网站URL
 export const siteUrl = import.meta.env.VITE_SITE_URL || 'https://xcj.pw'
 
+// ICP 备案号
+export const icp = import.meta.env.VITE_ICP
+
 // 点击头像的跳转路径
 export const avatarLink = 'https://github.com/ixcj'
 
@@ -34,10 +37,9 @@ export const footerLinks = [
 ]
 
 // 根据条件显示备案信息
-const _siteUrl = siteUrl.replace(/\/$/g, '')
-if (_siteUrl.endsWith('//xcj.pw') || _siteUrl.endsWith('.xcj.pw')) {
+if (icp) {
   footerLinks.push({
-    name: '渝ICP备2021011542号-3',
+    name: icp,
     link: 'https://beian.miit.gov.cn',
   })
 }
