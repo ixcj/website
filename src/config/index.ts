@@ -30,5 +30,8 @@ export * from './breakpoints'
 // 链接
 export * from './link'
 
+// 额外 JS 引入
+export * from './script'
+
 // 技能
 export * from './skill'
