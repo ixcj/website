@@ -1,0 +1,27 @@
+name: Webhook Trigger on Branch Change
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger-webhook:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Call Webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+        run: |
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "错误: WEBHOOK_URL secret 未设置"
+            echo "请在 GitHub 仓库设置中添加 WEBHOOK_URL secret"
+            exit 1
+          fi
+          
+          echo "正在调用 webhook..."
+          
+          curl -X GET "$WEBHOOK_URL"
+          
+          echo "Webhook 调用完成"
