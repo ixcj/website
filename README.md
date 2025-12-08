@@ -62,10 +62,17 @@ pnpm preview
 
 ## 项目配置
 
+环境变量
+  - **VITE_SITE_URL**：站点完整路径
+  - **VITE_ICP**：ICP 备案号
+  - **VITE_UMAMI_URL**：Umami 脚本路径，例如 `https://umami.is/script.js`
+  - **VITE_UMAMI_WEBSITE_ID**：Umami 站点 ID，例如 `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
+
 配置类 -> `src/config/index.ts`
   - **sectionList**: 需要显示的板块
   - **githubContributionUser**: GitHub 用户名。用于显示对应用户的贡献日历，设置为空字符串可隐藏
   - **cheatsKeys**: 彩蛋秘籍，按顺序按下按键可触发彩蛋，默认触发 `src/utils/cheats.ts` 下的 `cheatsExecute` 方法
+  - **scriptList**：引入第三方 JS 脚本，`src/config/script.ts`
   - **其他**: 其他配置请自行查看
 
 文本类 -> `src/language/lang/**.ts`
