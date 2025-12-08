@@ -28,10 +28,15 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "eslint": "^9.35.0",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0",
+    "vite": "npm:rolldown-vite@latest",
     "vite-plugin-font": "^2.1.5",
     "vite-ssg": "^0.23.7",
     "vue-router": "^4.3.2",
     "vue-tsc": "^2.0.6"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "npm:rolldown-vite@latest"
+    }
   }
 }

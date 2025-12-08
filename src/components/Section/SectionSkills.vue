@@ -4,8 +4,10 @@ import { skillList } from '@/config'
 
 <template>
   <div class="section-skills text-type-box">
-    <h2 class="section-title">{{ $t('SectionTitle.skills') }}</h2>
-    
+    <h2 class="section-title">
+      {{ $t('SectionTitle.skills') }}
+    </h2>
+
     <div class="section-skill-box">
       <div v-for="item in skillList" class="section-skill-item">
         <template v-if="item.icon">
@@ -19,13 +21,12 @@ import { skillList } from '@/config'
             referrerpolicy="no-referrer"
           >
           <component
-            v-else
             :is="item.icon"
+            v-else
             :style="{ color: item.color }"
             class="section-skill-item-icon"
           />
         </template>
-        
         <span>{{ item.name }}</span>
       </div>
     </div>

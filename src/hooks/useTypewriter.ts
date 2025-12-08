@@ -43,20 +43,22 @@ export function useTypewriter(
   async function onOutput(fn?: () => void) {
     if (output.value.length < text.value.length) {
       await delayedTask(() => {
-        !isPause && (output.value = text.value.substring(0, output.value.length + 1))
+        if (!isPause)
+          output.value = text.value.substring(0, output.value.length + 1)
         onOutput(fn)
       }, interval)
     }
     else {
-      callback && callback()
-      fn && fn()
+      callback?.()
+      fn?.()
     }
   }
 
   async function onBackspace() {
     if (output.value.length !== 0) {
       await delayedTask(() => {
-        !isPause && (output.value = output.value.substring(0, output.value.length - 1))
+        if (!isPause)
+          output.value = output.value.substring(0, output.value.length - 1)
         onBackspace()
       }, backInterval)
     }

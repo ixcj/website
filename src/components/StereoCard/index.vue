@@ -60,7 +60,8 @@ function updateStereoCardRefParams(el: Element | HTMLElement) {
 }
 
 function setStereoCardRefParams() {
-  stereoCardRef.value && updateStereoCardRefParams(stereoCardRef.value)
+  if (stereoCardRef.value)
+    updateStereoCardRefParams(stereoCardRef.value)
 
   judgeDescriptionContentHeight()
 }
@@ -145,7 +146,9 @@ function getIconComponent(iconName: string) {
 }
 
 onMounted(() => {
-  stereoCardRef.value && resizeObserver?.observe(stereoCardRef.value)
+  if (stereoCardRef.value)
+    resizeObserver?.observe(stereoCardRef.value)
+
   setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
   if (props.enableExternalData) {
     loopSetCardWrapperRefStyle()

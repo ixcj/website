@@ -2,7 +2,6 @@
 import { Moon, Sun } from '@vicons/fa'
 import { useLocalStorage } from '@vueuse/core'
 import { watchEffect } from 'vue'
-import { mobile } from '@/utils/screen'
 
 const isDark = useLocalStorage('isDark', true)
 watchEffect(() => {
@@ -14,7 +13,7 @@ function toggleDark() {
 }
 
 function switchTheme() {
-  if (!document.startViewTransition || mobile.value) {
+  if (!document.startViewTransition) {
     toggleDark()
     return
   }

@@ -11,6 +11,7 @@ import {
   cheatsKeys,
   githubContributionUser,
   loadMaxWaitingTime,
+  scriptList,
   siteUrl,
 } from '@/config'
 import { useCheatCode } from '@/hooks/useCheatCode'
@@ -55,12 +56,13 @@ useHead({
     // 设置了 githubContributionUser 则引入样式
     githubContributionUser
       ? {
-          href: '/css/github-calendar-responsive.css',
+          href: `${import.meta.env.BASE_URL}css/github-calendar-responsive.css`,
           rel: 'stylesheet',
           type: 'text/css',
         }
       : {},
   ],
+  script: scriptList,
 })
 
 const loading = ref(false)
