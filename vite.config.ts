@@ -5,49 +5,53 @@ import { defineConfig } from 'vite'
 import Font from 'vite-plugin-font'
 import { createI18n } from 'vue-i18n'
 
-const { messages, defaultLanguage } = require('./src/language/index.ts')
+const { messages, defaultLanguage } = require('./src/language/messages.ts')
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => ({
-  base: command === 'serve' ? '/website/' : undefined,
-  plugins: [
-    vue(),
-    Font.vite({
-      scanFiles: ['src/**/*.{vue,ts,tsx,js,jsx}'],
-    }),
-  ],
-  ssgOptions: {
-    includedRoutes() {
-      return Object.keys(messages).map((language) => {
-        return language === defaultLanguage ? '/' : `/${language}/`
-      })
-    },
-    onBeforePageRender(route, _, ctx) {
-      const locale = route.replace(/^\/|\/$/g, '') || defaultLanguage
-      const i18n = createI18n({
-        legacy: false,
-        locale,
-        fallbackLocale: defaultLanguage,
-        messages,
-      })
-      ctx.app.use(i18n)
-      return undefined
-    },
-  },
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
-  },
-  server: {
-    host: true,
-    port: 23333,
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler',
+export default defineConfig(({ command }) => {
+  const base = command === 'serve' ? '/website/' : undefined
+
+  return {
+    base,
+    plugins: [
+      vue(),
+      Font.vite({
+        scanFiles: ['src/**/*.{vue,ts,tsx,js,jsx}'],
+      }),
+    ],
+    ssgOptions: {
+      includedRoutes() {
+        return Object.keys(messages).map((language) => {
+          return language === defaultLanguage ? '/' : `/${language}/`
+        })
+      },
+      onBeforePageRender(route, _, ctx) {
+        const locale = route.replace(/^\/|\/$/g, '') || defaultLanguage
+        const i18n = createI18n({
+          legacy: false,
+          locale,
+          fallbackLocale: defaultLanguage,
+          messages,
+        })
+        ctx.app.use(i18n)
+        return undefined
       },
     },
-  },
-}))
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
+    },
+    server: {
+      host: true,
+      port: 23333,
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
+    },
+  }
+})

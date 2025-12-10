@@ -141,6 +141,11 @@ function judgeDescriptionContentHeight() {
   contentDescriptionRef.value.classList.toggle('gradation-bottom', (scrollHeight - clientHeight) > 5)
 }
 
+function getLogoUrl(data: StereoCardItem) {
+  const isExternal = data.logo.startsWith('http')
+  return (isExternal ? '' : import.meta.env.BASE_URL) + data.logo
+}
+
 function getIconComponent(iconName: string) {
   return props.iconMap[iconName]
 }
@@ -191,7 +196,7 @@ onUnmounted(() => {
         <div class="content-wrapper">
           <img
             v-if="data.logo"
-            :src="data.logo"
+            :src="getLogoUrl(data)"
             class="content-logo"
             alt=""
             loading="eager"
