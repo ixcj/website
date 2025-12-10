@@ -18,7 +18,7 @@ const { locale } = useI18n()
 
 function handleSwitchLang() {
   const pathname = locale.value === 'en' ? '' : 'en'
-  document.location.pathname = pathname
+  document.location.pathname = import.meta.env.BASE_URL + pathname
 }
 
 watchEffect(() => {
