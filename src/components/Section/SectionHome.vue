@@ -68,11 +68,17 @@ function setGithubContributionCalendar() {
 }
 
 function handleAnimationStart(event: AnimationEvent) {
-  handleThemeSwitchAnimation(event, () => pause(true))
+  handleThemeSwitchAnimation(event, () => {
+    pause(true)
+    document.documentElement.classList.add('hide-scroll-bar')
+  })
 }
 
 function handleAnimationEnd(event: AnimationEvent) {
-  handleThemeSwitchAnimation(event, () => pause(false))
+  handleThemeSwitchAnimation(event, () => {
+    pause(false)
+    document.documentElement.classList.remove('hide-scroll-bar')
+  })
 }
 
 function handleThemeSwitchAnimation(event: AnimationEvent, fn: () => void) {
