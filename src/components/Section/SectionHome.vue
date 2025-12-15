@@ -49,6 +49,10 @@ function setGithubContributionCalendar() {
     global_stats: false,
     cache: 'no-cache',
     tooltips: false,
+    proxy(username: string) {
+      return fetch(`https://gh-calendar.xcj.pw/?username=${username}`)
+        .then(r => r.text())
+    },
   }).finally(() => {
     loading.value = false
 
