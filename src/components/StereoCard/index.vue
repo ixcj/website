@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import type { StereoCardItem } from '@/types/StereoCard'
 import { Github } from '@vicons/fa'
-import { ArrowUpRight } from '@vicons/tabler'
+import { ArrowUpRight, ExternalLink } from '@vicons/tabler'
 import {
   onMounted,
   onUnmounted,
@@ -34,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   iconMap: () => ({
     _GITHUB_: Github,
     _ARROW_UP_RIGHT_: ArrowUpRight,
+    _EXTERNAL_LINK_: ExternalLink,
   }),
   enableExternalData: false,
   externaData: () => ({ X: 0, Y: 0 }),

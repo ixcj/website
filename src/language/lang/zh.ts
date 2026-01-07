@@ -36,7 +36,7 @@ export const projects: StereoCardItem[] = [
     logo: 'https://file.xcj.pw/img/caiji-music-logo.png',
     links: [
       { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
-      { href: 'https://music.ixcj.cn', content: '_ARROW_UP_RIGHT_', title: '查看演示' },
+      { href: 'https://music.ixcj.cn', content: '_EXTERNAL_LINK_', title: '查看演示' },
     ],
     description: `菜鸡音乐是一款在线音乐应用，提供歌曲搜索、免费歌曲在线试听、MV播放等功能。`,
     tags: [
