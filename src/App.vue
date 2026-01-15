@@ -11,6 +11,7 @@ import {
   cheatsKeys,
   githubContributionUser,
   loadMaxWaitingTime,
+  ogImageUrl,
   scriptList,
   siteUrl,
 } from '@/config'
@@ -27,7 +28,6 @@ const { t } = useI18n()
 
 const title = t('title')
 const description = t('description')
-const ogImage = `${siteUrl.replace(/\/$/, '')}/og.png`
 
 useHead({
   title,
@@ -43,14 +43,14 @@ useHead({
     { property: 'og:type', content: 'website' },
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
-    { property: 'og:image', content: ogImage },
+    { property: 'og:image', content: ogImageUrl },
 
     // Twitter Meta Tags
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:url', content: siteUrl },
     { name: 'twitter:description', content: description },
-    { name: 'twitter:image', content: ogImage },
+    { name: 'twitter:image', content: ogImageUrl },
   ],
   link: [
     // 设置了 githubContributionUser 则引入样式
