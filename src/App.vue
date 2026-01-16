@@ -9,8 +9,8 @@ import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
 import {
   cheatsKeys,
-  githubContributionUser,
   loadMaxWaitingTime,
+  ogImageUrl,
   scriptList,
   siteUrl,
 } from '@/config'
@@ -27,7 +27,6 @@ const { t } = useI18n()
 
 const title = t('title')
 const description = t('description')
-const ogImage = `${siteUrl.replace(/\/$/, '')}/og.png`
 
 useHead({
   title,
@@ -43,24 +42,14 @@ useHead({
     { property: 'og:type', content: 'website' },
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
-    { property: 'og:image', content: ogImage },
+    { property: 'og:image', content: ogImageUrl },
 
     // Twitter Meta Tags
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:url', content: siteUrl },
     { name: 'twitter:description', content: description },
-    { name: 'twitter:image', content: ogImage },
-  ],
-  link: [
-    // 设置了 githubContributionUser 则引入样式
-    githubContributionUser
-      ? {
-          href: `${import.meta.env.BASE_URL}css/github-calendar-responsive.css`,
-          rel: 'stylesheet',
-          type: 'text/css',
-        }
-      : {},
+    { name: 'twitter:image', content: ogImageUrl },
   ],
   script: scriptList,
 })
@@ -108,6 +97,7 @@ if (Array.isArray(cheatsKeys) && cheatsKeys.length) {
   transition: background-color var(--transition-duration);
   position: relative;
   overflow-x: hidden;
+  font-display: swap;
 
   &::after,
   &::before {

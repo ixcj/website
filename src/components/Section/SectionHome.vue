@@ -3,15 +3,13 @@
 import GitHubCalendar from 'github-calendar'
 import { nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { avatarLink, githubContributionUser, socialLinks } from '@/config'
+import { avatarLink, avatarUrl, githubContributionUser, socialLinks } from '@/config'
 import { useTypewriter } from '@/hooks/useTypewriter'
 import { mottoLength } from '@/language'
 
 const GITHUB_CALENDAR_WIDTH = 690
 const TYPEWRITER_PARAGRAPH_INTERVAL = 5000
 const THEME_SWITCH_ANIMATION_NAME_LIST = ['light-to-dark', 'dark-to-light']
-
-const avatar = `${import.meta.env.BASE_URL}avatar.png`
 
 let mottoIndex = getIndex(mottoLength)
 
@@ -108,7 +106,7 @@ onUnmounted(() => {
   <div class="section-home text-type-box">
     <div class="personal-info">
       <a :href="avatarLink || 'javascript: void(0);'" target="_blank">
-        <img class="avatar" :src="avatar" alt="Avatar" loading="eager">
+        <img class="avatar" :src="avatarUrl" alt="Avatar" loading="eager">
       </a>
       <h1 class="name">
         {{ $t('name') }}
