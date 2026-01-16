@@ -185,8 +185,8 @@ onUnmounted(() => {
           <img
             class="card-image"
             :src="data?.backgroundImage || defaultBackground"
-            alt=""
-            loading="eager"
+            :alt="data.name"
+            loading="lazy"
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
           >
@@ -199,8 +199,8 @@ onUnmounted(() => {
             v-if="data.logo"
             :src="getLogoUrl(data)"
             class="content-logo"
-            alt=""
-            loading="eager"
+            :alt="data.name"
+            loading="lazy"
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
           >

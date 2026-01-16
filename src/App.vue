@@ -9,7 +9,6 @@ import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
 import {
   cheatsKeys,
-  githubContributionUser,
   loadMaxWaitingTime,
   ogImageUrl,
   scriptList,
@@ -51,16 +50,6 @@ useHead({
     { name: 'twitter:url', content: siteUrl },
     { name: 'twitter:description', content: description },
     { name: 'twitter:image', content: ogImageUrl },
-  ],
-  link: [
-    // 设置了 githubContributionUser 则引入样式
-    githubContributionUser
-      ? {
-          href: `${import.meta.env.BASE_URL}css/github-calendar-responsive.css`,
-          rel: 'stylesheet',
-          type: 'text/css',
-        }
-      : {},
   ],
   script: scriptList,
 })
@@ -108,6 +97,7 @@ if (Array.isArray(cheatsKeys) && cheatsKeys.length) {
   transition: background-color var(--transition-duration);
   position: relative;
   overflow-x: hidden;
+  font-display: swap;
 
   &::after,
   &::before {
