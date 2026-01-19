@@ -6,6 +6,12 @@ export const siteUrl = import.meta.env.VITE_SITE_URL || 'https://xcj.pw'
 // ICP 备案号
 export const icp = import.meta.env.VITE_ICP
 
+// OG 图片路径
+export const ogImageUrl = 'https://file.xcj.pw/img/og.png'
+
+// 头像图片路径
+export const avatarUrl = 'https://file.xcj.pw/img/avatar-round.png'
+
 // 点击头像的跳转路径
 export const avatarLink = 'https://github.com/ixcj'
 

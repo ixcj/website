@@ -22,7 +22,7 @@ export const introduce = [
 export const projects: StereoCardItem[] = [
   {
     name: 'Personal Website',
-    logo: 'avatar.png',
+    logo: 'https://file.xcj.pw/img/avatar-round.png',
     links: [
       { href: 'https://github.com/ixcj/website', content: '_GITHUB_', title: 'GitHub' },
     ],
@@ -36,7 +36,7 @@ export const projects: StereoCardItem[] = [
     logo: 'https://file.xcj.pw/img/caiji-music-logo.png',
     links: [
       { href: 'https://github.com/ixcj/caiji-music', content: '_GITHUB_', title: 'GitHub' },
-      { href: 'https://music.xcj.im', content: '_ARROW_UP_RIGHT_', title: 'Live Demo' },
+      { href: 'https://music.xcj.im', content: '_EXTERNAL_LINK_', title: 'Live Demo' },
     ],
     description: `caiji-music is an online music app offering song search, free online listening, MV playback, and more.`,
     tags: [
