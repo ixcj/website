@@ -46,12 +46,5 @@ export default defineConfig(({ command }) => {
       host: true,
       port: 23333,
     },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler',
-        },
-      },
-    },
   }
 })

@@ -8,6 +8,7 @@ import PageFooter from '@/components/PageFooter/index.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
 import PageMain from '@/components/PageMain/index.vue'
 import {
+  avatarUrl,
   cheatsKeys,
   loadMaxWaitingTime,
   ogImageUrl,
@@ -50,6 +51,9 @@ useHead({
     { name: 'twitter:url', content: siteUrl },
     { name: 'twitter:description', content: description },
     { name: 'twitter:image', content: ogImageUrl },
+  ],
+  link: [
+    { rel: 'icon', type: 'image/png', href: avatarUrl },
   ],
   script: scriptList,
 })

@@ -8,5 +8,5 @@ export const scriptList = [
         'src': umamiUrl,
         'data-website-id': umamiWebsiteId,
       }
-    : {},
-]
+    : undefined,
+].filter(val => !!val)
