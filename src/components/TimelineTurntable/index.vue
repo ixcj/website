@@ -12,7 +12,6 @@ import {
 import {
   distinguishDateData,
   getDateString,
-
   transformTimelineTurntableItem,
 } from './transform'
 import Turntable from './Turntable.vue'
@@ -266,7 +265,9 @@ onUnmounted(() => {
   >
     <div class="turntable-box">
       <div ref="timelineTurntableRotateBoxRef" class="turntable-rotate-box">
-        <Turntable class="turntable-image" />
+        <ClientOnly>
+          <Turntable class="turntable-image" />
+        </ClientOnly>
       </div>
     </div>
 
