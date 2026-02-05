@@ -2,6 +2,12 @@
 export const sectionList = <const>['home', 'about', 'skills', 'project', 'experience']
 export type Section = typeof sectionList[number]
 
+// 经历组件类型配置
+// 'turntable' - 转盘时间轴（默认）
+// 'line' - 线性时间轴
+export type ExperienceType = 'turntable' | 'line'
+export const experienceType: ExperienceType = 'line'
+
 // GitHub 显示贡献图表的用户名，为空则不显示
 export const githubContributionUser = 'ixcj'
 
