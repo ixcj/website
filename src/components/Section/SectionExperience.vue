@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import TimelineLine from '@/components/TimelineLine/index.vue'
 import TimelineTurntable from '@/components/TimelineTurntable/index.vue'
+import { experienceType } from '@/config'
 
 const { t } = useI18n()
 
@@ -15,6 +17,8 @@ const experiences = computed(() => {
     return []
   }
 })
+
+const isLineType = computed(() => experienceType === 'line')
 </script>
 
 <template>
@@ -23,8 +27,9 @@ const experiences = computed(() => {
       {{ $t('SectionTitle.experience') }}
     </h2>
 
-    <div class="section-experience-box hide-page-cursor">
-      <TimelineTurntable :data="experiences" />
+    <div class="section-experience-box" :class="{ 'hide-page-cursor': !isLineType }">
+      <TimelineLine v-if="isLineType" :data="experiences" />
+      <TimelineTurntable v-else :data="experiences" />
     </div>
   </div>
 </template>
