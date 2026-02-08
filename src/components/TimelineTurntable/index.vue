@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { TimelineTurntableTransformItem } from './transform'
 import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
+import type { TimelineTurntableTransformItem } from '@/utils/dateTransform'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import {
   computed,
@@ -13,7 +13,7 @@ import {
   distinguishDateData,
   getDateString,
   transformTimelineTurntableItem,
-} from './transform'
+} from '@/utils/dateTransform'
 import Turntable from './Turntable.vue'
 
 interface Props {

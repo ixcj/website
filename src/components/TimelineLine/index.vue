@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
 import { computed } from 'vue'
-import { distinguishDateData, getDateString } from '@/components/TimelineTurntable/transform'
+import { useI18n } from 'vue-i18n'
+import { experienceSort } from '@/config'
+import {
+  distinguishDateData,
+  getDateString,
+  sortExperiences,
+} from '@/utils/dateTransform'
 
 interface Props {
   data: TimelineTurntableItem[]
@@ -12,26 +18,32 @@ const props = defineProps<Props>()
 interface TimelineItem {
   dateStart: string
   dateEnd: string
-  title?: string
+  title?: string | undefined
   children: {
-    title?: string
+    title?: string | undefined
     describe: string
   }[]
 }
 
+const { t } = useI18n()
+
 const timelineData = computed<TimelineItem[]>(() => {
-  return props.data.map((item) => {
-    const [start, end] = item.date
-    return {
-      dateStart: getDateString(distinguishDateData(start)),
-      dateEnd: getDateString(distinguishDateData(end)),
-      title: item.title,
-      children: item.children.map(child => ({
-        title: child.title,
-        describe: child.describe,
-      })),
-    }
-  })
+  const _data = [...props.data]
+  const data = sortExperiences(_data, experienceSort)
+    .map((item) => {
+      const [start, end] = item.date
+      return {
+        dateStart: getDateString(distinguishDateData(start)),
+        dateEnd: end === 'now' ? t('now') : getDateString(distinguishDateData(end)),
+        title: item.title,
+        children: item.children.map(child => ({
+          title: child.title,
+          describe: child.describe,
+        })),
+      }
+    })
+
+  return data
 })
 </script>
 
@@ -45,7 +57,11 @@ const timelineData = computed<TimelineItem[]>(() => {
       >
         <div class="timeline-marker">
           <div class="timeline-dot" />
-          <div v-if="index !== timelineData.length - 1" class="timeline-connector" />
+          <div
+            v-if="index !== timelineData.length - 1"
+            class="timeline-connector"
+            :class="experienceSort"
+          />
         </div>
 
         <div class="timeline-content">
@@ -146,6 +162,10 @@ const timelineData = computed<TimelineItem[]>(() => {
   border-radius: var(--timeline-line-width);
   position: absolute;
   height: calc(100% - 32px);
+
+  &.asc {
+    transform: rotate(180deg);
+  }
 }
 
 .timeline-content {

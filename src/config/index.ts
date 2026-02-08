@@ -3,10 +3,14 @@ export const sectionList = <const>['home', 'about', 'skills', 'project', 'experi
 export type Section = typeof sectionList[number]
 
 // 经历组件类型配置
-// 'turntable' - 转盘时间轴（默认）
-// 'line' - 线性时间轴
+// 'turntable' - 转盘时间轴（默认）   'line' - 线性时间轴
 export type ExperienceType = 'turntable' | 'line'
 export const experienceType: ExperienceType = 'line'
+
+// 经历组件排序
+// 'desc' - 时间降序（默认）   'asc' - 时间升序
+export type ExperienceSort = 'desc' | 'asc'
+export const experienceSort: ExperienceSort = 'desc'
 
 // GitHub 显示贡献图表的用户名，为空则不显示
 export const githubContributionUser = 'ixcj'

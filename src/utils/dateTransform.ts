@@ -6,7 +6,7 @@ import type {
 
 export interface TimelineTurntableTransformItem {
   date: [string, string]
-  title?: string
+  title?: string | undefined
   angleRange: [number, number]
   children: TimelineTurntableItemChildren[]
 }
@@ -82,6 +82,28 @@ export function getAngleRatio(
   const angleRatio = monthSpan / monthSpanSum * 360
 
   return Number(angleRatio.toFixed(decimals))
+}
+
+export function sortExperiences(
+  timelineTurntableItem: TimelineTurntableItem[],
+  sort: 'desc' | 'asc' = 'desc',
+): TimelineTurntableItem[] {
+  const _timelineTurntableItem = [...timelineTurntableItem]
+  const _sort = sort === 'desc' ? -1 : 1
+  const result = _timelineTurntableItem.sort((a, b) => {
+    const [startA] = a.date
+    const [startB] = b.date
+
+    const _startA = distinguishDateData(startA)
+    const _startB = distinguishDateData(startB)
+
+    const startTimeA = new Date(distinguishDateData(_startA).year, (_startA).month).getTime()
+    const startTimeB = new Date((_startB).year, (_startB).month).getTime()
+
+    return (startTimeA - startTimeB) * _sort
+  })
+
+  return result
 }
 
 export function distinguishDateData(date: dateData) {
