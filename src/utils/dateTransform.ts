@@ -3,6 +3,7 @@ import type {
   TimelineTurntableItem,
   TimelineTurntableItemChildren,
 } from '@/types/TimelineTurntable'
+import { experienceSort } from '@/config'
 
 export interface TimelineTurntableTransformItem {
   date: [string, string]
@@ -86,7 +87,7 @@ export function getAngleRatio(
 
 export function sortExperiences(
   timelineTurntableItem: TimelineTurntableItem[],
-  sort: 'desc' | 'asc' = 'desc',
+  sort: 'desc' | 'asc' = experienceSort,
 ): TimelineTurntableItem[] {
   const _timelineTurntableItem = [...timelineTurntableItem]
   const _sort = sort === 'desc' ? -1 : 1

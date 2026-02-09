@@ -29,7 +29,7 @@ const { t } = useI18n()
 
 const timelineData = computed<TimelineItem[]>(() => {
   const _data = [...props.data]
-  const data = sortExperiences(_data, experienceSort)
+  const data = sortExperiences(_data)
     .map((item) => {
       const [start, end] = item.date
       return {
