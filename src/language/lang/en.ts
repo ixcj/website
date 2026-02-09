@@ -135,4 +135,6 @@ export default {
   experiences: encodeURIComponent(JSON.stringify(experiences)),
 
   contributionCalendar: 'GitHub Contribution calendar',
+
+  now: 'Now',
 }
