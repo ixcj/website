@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { TimelineTurntableTransformItem } from './transform'
 import type { TimelineTurntableItem } from '@/types/TimelineTurntable'
+import type { TimelineTurntableTransformItem } from '@/utils/dateTransform'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import {
   computed,
@@ -12,8 +12,9 @@ import {
 import {
   distinguishDateData,
   getDateString,
+  sortExperiences,
   transformTimelineTurntableItem,
-} from './transform'
+} from '@/utils/dateTransform'
 import Turntable from './Turntable.vue'
 
 interface Props {
@@ -52,7 +53,10 @@ const rotateZ = ref(0)
 
 const absRotateZ = computed(() => Math.abs((rotateZ.value >= 0 ? 0 : 360) - (Math.abs(rotateZ.value) % 360)))
 
-const transformData = computed<TimelineTurntableTransformItem[]>(() => transformTimelineTurntableItem(props.data))
+const transformData = computed<TimelineTurntableTransformItem[]>(() => {
+  const data = sortExperiences(props.data)
+  return transformTimelineTurntableItem(data)
+})
 const currentAngleIndex = computed(() => {
   return transformData.value.findIndex((item) => {
     const [min, max] = item.angleRange
