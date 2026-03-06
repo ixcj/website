@@ -1,10 +1,4 @@
-import {
-  onMounted,
-  onUnmounted,
-  reactive,
-  ref,
-  watchEffect,
-} from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 interface Options {
   /** 默认值 */
@@ -15,6 +9,12 @@ interface Options {
   timeout?: number
   /** 自定义匹配规则 */
   matcher?: (inputKeys: string[], targetKeys: string[]) => boolean
+}
+
+function defaultMatcher(inputKeys: string[], targetKeys: string[]): boolean {
+  if (inputKeys.length !== targetKeys.length)
+    return false
+  return inputKeys.every((key, index) => key === targetKeys[index])
 }
 
 export function useCheatCode(
@@ -29,73 +29,81 @@ export function useCheatCode(
     matcher = defaultMatcher,
   } = options
 
-  const _keys = reactive<string[]>([])
+  const inputKeys = ref<string[]>([])
   const activate = ref(defaultActivate)
-  let timeoutId: NodeJS.Timeout | null = null
 
-  function defaultMatcher(inputKeys: string[], targetKeys: string[]): boolean {
-    return JSON.stringify(inputKeys) === JSON.stringify(targetKeys)
-  }
+  let timeoutId: ReturnType<typeof setTimeout> | null = null
+  let stopWatch: (() => void) | undefined
 
-  function resetKeys() {
-    _keys.length = 0
+  const isBrowser = typeof window !== 'undefined'
+
+  function clearTimer() {
     if (timeoutId) {
       clearTimeout(timeoutId)
       timeoutId = null
     }
   }
 
-  function setKeys(e: KeyboardEvent) {
-    try {
-      const { code } = e
-      if (!code)
-        return
-
-      _keys.push(code)
-
-      // 重置超时定时器
-      if (timeoutId)
-        clearTimeout(timeoutId)
-      timeoutId = setTimeout(resetKeys, timeout)
-
-      // 如果输入序列长度超过目标序列，移除最早的输入
-      if (keys.length < _keys.length) {
-        _keys.shift()
-      }
-    }
-    catch (err) {
-      console.error('Error in setKeys:', err)
-      resetKeys()
-    }
+  function resetKeys() {
+    inputKeys.value = []
+    clearTimer()
   }
 
-  watchEffect(() => {
+  function scheduleReset() {
+    clearTimer()
+    if (timeout > 0)
+      timeoutId = setTimeout(resetKeys, timeout)
+  }
+
+  function handleKey(event: KeyboardEvent) {
     if (!activate.value)
       return
 
+    const { code } = event
+    if (!code)
+      return
+
+    const buffer = inputKeys.value
+    buffer.push(code)
+
+    if (buffer.length > keys.length)
+      buffer.shift()
+
+    scheduleReset()
+
     try {
-      if (matcher(_keys, keys)) {
+      if (matcher(buffer, keys)) {
         resetKeys()
         fn()
       }
     }
     catch (err) {
-      console.error('Error in watchEffect:', err)
+      console.error('Error in matcher:', err)
       resetKeys()
     }
-  })
+  }
 
   onMounted(() => {
-    if (typeof window !== 'undefined') {
-      window.addEventListener(listenerType, setKeys)
-    }
+    if (!isBrowser)
+      return
+
+    stopWatch = watch(
+      activate,
+      (value) => {
+        if (value)
+          window.addEventListener(listenerType, handleKey)
+        else
+          window.removeEventListener(listenerType, handleKey)
+      },
+      { immediate: true },
+    )
   })
 
   onUnmounted(() => {
-    if (typeof window !== 'undefined') {
-      window.removeEventListener(listenerType, setKeys)
-      resetKeys()
-    }
+    if (isBrowser)
+      window.removeEventListener(listenerType, handleKey)
+    stopWatch?.()
+    resetKeys()
   })
 
   return {
