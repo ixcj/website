@@ -1,52 +1,58 @@
 # [ixcj/website](https://new.xcj.im)
 
-基于 Vue3 开发的个人作品和专业技能的数字名片网站。
-
-## 技术栈
-
-- 🚀 [Vue 3](https://vuejs.org/) - 渐进式 JavaScript 框架
-- 🛠️ [TypeScript](https://www.typescriptlang.org/) - JavaScript 的超集
-- 📦 [Vite](https://vitejs.dev/) - 下一代前端构建工具
-- 🎨 [Sass](https://sass-lang.com/) - CSS 预处理器
-- 🌐 [Vue I18n](https://vue-i18n.intlify.dev/) - Vue.js 的国际化插件
-- 📅 [GitHub Calendar](https://github.com/Bloggify/github-calendar) - GitHub 贡献日历组件
-- 🎯 [@vueuse/core](https://vueuse.org/) - Vue Composition API 工具集
+一个基于 Vue 3 构建的个人主页模板，用来展示个人介绍、技能栈、项目经历和职业时间线。项目以静态站点形式输出，适合直接部署到静态托管平台，也方便 fork 后快速改造成自己的在线名片。
 
 ## 在线预览
 
-- 演示地址：[https://new.xcj.im](https://new.xcj.im)
+- 站点地址：[https://new.xcj.im](https://new.xcj.im)
 - 预览截图：
 
 ![Preview](https://file.xcj.im/website/images/preview.png)
 
-## 功能&特性
+## 特性
 
-- [x] I18n
-- [x] 主题切换
-- [x] 打字机效果
-- [x] GitHub 贡献日历
-- [x] 立体镭射卡片
-  - [x] 立体镭射卡片兼容移动端陀螺仪
-- [x] 时间轴转盘
+- 基于 `Vue 3 + TypeScript + Vite` 构建
+- 使用 `vite-ssg` 生成静态页面，便于部署
+- 内置中英文双语路由
+- 支持亮色 / 暗色主题切换
+- 首页打字机文案效果
+- GitHub Contribution Calendar 展示
+- 项目区使用立体镭射卡片效果
+- 经历区支持时间轴 / 转盘两种展示模式
+- 移动端支持陀螺仪交互
+- 支持接入 Umami 统计脚本
+
+## 技术栈
+
+- [Vue 3](https://vuejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [vite-ssg](https://github.com/antfu-collective/vite-ssg)
+- [Sass](https://sass-lang.com/)
+- [Vue I18n](https://vue-i18n.intlify.dev/)
+- [@vueuse/core](https://vueuse.org/)
+- [GitHub Calendar](https://github.com/Bloggify/github-calendar)
 
 ## 快速开始
 
 ### 环境要求
 
-- Node.js >= 16
-- pnpm >= 8
+- Node.js `>= 16`
+- pnpm `>= 8`
 
 ### 安装依赖
 
 ```bash
-pnpm i
+pnpm install
 ```
 
-### 开发环境
+### 本地开发
 
 ```bash
 pnpm dev
 ```
+
+默认开发端口为 `23333`。
 
 ### 生产构建
 
@@ -54,36 +60,70 @@ pnpm dev
 pnpm build
 ```
 
-### 预览构建结果
+构建完成后，静态文件会输出到 `dist/` 目录。
+
+### 本地预览构建结果
 
 ```bash
 pnpm preview
 ```
 
-## 项目配置
+### 代码检查
 
-环境变量
-  - **VITE_SITE_URL**：站点完整路径
-  - **VITE_ICP**：ICP 备案号
-  - **VITE_UMAMI_URL**：Umami 脚本路径，例如 `https://umami.is/script.js`
-  - **VITE_UMAMI_WEBSITE_ID**：Umami 站点 ID，例如 `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
+```bash
+pnpm lint
+```
 
-配置类 -> `src/config/index.ts`
-  - **sectionList**: 需要显示的板块
-  - **githubContributionUser**: GitHub 用户名。用于显示对应用户的贡献日历，设置为空字符串可隐藏
-  - **cheatsKeys**: 彩蛋秘籍，按顺序按下按键可触发彩蛋，默认触发 `src/utils/cheats.ts` 下的 `cheatsExecute` 方法
-  - **scriptList**：引入第三方 JS 脚本，`src/config/script.ts`
-  - **其他**: 其他配置请自行查看
+## 配置说明
 
-文本类 -> `src/language/lang/**.ts`
-  - **name**: 名称
-  - **intro**: 介绍
-  - **mottos**: 座右铭集合。打字机效果
-  - **projects**: 项目集合。立体卡片效果
-  - **experiences**: 经历集合。时间转盘效果
-  - **SectionText**: Header 中显示的板块名称
-  - **SectionTitle**: 板块 Title
-  - **contributionCalendar**: GitHub 贡献日历显示名称
+### 环境变量
+
+可通过 `.env` 文件或部署平台环境变量进行配置：
+
+- `VITE_SITE_URL`：站点完整 URL，用于 SEO 和 Open Graph
+- `VITE_ICP`：备案号，配置后会显示在页脚
+- `VITE_UMAMI_URL`：Umami 脚本地址，例如 `https://umami.is/script.js`
+- `VITE_UMAMI_WEBSITE_ID`：Umami 站点 ID
+
+### 主要配置入口
+
+- `src/config/index.ts`：页面板块开关、经历展示类型、排序方式、GitHub 用户名、彩蛋按键等核心配置
+- `src/config/link.ts`：头像链接、社交链接、页脚链接、备案信息
+- `src/config/skill.ts`：技能列表
+- `src/config/script.ts`：第三方脚本注入逻辑
+- `src/config/url.ts`：站点地址、OG 图片、头像资源等站点级 URL 配置
+
+### 文案与内容数据
+
+- `src/language/lang/zh.ts`
+- `src/language/lang/en.ts`
+
+这两个文件负责维护多语言内容，包括：
+
+- 基础信息：姓名、标题、简介、SEO 文案
+- 首页文案：打字机语句、自我介绍
+- 项目列表：名称、链接、描述、标签
+- 经历列表：时间、职位、描述
+- 各板块标题与导航文本
+
+## 自定义建议
+
+如果你准备把这个项目改成自己的主页，通常只需要优先修改以下内容：
+
+- `src/language/lang/*.ts` 中的个人介绍、项目和经历数据
+- `src/config/link.ts` 中的社交账号和页脚链接
+- `src/config/index.ts` 中的板块显示顺序、GitHub 用户名和展示模式
+- `src/config/url.ts` 中的站点地址和分享图配置
+
+## 部署
+
+本项目输出为纯静态资源，构建后可直接部署到：
+
+- Vercel
+- Netlify
+- GitHub Pages
+- Cloudflare Pages
+- Nginx 静态站点服务
 
 ## 许可证
 
