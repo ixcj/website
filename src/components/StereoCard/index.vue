@@ -19,6 +19,9 @@ interface Props {
   bgSpeedX?: number
   bgSpeedY?: number
   contentFloatStrength?: number
+  perspectiveReboundStrength?: number
+  perspectiveReboundCount?: number
+  perspectiveReboundSpeed?: number
   iconMap?: Record<string, any>
   enableExternalData?: boolean
   externaData?: {
@@ -33,6 +36,9 @@ const props = withDefaults(defineProps<Props>(), {
   bgSpeedX: 20,
   bgSpeedY: 20,
   contentFloatStrength: 6,
+  perspectiveReboundStrength: 0.35,
+  perspectiveReboundCount: 4,
+  perspectiveReboundSpeed: 160,
   iconMap: () => ({
     _GITHUB_: Github,
     _ARROW_UP_RIGHT_: ArrowUpRight,
@@ -48,6 +54,7 @@ const cardWrapperRef = ref<HTMLElement>()
 const contentDescriptionRef = ref<HTMLElement>()
 
 let myReq = 0
+let reboundTimer: ReturnType<typeof globalThis.setTimeout> | undefined
 
 let stereoCardRefParams = { top: 0, left: 0, width: 0, height: 0 }
 const ResizeObserver = globalThis?.ResizeObserver
@@ -73,9 +80,23 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max)
 }
 
+function getReboundAttenuation(index: number, count: number) {
+  return 1 - index / count
+}
+
+function clearReboundTimer() {
+  if (!reboundTimer)
+    return
+
+  globalThis.clearTimeout(reboundTimer)
+  reboundTimer = undefined
+}
+
 function onMousemove(e: MouseEvent) {
   if (props.enableExternalData)
     return
+
+  clearReboundTimer()
 
   const { top, left, width, height } = stereoCardRefParams
   if (!width || !height)
@@ -91,7 +112,36 @@ function onMouseout() {
   if (!cardWrapperRef.value)
     return
 
-  setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
+  const { perspectiveReboundStrength, perspectiveReboundCount, perspectiveReboundSpeed, speedX, speedY } = props
+  if (perspectiveReboundStrength <= 0 || perspectiveReboundCount <= 0 || !speedX || !speedY) {
+    setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
+    return
+  }
+
+  const currentOffsetX = -((Number.parseFloat(cardWrapperRef.value.style.getPropertyValue('--r-x')) || 0) / speedX)
+  const currentOffsetY = (Number.parseFloat(cardWrapperRef.value.style.getPropertyValue('--r-y')) || 0) / speedY
+  const reboundCount = Math.round(perspectiveReboundCount)
+  const reboundSpeed = Math.max(16, perspectiveReboundSpeed)
+
+  function runRebound(index: number) {
+    if (index >= reboundCount) {
+      setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
+      reboundTimer = undefined
+      return
+    }
+
+    const direction = index % 2 === 0 ? -1 : 1
+    const attenuation = getReboundAttenuation(index, reboundCount)
+    setCardWrapperRefStyle({
+      X: 0.5 + currentOffsetX * direction * attenuation,
+      Y: 0.5 + currentOffsetY * direction * attenuation,
+    })
+
+    reboundTimer = globalThis.setTimeout(() => runRebound(index + 1), reboundSpeed)
+  }
+
+  clearReboundTimer()
+  runRebound(0)
 }
 
 function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
@@ -183,6 +233,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  clearReboundTimer()
+
   resizeObserver?.disconnect()
   stereoCardRef.value?.removeEventListener('mousemove', onMousemove)
   stereoCardRef.value?.removeEventListener('mouseout', onMouseout)
