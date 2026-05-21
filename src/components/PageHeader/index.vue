@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue'
+import type { Section } from '@/config'
+import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sectionList } from '@/config'
 import { mobile, mobileThresholdValue } from '@/utils/screen'
@@ -12,13 +13,48 @@ const HEADER_INNER_HEIGHT = 48
 
 const headerHeight = ref(DEFAULT_HEADER_HEIGHT)
 const menuHamburgerActive = ref(false)
+const activeSection = ref<Section>(sectionList[0])
 const showMenu = computed(() => menuHamburgerActive.value || !mobile.value)
+
+let scrollReq = 0
 
 const { locale } = useI18n()
 
 function handleSwitchLang() {
   const pathname = locale.value === 'en' ? '' : 'en'
   document.location.pathname = import.meta.env.BASE_URL + pathname
+}
+
+function updateActiveSection() {
+  const scrollPosition = globalThis.scrollY + headerHeight.value + 80
+  let nextSection: Section = activeSection.value
+
+  for (const section of sectionList) {
+    const el = document.getElementById(section)
+    if (!el)
+      continue
+
+    const sectionTop = el.offsetTop
+    const sectionBottom = sectionTop + el.offsetHeight
+    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+      nextSection = section
+      break
+    }
+  }
+
+  const bottomDistance = document.documentElement.scrollHeight - globalThis.innerHeight - globalThis.scrollY
+  if (bottomDistance <= 2)
+    nextSection = sectionList[sectionList.length - 1]
+
+  activeSection.value = nextSection
+}
+
+function requestUpdateActiveSection() {
+  if (!globalThis.document || !globalThis.requestAnimationFrame)
+    return
+
+  cancelAnimationFrame(scrollReq)
+  scrollReq = requestAnimationFrame(updateActiveSection)
 }
 
 watchEffect(() => {
@@ -35,6 +71,19 @@ watchEffect(() => {
   }
 
   globalThis?.document?.documentElement.style.setProperty('--header-height', `${headerHeight.value}px`)
+  requestUpdateActiveSection()
+})
+
+onMounted(() => {
+  requestUpdateActiveSection()
+  globalThis.addEventListener('scroll', requestUpdateActiveSection)
+  globalThis.addEventListener('resize', requestUpdateActiveSection)
+})
+
+onUnmounted(() => {
+  cancelAnimationFrame(scrollReq)
+  globalThis.removeEventListener('scroll', requestUpdateActiveSection)
+  globalThis.removeEventListener('resize', requestUpdateActiveSection)
 })
 </script>
 
@@ -63,7 +112,14 @@ watchEffect(() => {
             :class="{ column: mobile }"
           >
             <li v-for="section in sectionList" class="page-header-nav-item" @click="menuHamburgerActive = false">
-              <a class="page-header-link" :href="`#${section}`">{{ $t(`SectionText.${section}`) }}</a>
+              <a
+                class="page-header-link"
+                :class="{ active: activeSection === section }"
+                :href="`#${section}`"
+                :aria-current="activeSection === section ? 'location' : undefined"
+              >
+                {{ $t(`SectionText.${section}`) }}
+              </a>
             </li>
             <li v-if="mobile" class="page-header-nav-item">
               <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
@@ -241,10 +297,38 @@ watchEffect(() => {
           padding: 15px;
           text-decoration: none;
           color: var(--foreground-color);
-          transition: color var(--transition-duration);
+          transition:
+            color var(--transition-duration),
+            opacity var(--transition-duration);
           text-align: center;
           position: relative;
           z-index: 1;
+
+          &::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 8px;
+            width: 18px;
+            height: 2px;
+            border-radius: 2px;
+            background-color: currentColor;
+            opacity: 0;
+            transform: translateX(-50%) scaleX(0.4);
+            transition:
+              opacity var(--transition-duration),
+              transform var(--transition-duration);
+          }
+
+          &.active {
+            color: var(--foreground-color);
+            opacity: 1;
+
+            &::after {
+              opacity: 1;
+              transform: translateX(-50%) scaleX(1);
+            }
+          }
         }
       }
     }
