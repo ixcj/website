@@ -18,6 +18,10 @@ interface Props {
   speedY?: number
   bgSpeedX?: number
   bgSpeedY?: number
+  contentFloatStrength?: number
+  perspectiveReboundStrength?: number
+  perspectiveReboundCount?: number
+  perspectiveReboundSpeed?: number
   iconMap?: Record<string, any>
   enableExternalData?: boolean
   externaData?: {
@@ -31,6 +35,10 @@ const props = withDefaults(defineProps<Props>(), {
   speedY: 10,
   bgSpeedX: 20,
   bgSpeedY: 20,
+  contentFloatStrength: 6,
+  perspectiveReboundStrength: 0.35,
+  perspectiveReboundCount: 4,
+  perspectiveReboundSpeed: 160,
   iconMap: () => ({
     _GITHUB_: Github,
     _ARROW_UP_RIGHT_: ArrowUpRight,
@@ -46,6 +54,7 @@ const cardWrapperRef = ref<HTMLElement>()
 const contentDescriptionRef = ref<HTMLElement>()
 
 let myReq = 0
+let reboundTimer: ReturnType<typeof globalThis.setTimeout> | undefined
 
 let stereoCardRefParams = { top: 0, left: 0, width: 0, height: 0 }
 const ResizeObserver = globalThis?.ResizeObserver
@@ -67,28 +76,72 @@ function setStereoCardRefParams() {
   judgeDescriptionContentHeight()
 }
 
-function onMousemove() {
-  if (!stereoCardRef.value)
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max)
+}
+
+function getReboundAttenuation(index: number, count: number) {
+  return 1 - index / count
+}
+
+function clearReboundTimer() {
+  if (!reboundTimer)
     return
 
-  stereoCardRef.value.addEventListener('mousemove', (e) => {
-    if (props.enableExternalData)
-      return
+  globalThis.clearTimeout(reboundTimer)
+  reboundTimer = undefined
+}
 
-    const { top, left, width, height } = stereoCardRefParams
+function onMousemove(e: MouseEvent) {
+  if (props.enableExternalData)
+    return
 
-    const X = (e.clientX - left) / width
-    const Y = (e.clientY - top) / height
+  clearReboundTimer()
 
-    setCardWrapperRefStyle({ X, Y })
-  })
+  const { top, left, width, height } = stereoCardRefParams
+  if (!width || !height)
+    return
+
+  const X = (e.clientX - left) / width
+  const Y = (e.clientY - top) / height
+
+  setCardWrapperRefStyle({ X, Y })
 }
 
 function onMouseout() {
   if (!cardWrapperRef.value)
     return
 
-  setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
+  const { perspectiveReboundStrength, perspectiveReboundCount, perspectiveReboundSpeed, speedX, speedY } = props
+  if (perspectiveReboundStrength <= 0 || perspectiveReboundCount <= 0 || !speedX || !speedY) {
+    setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
+    return
+  }
+
+  const currentOffsetX = -((Number.parseFloat(cardWrapperRef.value.style.getPropertyValue('--r-x')) || 0) / speedX)
+  const currentOffsetY = (Number.parseFloat(cardWrapperRef.value.style.getPropertyValue('--r-y')) || 0) / speedY
+  const reboundCount = Math.round(perspectiveReboundCount)
+  const reboundSpeed = Math.max(16, perspectiveReboundSpeed)
+
+  function runRebound(index: number) {
+    if (index >= reboundCount) {
+      setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
+      reboundTimer = undefined
+      return
+    }
+
+    const direction = index % 2 === 0 ? -1 : 1
+    const attenuation = getReboundAttenuation(index, reboundCount)
+    setCardWrapperRefStyle({
+      X: 0.5 + currentOffsetX * direction * attenuation,
+      Y: 0.5 + currentOffsetY * direction * attenuation,
+    })
+
+    reboundTimer = globalThis.setTimeout(() => runRebound(index + 1), reboundSpeed)
+  }
+
+  clearReboundTimer()
+  runRebound(0)
 }
 
 function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
@@ -97,13 +150,20 @@ function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
 
   cancelAnimationFrame(myReq)
 
-  const { speedX, speedY, bgSpeedX, bgSpeedY } = props
+  const { speedX, speedY, bgSpeedX, bgSpeedY, contentFloatStrength } = props
+
+  const boundedX = clamp(X, 0, 1)
+  const boundedY = clamp(Y, 0, 1)
 
   const rX = -(X - 0.5) * speedX
   const rY = (Y - 0.5) * speedY
 
   const bgX = 40 + bgSpeedX * X
   const bgY = 40 + bgSpeedY * Y
+
+  const contentFloatX = -(boundedX - 0.5) * contentFloatStrength
+  const contentFloatY = -(boundedY - 0.5) * contentFloatStrength
+  const contentFloatZ = Math.max(contentFloatStrength, 0)
 
   myReq = requestAnimationFrame(() => {
     if (!cardWrapperRef.value)
@@ -117,6 +177,10 @@ function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
 
     cardWrapperRef.value.style.setProperty('--r-x', `${rX}deg`)
     cardWrapperRef.value.style.setProperty('--r-y', `${rY}deg`)
+
+    cardWrapperRef.value.style.setProperty('--content-float-x', `${contentFloatX}px`)
+    cardWrapperRef.value.style.setProperty('--content-float-y', `${contentFloatY}px`)
+    cardWrapperRef.value.style.setProperty('--content-float-z', `${contentFloatZ}px`)
   })
 }
 
@@ -169,6 +233,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  clearReboundTimer()
+
   resizeObserver?.disconnect()
   stereoCardRef.value?.removeEventListener('mousemove', onMousemove)
   stereoCardRef.value?.removeEventListener('mouseout', onMouseout)
@@ -195,19 +261,21 @@ onUnmounted(() => {
         <div class="card-layer2" />
 
         <div class="content-wrapper">
-          <img
-            v-if="data.logo"
-            :src="getLogoUrl(data)"
-            class="content-logo"
-            :alt="data.name"
-            loading="lazy"
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-          >
-          <p class="content-name">
-            {{ data.name }}
-          </p>
-          <p ref="contentDescriptionRef" class="content-description" v-html="data.description" />
+          <div class="content-float-wrapper">
+            <img
+              v-if="data.logo"
+              :src="getLogoUrl(data)"
+              class="content-logo"
+              :alt="data.name"
+              loading="lazy"
+              crossorigin="anonymous"
+              referrerpolicy="no-referrer"
+            >
+            <p class="content-name">
+              {{ data.name }}
+            </p>
+            <p ref="contentDescriptionRef" class="content-description" v-html="data.description" />
+          </div>
 
           <div v-if="data.links.length" class="content-link-box">
             <a
@@ -285,12 +353,14 @@ onUnmounted(() => {
 
   .card-wrapper {
     perspective: 600px;
+    transform-style: preserve-3d;
     position: absolute;
     inset: 0;
     border-radius: var(--round);
 
     .card-3d {
       transform: rotateY(var(--r-x, 0)) rotateX(var(--r-y, 0));
+      transform-style: preserve-3d;
       position: absolute;
       inset: 0;
       clip-path: inset(0 0 0 0 round var(--round));
@@ -310,6 +380,22 @@ onUnmounted(() => {
         .dark & {
           opacity: 0.1;
         }
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        z-index: 999;
+        height: 100%;
+        aspect-ratio: 1;
+        background: radial-gradient(
+          farthest-corner circle at var(--x, 0) var(--y, 0),
+          rgba(255, 255, 255, 1) 0,
+          rgba(255, 255, 255, 0.6) 30%,
+          rgb(255, 255, 255, 0) 100%
+        );
+        mix-blend-mode: hard-light;
+        opacity: 0.15;
       }
 
       .card-image-box {
@@ -379,14 +465,26 @@ onUnmounted(() => {
     position: absolute;
     inset: 0;
     z-index: 999;
-    display: flex;
-    gap: 12px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    transform-style: preserve-3d;
     pointer-events: all;
     border-radius: var(--round);
     color: #f7f8f8;
+
+    .content-float-wrapper {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      gap: 12px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transform: translate3d(var(--content-float-x, 0), var(--content-float-y, 0), var(--content-float-z, 0)) scale(1.02);
+      transform-style: preserve-3d;
+      transition:
+        transform calc(var(--transition-duration) / 3) linear,
+        filter calc(var(--transition-duration) / 3) linear;
+      filter: drop-shadow(0 10px 18px rgba($color: #000, $alpha: .25));
+    }
 
     .content-logo {
       height: 80px;

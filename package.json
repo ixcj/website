@@ -1,7 +1,7 @@
 {
   "name": "website",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.1.8",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -25,12 +25,12 @@
     "@types/node": "^20.12.11",
     "@unhead/vue": "^1.9.10",
     "@vicons/fa": "^0.12.0",
-    "@vitejs/plugin-vue": "^5.0.4",
+    "@vitejs/plugin-vue": "^6.0.5",
     "eslint": "^9.35.0",
     "typescript": "^5.2.2",
-    "vite": "npm:rolldown-vite@latest",
+    "vite": "^8.0.3",
     "vite-plugin-font": "^2.1.5",
-    "vite-ssg": "^0.23.7",
+    "vite-ssg": "^28.3.0",
     "vue-router": "^4.3.2",
     "vue-tsc": "^2.0.6"
   },

@@ -1,11 +1,5 @@
 import type { WatchStopHandle } from 'vue'
-import {
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-
-} from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 interface Options {
   /** 输出间隔 */
@@ -25,8 +19,6 @@ export function useTypewriter(
   defaultText: string = '',
   options: Options = {},
 ) {
-  let isPause = false
-
   const {
     interval = 50,
     backInterval = 50,
@@ -37,62 +29,83 @@ export function useTypewriter(
   const text = ref(defaultText)
   const output = ref(immediate ? '' : defaultText)
 
-  let timer: any
-  let unwatch: WatchStopHandle
+  let paused = false
+  let timer: ReturnType<typeof setTimeout> | undefined
+  let runId = 0
+  let unwatch: WatchStopHandle | undefined
 
-  async function onOutput(fn?: () => void) {
-    if (output.value.length < text.value.length) {
-      await delayedTask(() => {
-        if (!isPause)
-          output.value = text.value.substring(0, output.value.length + 1)
-        onOutput(fn)
-      }, interval)
+  function clearTimer() {
+    if (timer) {
+      clearTimeout(timer)
+      timer = undefined
     }
-    else {
+  }
+
+  function schedule(task: () => void, delay: number) {
+    timer = setTimeout(task, delay)
+  }
+
+  function runOutput(currentId: number, done?: () => void) {
+    if (currentId !== runId)
+      return
+
+    if (output.value.length >= text.value.length) {
       callback?.()
-      fn?.()
+      done?.()
+      return
     }
+
+    schedule(() => {
+      if (currentId !== runId)
+        return
+      if (!paused)
+        output.value = text.value.substring(0, output.value.length + 1)
+      runOutput(currentId, done)
+    }, interval)
   }
 
-  async function onBackspace() {
-    if (output.value.length !== 0) {
-      await delayedTask(() => {
-        if (!isPause)
-          output.value = output.value.substring(0, output.value.length - 1)
-        onBackspace()
-      }, backInterval)
+  function runBackspace(currentId: number) {
+    if (currentId !== runId)
+      return
+
+    if (output.value.length === 0) {
+      runOutput(currentId)
+      return
     }
-    else {
-      onOutput()
-    }
+
+    schedule(() => {
+      if (currentId !== runId)
+        return
+      if (!paused)
+        output.value = output.value.substring(0, output.value.length - 1)
+      runBackspace(currentId)
+    }, backInterval)
   }
 
-  function delayedTask(task: () => void, delay: number) {
-    return new Promise((resolve) => {
-      timer = setTimeout(() => {
-        task()
-        resolve(true)
-      }, delay)
-    })
+  function restart() {
+    runId += 1
+    clearTimer()
+    runBackspace(runId)
   }
 
-  function pause(pauseStatus?: boolean | undefined) {
-    isPause = pauseStatus === undefined ? !isPause : pauseStatus
+  function pause(pauseStatus?: boolean) {
+    paused = pauseStatus === undefined ? !paused : pauseStatus
   }
 
   onMounted(() => {
     unwatch = watch(
       text,
       () => {
-        clearTimeout(timer)
-        onBackspace()
+        restart()
       },
       { immediate },
     )
   })
 
   onUnmounted(() => {
-    unwatch()
+    runId += 1
+    clearTimer()
+    unwatch?.()
   })
 
   return {
