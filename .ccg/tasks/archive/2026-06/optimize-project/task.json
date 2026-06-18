@@ -1,0 +1,12 @@
+{
+  "id": "optimize-project",
+  "title": "优化 Vue/Vite 项目",
+  "status": "completed",
+  "complexity": "M",
+  "risk": "medium",
+  "domain": "frontend",
+  "currentPhase": "completed",
+  "nextAction": "归档任务",
+  "createdAt": "2026-06-18T00:00:00Z",
+  "branch": "dev"
+}
