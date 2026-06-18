@@ -8,6 +8,7 @@ import { footerLinks } from '@/config'
     <div class="footer-links">
       <a
         v-for="item in footerLinks"
+        :key="item.link"
         :href="item.link"
         class="page-link hide-page-cursor"
         target="_blank"

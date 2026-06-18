@@ -4,6 +4,7 @@ import {
   onMounted,
   onUnmounted,
   ref,
+  shallowRef,
 } from 'vue'
 
 const props = withDefaults(defineProps<{
@@ -13,8 +14,8 @@ const props = withDefaults(defineProps<{
 })
 
 const cursor = ref<HTMLElement | null>(null)
-const cursorType = ref('auto')
-const cursorState = ref('')
+const cursorType = shallowRef('auto')
+const cursorState = shallowRef('')
 
 const cursorStyle = computed<CSSStyleDeclaration>(() => {
   return cursor.value?.style || {} as CSSStyleDeclaration

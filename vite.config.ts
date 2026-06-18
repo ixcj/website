@@ -4,8 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import Font from 'vite-plugin-font'
 import { createI18n } from 'vue-i18n'
-
-const { messages, defaultLanguage } = require('./src/language/messages.ts')
+import { defaultLanguage, messages } from './src/language/messages'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => {

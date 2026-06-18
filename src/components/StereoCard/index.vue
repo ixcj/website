@@ -54,6 +54,7 @@ const cardWrapperRef = ref<HTMLElement>()
 const contentDescriptionRef = ref<HTMLElement>()
 
 let myReq = 0
+let externalDataReq = 0
 let reboundTimer: ReturnType<typeof globalThis.setTimeout> | undefined
 
 let stereoCardRefParams = { top: 0, left: 0, width: 0, height: 0 }
@@ -188,7 +189,8 @@ function loopSetCardWrapperRefStyle() {
   if (!props.enableExternalData)
     return
 
-  requestAnimationFrame(() => {
+  cancelAnimationFrame(externalDataReq)
+  externalDataReq = requestAnimationFrame(() => {
     const { X, Y } = props.externaData
     setCardWrapperRefStyle({ X, Y })
 
@@ -234,6 +236,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   clearReboundTimer()
+  cancelAnimationFrame(myReq)
+  cancelAnimationFrame(externalDataReq)
 
   resizeObserver?.disconnect()
   stereoCardRef.value?.removeEventListener('mousemove', onMousemove)
@@ -279,7 +283,8 @@ onUnmounted(() => {
 
           <div v-if="data.links.length" class="content-link-box">
             <a
-              v-for="link, in data.links"
+              v-for="link in data.links"
+              :key="`${link.href}-${link.content}`"
               class="content-link-item"
               target="_blank"
               rel="noopener noreferrer"
@@ -299,6 +304,7 @@ onUnmounted(() => {
           <div v-if="data.tags.length" class="content-tag-box">
             <div
               v-for="tag in data.tags"
+              :key="tag.content"
               class="content-tag-item"
               :class="tag.type || ''"
               :style="tag?.style || {}"

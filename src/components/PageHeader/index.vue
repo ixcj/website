@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Section } from '@/config'
-import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
+import { computed, onMounted, onUnmounted, shallowRef, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sectionList } from '@/config'
 import { mobile, mobileThresholdValue } from '@/utils/screen'
@@ -11,9 +11,9 @@ const DEFAULT_HEADER_HEIGHT = 80
 const MOBILE_HEADER_HEIGHT = 50
 const HEADER_INNER_HEIGHT = 48
 
-const headerHeight = ref(DEFAULT_HEADER_HEIGHT)
-const menuHamburgerActive = ref(false)
-const activeSection = ref<Section>(sectionList[0])
+const headerHeight = shallowRef(DEFAULT_HEADER_HEIGHT)
+const menuHamburgerActive = shallowRef(false)
+const activeSection = shallowRef<Section>(sectionList[0])
 const showMenu = computed(() => menuHamburgerActive.value || !mobile.value)
 
 let scrollReq = 0
@@ -111,7 +111,12 @@ onUnmounted(() => {
             class="page-header-nav-list"
             :class="{ column: mobile }"
           >
-            <li v-for="section in sectionList" class="page-header-nav-item" @click="menuHamburgerActive = false">
+            <li
+              v-for="section in sectionList"
+              :key="section"
+              class="page-header-nav-item"
+              @click="menuHamburgerActive = false"
+            >
               <a
                 class="page-header-link"
                 :class="{ active: activeSection === section }"

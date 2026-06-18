@@ -1,7 +1,5 @@
 <script setup lang="ts">
-// @ts-expect-error 没有类型说明
-import GitHubCalendar from 'github-calendar'
-import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { nextTick, onMounted, onUnmounted, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { avatarLink, avatarUrl, githubContributionUser, socialLinks } from '@/config'
 import { useTypewriter } from '@/hooks/useTypewriter'
@@ -12,6 +10,7 @@ const TYPEWRITER_PARAGRAPH_INTERVAL = 5000
 const THEME_SWITCH_ANIMATION_NAME_LIST = ['light-to-dark', 'dark-to-light']
 
 let mottoIndex = getIndex(mottoLength)
+let mottoTimer: ReturnType<typeof setTimeout> | undefined
 
 const { t, locale } = useI18n()
 const TYPEWRITER_OUTPUT_INTERVAL = locale.value === 'zh' ? 50 : 25
@@ -20,7 +19,7 @@ const { text, output: motto, pause } = useTypewriter(t(`mottos[${mottoIndex}]`),
   interval: TYPEWRITER_OUTPUT_INTERVAL,
   backInterval: TYPEWRITER_OUTPUT_INTERVAL * 0.618,
   callback: () => {
-    setTimeout(() => {
+    mottoTimer = setTimeout(() => {
       mottoIndex = getIndex(mottoLength, mottoIndex)
       text.value = t(`mottos[${mottoIndex}]`)
     }, TYPEWRITER_PARAGRAPH_INTERVAL)
@@ -36,37 +35,46 @@ function getIndex(length: number, exclude: number | undefined = undefined) {
   return list[Math.floor(Math.random() * list.length)]
 }
 
-const loading = ref(true)
+const loading = shallowRef(true)
+let mounted = false
 
-function setGithubContributionCalendar() {
+async function setGithubContributionCalendar() {
   if (!githubContributionUser)
     return
 
   loading.value = true
-  GitHubCalendar('#github-contribution-calendar', githubContributionUser, {
-    global_stats: false,
-    cache: 'no-cache',
-    tooltips: false,
-    proxy(username: string) {
-      return fetch(`https://gh-calendar.xcj.pw/?username=${username}`)
-        .then(r => r.text())
-    },
-  }).finally(() => {
-    loading.value = false
 
-    nextTick(() => {
-      const calendarGraphContainer = document.querySelector('.js-calendar-graph > div')
+  try {
+    const { default: GitHubCalendar } = await import('github-calendar')
 
-      if (calendarGraphContainer) {
-        const toolTipList = Array.from(calendarGraphContainer.querySelectorAll('tool-tip'))
-        toolTipList.forEach(item => item.remove())
-        toolTipList.splice(0, toolTipList.length)
-
-        const link = document.querySelector('.Link--muted')
-        link?.setAttribute('target', '_blank')
-      }
+    await GitHubCalendar('#github-contribution-calendar', githubContributionUser, {
+      global_stats: false,
+      cache: 'no-cache',
+      tooltips: false,
+      proxy(username: string) {
+        return fetch(`https://gh-calendar.xcj.pw/?username=${username}`)
+          .then(r => r.text())
+      },
     })
-  })
+  }
+  finally {
+    if (mounted) {
+      loading.value = false
+
+      nextTick(() => {
+        const calendarGraphContainer = document.querySelector('.js-calendar-graph > div')
+
+        if (calendarGraphContainer) {
+          const toolTipList = Array.from(calendarGraphContainer.querySelectorAll('tool-tip'))
+          toolTipList.forEach(item => item.remove())
+          toolTipList.splice(0, toolTipList.length)
+
+          const link = document.querySelector('.Link--muted')
+          link?.setAttribute('target', '_blank')
+        }
+      })
+    }
+  }
 }
 
 function handleAnimationStart(event: AnimationEvent) {
@@ -91,12 +99,16 @@ function handleThemeSwitchAnimation(event: AnimationEvent, fn: () => void) {
 }
 
 onMounted(() => {
+  mounted = true
   setGithubContributionCalendar()
   document.addEventListener('animationstart', handleAnimationStart)
   document.addEventListener('animationend', handleAnimationEnd)
 })
 
 onUnmounted(() => {
+  mounted = false
+  if (mottoTimer)
+    clearTimeout(mottoTimer)
   document.removeEventListener('animationstart', handleAnimationStart)
   document.removeEventListener('animationend', handleAnimationEnd)
 })
@@ -120,8 +132,8 @@ onUnmounted(() => {
     </div>
     <div class="social-links">
       <a
-        v-for="(link, index) in socialLinks"
-        :key="index"
+        v-for="link in socialLinks"
+        :key="link.link"
         :href="link.link"
         :title="link.name"
         class="link"

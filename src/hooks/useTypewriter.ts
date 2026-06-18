@@ -1,5 +1,5 @@
 import type { WatchStopHandle } from 'vue'
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, shallowRef, watch } from 'vue'
 
 interface Options {
   /** 输出间隔 */
@@ -26,8 +26,8 @@ export function useTypewriter(
     callback = undefined,
   } = options
 
-  const text = ref(defaultText)
-  const output = ref(immediate ? '' : defaultText)
+  const text = shallowRef(defaultText)
+  const output = shallowRef(immediate ? '' : defaultText)
 
   let paused = false
   let timer: ReturnType<typeof setTimeout> | undefined

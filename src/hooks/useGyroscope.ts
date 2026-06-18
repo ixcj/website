@@ -1,12 +1,12 @@
 import type { WatchStopHandle } from 'vue'
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, shallowRef, watch } from 'vue'
 
 export function useGyroscope(enable: boolean = true) {
-  const alpha = ref(0)
-  const beta = ref(0)
-  const gamma = ref(0)
-  const ready = ref(false)
-  const activate = ref(enable)
+  const alpha = shallowRef(0)
+  const beta = shallowRef(0)
+  const gamma = shallowRef(0)
+  const ready = shallowRef(false)
+  const activate = shallowRef(enable)
 
   const isSupported
     = typeof window !== 'undefined' && 'DeviceOrientationEvent' in window

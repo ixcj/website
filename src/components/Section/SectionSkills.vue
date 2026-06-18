@@ -9,7 +9,7 @@ import { skillList } from '@/config'
     </h2>
 
     <div class="section-skill-box">
-      <div v-for="item in skillList" class="section-skill-item">
+      <div v-for="item in skillList" :key="item.name" class="section-skill-item">
         <template v-if="item.icon">
           <img
             v-if="item.type === 'image'"

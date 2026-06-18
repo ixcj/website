@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useHead } from '@unhead/vue'
-import { nextTick, ref } from 'vue'
+import { nextTick, onMounted, onUnmounted, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { css } from '@/assets/font/MiSans-Normal.ttf?subsets'
 import PageCursor from '@/components/PageCursor/index.vue'
@@ -58,14 +58,35 @@ useHead({
   script: scriptList,
 })
 
-const loading = ref(false)
+const loading = shallowRef(false)
+let loadTimer: ReturnType<typeof setTimeout> | undefined
 
-globalThis.onload = onLoad
+onMounted(() => {
+  if (document.readyState === 'complete') {
+    onLoad()
+    return
+  }
 
-setTimeout(onLoad, loadMaxWaitingTime)
+  window.addEventListener('load', onLoad, { once: true })
+  loadTimer = setTimeout(onLoad, loadMaxWaitingTime)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('load', onLoad)
+  if (loadTimer)
+    clearTimeout(loadTimer)
+})
 
 function onLoad() {
+  if (loading.value)
+    return
+
   loading.value = true
+  if (loadTimer) {
+    clearTimeout(loadTimer)
+    loadTimer = undefined
+  }
+
   nextTick(() => {
     setScrollBarWidth()
   })

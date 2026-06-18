@@ -1,5 +1,5 @@
 import { useWindowSize, watchDebounced } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { breakpointsConfig, mobileBreakpoint } from '@/config'
 
 export const mobileThresholdValue
@@ -8,13 +8,17 @@ export const mobileThresholdValue
     : breakpointsConfig.find(item => item.name === mobileBreakpoint)?.range[1] ?? 600
 
 export const { width: windowWidth } = useWindowSize()
-export const breakpointsName = ref('xl')
-export const mobile = ref(windowWidth.value <= mobileThresholdValue)
-export const scrollBarWidth = ref(0)
-export const contentWidth = ref<number | string>(900)
+export const breakpointsName = shallowRef('xl')
+export const mobile = shallowRef(windowWidth.value <= mobileThresholdValue)
+export const scrollBarWidth = shallowRef(0)
+export const contentWidth = shallowRef<number | string>(900)
 
 const haveMatchMedia = 'matchMedia' in globalThis
-export const touch = ref(haveMatchMedia && Boolean(globalThis.matchMedia('(pointer: coarse)')?.matches))
+const touchMediaQuery = haveMatchMedia
+  ? globalThis.matchMedia('(pointer: coarse)')
+  : undefined
+
+export const touch = shallowRef(Boolean(touchMediaQuery?.matches))
 
 watchDebounced(
   windowWidth,
@@ -50,8 +54,8 @@ export function setScrollBarWidth() {
     .setProperty('--scroll-bar-width', `${scrollBarWidth.value}px`)
 }
 
-if (haveMatchMedia) {
-  globalThis.matchMedia('(pointer: coarse)').addEventListener('change', () => {
-    touch.value = globalThis.matchMedia('(pointer: coarse)').matches
+if (touchMediaQuery) {
+  touchMediaQuery.addEventListener('change', () => {
+    touch.value = touchMediaQuery.matches
   })
 }

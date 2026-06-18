@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watchEffect } from 'vue'
+import { computed, onUnmounted, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StereoCard from '@/components/StereoCard/index.vue'
 import { useGyroscope } from '@/hooks/useGyroscope'
@@ -19,26 +19,42 @@ const projects = computed(() => {
 })
 
 const { beta, gamma, ready, activate } = useGyroscope(false)
-watchEffect(() => {
-  activate.value = touch.value && ready.value
-})
+watch(
+  [touch, ready],
+  ([isTouch, isReady]) => {
+    activate.value = isTouch && isReady
+  },
+  { immediate: true },
+)
 
 let initialBeta = 0
 let initialGamma = 0
+let frameRequest = 0
 
-const stereoCardData = ref({ X: 0, Y: 0 })
+const stereoCardData = shallowRef({ X: 0, Y: 0 })
+
+function cancelFrameRequest() {
+  if (typeof cancelAnimationFrame === 'function')
+    cancelAnimationFrame(frameRequest)
+}
 
 function setXY() {
+  if (typeof requestAnimationFrame !== 'function')
+    return
+
   if (!initialBeta)
     initialBeta = beta.value
   if (!initialGamma)
     initialGamma = gamma.value
 
-  requestAnimationFrame(() => {
+  cancelFrameRequest()
+  frameRequest = requestAnimationFrame(() => {
     const { xPercentage, yPercentage } = calculatePerspective(beta.value, gamma.value)
 
-    stereoCardData.value.X = xPercentage
-    stereoCardData.value.Y = yPercentage
+    stereoCardData.value = {
+      X: xPercentage,
+      Y: yPercentage,
+    }
 
     if (activate.value)
       setXY()
@@ -53,11 +69,23 @@ function calculatePerspective(beta = 0, gamma = 0) {
   }
 }
 
-onMounted(() => {
-  watchEffect(() => {
+watch(
+  activate,
+  (isActive) => {
+    if (!isActive) {
+      cancelFrameRequest()
+      return
+    }
+
+    initialBeta = 0
+    initialGamma = 0
     if (activate.value)
       setXY()
-  })
+  },
+)
+
+onUnmounted(() => {
+  cancelFrameRequest()
 })
 </script>
 
@@ -70,6 +98,7 @@ onMounted(() => {
     <div class="project-box">
       <div
         v-for="item in projects"
+        :key="item.name"
         class="project-item"
       >
         <StereoCard :data="item" :enable-external-data="touch && ready" :externa-data="stereoCardData" />
