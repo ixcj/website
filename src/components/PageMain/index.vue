@@ -30,6 +30,7 @@ const contentWidthString = computed(() => {
     <section
       v-for="(section, index) in sectionList"
       :id="section"
+      :key="section"
       :class="{ first: index === 0 }"
       class="section-item"
     >
@@ -55,7 +56,14 @@ const contentWidthString = computed(() => {
     ::v-deep() {
       .section-title {
         font-size: 28px;
+        font-weight: 700;
+        line-height: 1.3;
+        letter-spacing: 0.04em;
         text-align: center;
+
+        .xs & {
+          font-size: 24px;
+        }
       }
 
       .text-type-box {

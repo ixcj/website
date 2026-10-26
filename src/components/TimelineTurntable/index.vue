@@ -296,6 +296,7 @@ onUnmounted(() => {
           <div v-if="progressPartingLine.length" class="turntable-content-date-parting-line">
             <div
               v-for="n in progressPartingLine"
+              :key="n"
               class="turntable-content-date-parting-line-item"
               :style="{ '--parting-line-left': `${n * 100}%` }"
             />
@@ -330,7 +331,7 @@ onUnmounted(() => {
     </div>
 
     <div v-if="seoData.length" class="seo-data-box">
-      <template v-for="item in seoData">
+      <template v-for="item in seoData" :key="`${item.date[0]}-${item.date[1]}-${item.title}`">
         <div class="turntable-content-box">
           <div class="turntable-content-date-box">
             <div class="turntable-content-date">
@@ -341,7 +342,11 @@ onUnmounted(() => {
           <p v-if="item?.title" class="turntable-content-title" @touchmove.stop @touchstart.stop>
             {{ item.title }}
           </p>
-          <div v-for="childrenItem in item.children" class="turntable-content-text-box">
+          <div
+            v-for="childrenItem in item.children"
+            :key="`${childrenItem.title}-${childrenItem.describe}`"
+            class="turntable-content-text-box"
+          >
             <div :key="JSON.stringify(childrenItem)" class="turntable-content-text" @touchmove.stop @touchstart.stop>
               <div v-if="childrenItem.title" class="turntable-content-text-title">
                 {{ childrenItem.title }}

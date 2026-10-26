@@ -8,18 +8,25 @@ defineProps({
 </script>
 
 <template>
-  <div class="hamburger" :class="{ active }">
+  <button
+    type="button"
+    class="hamburger plain-button"
+    :class="{ active }"
+    :aria-expanded="active"
+    :aria-label="active ? $t('a11y.closeMenu') : $t('a11y.openMenu')"
+  >
     <span class="hamburger-1" />
     <span class="hamburger-2" />
     <span class="hamburger-3" />
-  </div>
+  </button>
 </template>
 
 <style lang="scss" scoped>
 .hamburger {
-  cursor: pointer;
-  width: 20px;
-  height: var(--header-height);
+  width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,6 +58,7 @@ defineProps({
   .hamburger-1,
   .hamburger-2,
   .hamburger-3 {
+    display: block;
     width: 100%;
     background-color: var(--foreground-color);
     border-radius: 10px;

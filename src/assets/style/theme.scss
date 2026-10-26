@@ -4,12 +4,32 @@
   --background-color: #f7f8f8;
   --foreground-color: #000212;
 
+  // 语义角色：都从前景色派生，亮暗主题自动适配
+  --text-muted: color-mix(in srgb, var(--foreground-color) 72%, transparent);
+  --text-subtle: color-mix(in srgb, var(--foreground-color) 56%, transparent);
+  --surface: color-mix(in srgb, var(--foreground-color) 4%, transparent);
+  --surface-hover: color-mix(in srgb, var(--foreground-color) 8%, transparent);
+  --border: color-mix(in srgb, var(--foreground-color) 12%, transparent);
+  --border-strong: color-mix(in srgb, var(--foreground-color) 24%, transparent);
+  --focus-ring: 0 0 0 2px var(--background-color), 0 0 0 4px color-mix(in srgb, var(--foreground-color) 70%, transparent);
+
+  // 形状
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  // 字体
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, monospace;
+
   color-scheme: light;
 
   &.dark {
     --background-color: #000212;
     --foreground-color: #f7f8f8;
-    
+
+    --surface: color-mix(in srgb, var(--foreground-color) 5%, transparent);
+    --border: color-mix(in srgb, var(--foreground-color) 11%, transparent);
+
     color-scheme: dark;
   }
 }

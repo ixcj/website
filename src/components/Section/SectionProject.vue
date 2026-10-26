@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watchEffect } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StereoCard from '@/components/StereoCard/index.vue'
 import { useGyroscope } from '@/hooks/useGyroscope'
@@ -19,30 +19,49 @@ const projects = computed(() => {
 })
 
 const { beta, gamma, ready, activate } = useGyroscope(false)
-watchEffect(() => {
-  activate.value = touch.value && ready.value
-})
+watch(
+  [touch, ready],
+  ([isTouch, isReady]) => {
+    activate.value = isTouch && isReady
+  },
+  { immediate: true },
+)
 
 let initialBeta = 0
 let initialGamma = 0
+let frameRequest = 0
 
-const stereoCardData = ref({ X: 0, Y: 0 })
+// Non-reactive and mutated in place: cards read the latest value in their own rAF loop.
+// Replacing it with a new reactive object every frame re-rendered this section and every card per frame.
+const stereoCardData = { X: 0, Y: 0 }
 
-function setXY() {
+function cancelFrameRequest() {
+  if (frameRequest && typeof cancelAnimationFrame === 'function')
+    cancelAnimationFrame(frameRequest)
+  frameRequest = 0
+}
+
+function updateXY() {
+  frameRequest = 0
+  if (!activate.value)
+    return
+
   if (!initialBeta)
     initialBeta = beta.value
   if (!initialGamma)
     initialGamma = gamma.value
 
-  requestAnimationFrame(() => {
-    const { xPercentage, yPercentage } = calculatePerspective(beta.value, gamma.value)
+  const { xPercentage, yPercentage } = calculatePerspective(beta.value, gamma.value)
+  stereoCardData.X = xPercentage
+  stereoCardData.Y = yPercentage
+}
 
-    stereoCardData.value.X = xPercentage
-    stereoCardData.value.Y = yPercentage
+// Coalesce updates per frame and only when gyroscope data changes; no idle requestAnimationFrame loop
+function requestUpdateXY() {
+  if (frameRequest || typeof requestAnimationFrame !== 'function')
+    return
 
-    if (activate.value)
-      setXY()
-  })
+  frameRequest = requestAnimationFrame(updateXY)
 }
 
 function calculatePerspective(beta = 0, gamma = 0) {
@@ -53,11 +72,61 @@ function calculatePerspective(beta = 0, gamma = 0) {
   }
 }
 
+watch([beta, gamma], () => {
+  if (activate.value)
+    requestUpdateXY()
+})
+
+watch(
+  activate,
+  (isActive) => {
+    if (!isActive) {
+      cancelFrameRequest()
+      return
+    }
+
+    initialBeta = 0
+    initialGamma = 0
+    requestUpdateXY()
+  },
+)
+
+// —— 入场：卡片进入视口时依次浮现；SSR 与减少动效时默认可见 ——
+const itemRefs = ref<HTMLElement[]>([])
+const motionReady = ref(false)
+const visibleSet = ref(new Set<number>())
+let observer: IntersectionObserver | null = null
+
 onMounted(() => {
-  watchEffect(() => {
-    if (activate.value)
-      setXY()
+  const reduceMotion = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  if (reduceMotion || typeof IntersectionObserver === 'undefined')
+    return
+
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting)
+        return
+      const index = itemRefs.value.indexOf(entry.target as HTMLElement)
+      if (index > -1) {
+        visibleSet.value = new Set(visibleSet.value).add(index)
+        observer?.unobserve(entry.target)
+      }
+    })
+  }, { rootMargin: '0px 0px -10% 0px' })
+
+  itemRefs.value.forEach((el, index) => {
+    // 挂载时已在视口内的卡片直接显示，避免闪烁
+    if (el.getBoundingClientRect().top < globalThis.innerHeight)
+      visibleSet.value.add(index)
+    else
+      observer?.observe(el)
   })
+  motionReady.value = true
+})
+
+onUnmounted(() => {
+  cancelFrameRequest()
+  observer?.disconnect()
 })
 </script>
 
@@ -67,39 +136,55 @@ onMounted(() => {
       {{ $t('SectionTitle.project') }}
     </h2>
 
-    <div class="project-box">
-      <div
-        v-for="item in projects"
+    <ul class="project-box" :class="{ 'motion-ready': motionReady }">
+      <li
+        v-for="(item, index) in projects"
+        :key="item.name"
+        ref="itemRefs"
         class="project-item"
+        :class="{ 'is-visible': visibleSet.has(index) }"
+        :style="{ '--i': index }"
       >
         <StereoCard :data="item" :enable-external-data="touch && ready" :externa-data="stereoCardData" />
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .section-project {
   .project-box {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: 20px;
+    max-width: 860px;
+    margin: 28px auto 0;
     padding: 0 20px;
+    box-sizing: border-box;
+    list-style: none;
 
-    .project-item {
-      width: calc((100% - 40px) / 3);
-      aspect-ratio: 3 / 4;
+    .xs & {
+      gap: 16px;
+      margin-top: 20px;
+      padding: 0 16px;
+    }
+  }
 
-      .sm & {
-        width: calc((100% - 20px) / 2);
-      }
+  .project-item {
+    min-width: 0;
+  }
 
-      .xs &  {
-        width: 100%;
-        max-width: 300px;
-      }
+  .motion-ready .project-item {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--i, 0) * 80ms);
+
+    &.is-visible {
+      opacity: 1;
+      transform: none;
     }
   }
 }

@@ -74,6 +74,29 @@
   }
 }
 
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+// 无样式按钮：用于图标、文字形态的交互控件
+.plain-button {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: var(--transition-duration, 0.25s) ease;
