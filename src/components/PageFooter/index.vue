@@ -23,11 +23,17 @@ import { footerLinks } from '@/config'
   width: 100%;
   position: relative;
   min-height: 80px;
+  padding: 24px 20px;
+  box-sizing: border-box;
   display: flex;
-  gap: 5px;
+  gap: 8px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--text-subtle);
 
   &::before {
     content: '';
@@ -46,8 +52,16 @@ import { footerLinks } from '@/config'
   .footer-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 4px 12px;
     justify-content: center;
+
+    .page-link {
+      color: var(--text-muted);
+
+      &:hover {
+        color: var(--background-color);
+      }
+    }
   }
 }
 </style>

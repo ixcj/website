@@ -41,24 +41,33 @@ import { skillList } from '@/config'
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 24px;
     padding: 0 20px;
 
     .section-skill-item {
-      font-size: 16px;
+      font-size: 15px;
       display: flex;
-      gap: 5px;
+      gap: 8px;
       justify-content: center;
       align-items: center;
-      padding: 8px 12px;
-      background-color: var(--foreground-color);
-      color: var(--background-color);
-      border-radius: 10px;
+      padding: 8px 14px;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--foreground-color);
+      border-radius: var(--radius-md);
+      transition:
+        background-color var(--transition-duration),
+        border-color var(--transition-duration);
+
+      &:hover {
+        background-color: var(--surface-hover);
+        border-color: var(--border-strong);
+      }
 
       .section-skill-item-icon {
-        width: 20px;
-        height: 20px;
-        object-fit: cover;
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
       }
     }
   }

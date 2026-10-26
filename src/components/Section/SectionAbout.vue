@@ -29,12 +29,14 @@ const introduce = computed(() => {
 <style lang="scss" scoped>
 .section-about {
   .section-about-introduce {
-    margin-top: 20px;
+    margin-top: 24px;
     padding: 0 20px;
+    font-size: 16px;
+    color: var(--text-muted);
 
     ::v-deep(p) {
-      margin-bottom: 0.75em;
-      line-height: 1.4;
+      margin-bottom: 1em;
+      line-height: 1.8;
 
       &:last-child {
         margin-bottom: 0;

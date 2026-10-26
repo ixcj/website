@@ -137,4 +137,12 @@ export default {
   contributionCalendar: 'GitHub 贡献日历',
 
   now: '至今',
+
+  a11y: {
+    switchLanguage: 'Switch to English',
+    switchTheme: '切换亮色 / 暗色主题',
+    openMenu: '打开导航菜单',
+    closeMenu: '关闭导航菜单',
+    backToTop: '回到顶部',
+  },
 }

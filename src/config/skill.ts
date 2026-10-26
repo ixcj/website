@@ -73,7 +73,7 @@ export const skillList: Array<Skill_Icon | Skill_Image> = [
   {
     name: 'GitHub',
     icon: Github,
-    color: 'var(--background-color)',
+    color: 'var(--foreground-color)',
     type: 'icon',
   },
 ]

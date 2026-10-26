@@ -137,4 +137,12 @@ export default {
   contributionCalendar: 'GitHub Contribution calendar',
 
   now: 'Now',
+
+  a11y: {
+    switchLanguage: '切换到中文',
+    switchTheme: 'Toggle light / dark theme',
+    openMenu: 'Open navigation menu',
+    closeMenu: 'Close navigation menu',
+    backToTop: 'Back to top',
+  },
 }

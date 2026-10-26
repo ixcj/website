@@ -182,8 +182,8 @@ const timelineData = computed<TimelineItem[]>(() => {
 
 .timeline-date {
   font-size: 14px;
-  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, monospace;
-  color: color-mix(in srgb, var(--foreground-color) 70%, transparent);
+  font-family: var(--font-mono);
+  color: var(--text-subtle);
   letter-spacing: 0.02em;
 
   .timeline-date-separator {
@@ -208,14 +208,14 @@ const timelineData = computed<TimelineItem[]>(() => {
 
 .timeline-child {
   padding: 16px;
-  background: color-mix(in srgb, var(--foreground-color) 5%, transparent);
-  border-radius: 8px;
-  border: 1px solid color-mix(in srgb, var(--foreground-color) 10%, transparent);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
   transition: background 0.2s ease, border-color 0.2s ease;
 
   &:hover {
-    background: color-mix(in srgb, var(--foreground-color) 8%, transparent);
-    border-color: color-mix(in srgb, var(--foreground-color) 20%, transparent);
+    background: var(--surface-hover);
+    border-color: var(--border-strong);
   }
 }
 
@@ -228,8 +228,8 @@ const timelineData = computed<TimelineItem[]>(() => {
 
 .timeline-child-describe {
   font-size: 14px;
-  line-height: 1.6;
-  color: color-mix(in srgb, var(--foreground-color) 80%, transparent);
+  line-height: 1.7;
+  color: var(--text-muted);
 
   :deep(div) {
     position: relative;

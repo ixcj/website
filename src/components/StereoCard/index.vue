@@ -290,11 +290,13 @@ onUnmounted(() => {
               rel="noopener noreferrer"
               :href="link.href"
               :title="link.title"
+              :aria-label="link.title"
             >
               <component
                 :is="getIconComponent(link.content)"
                 v-if="getIconComponent(link.content)"
                 class="content-link-item-icon"
+                aria-hidden="true"
               />
               <img v-else-if="link.type === 'image'" :src="link.content" alt="">
               <span v-else>{{ link.content }}</span>
@@ -507,9 +509,11 @@ onUnmounted(() => {
     }
 
     .content-description {
-      font-size: 16px;
-      max-width: 90%;
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 86%;
       text-align: center;
+      opacity: 0.88;
       max-height: calc(100% - var(--round) - 200px);
       scrollbar-width: none;
 
@@ -542,7 +546,17 @@ onUnmounted(() => {
       right: calc(var(--round) / 2);
 
       .content-link-item {
-        padding: 3px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        transition: background-color var(--transition-duration);
+
+        &:hover {
+          background-color: rgba($color: #fff, $alpha: .12);
+        }
 
         .content-link-item-icon {
           width: 20px;
@@ -571,10 +585,11 @@ onUnmounted(() => {
 
       .content-tag-item {
         font-size: 12px;
-        padding: 2px 6px;
+        line-height: 1.4;
+        padding: 2px 8px;
         border: 1px solid #f7f8f8;
         color: #f7f8f8;
-        border-radius: 12px;
+        border-radius: 999px;
         white-space: nowrap;
 
         &.success {

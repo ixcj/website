@@ -90,9 +90,25 @@ onUnmounted(() => {
 <template>
   <header class="page-header">
     <div class="page-header-inner">
+      <a
+        v-if="mobile"
+        class="page-header-title"
+        href="#home"
+        :aria-label="$t('a11y.backToTop')"
+        @click="menuHamburgerActive = false"
+      >{{ $t('name') }}</a>
+
       <div class="page-header-feature">
         <template v-if="!mobile">
-          <span class="switch-lang" @click="handleSwitchLang">{{ $t('language') }}</span>
+          <button
+            type="button"
+            class="switch-lang plain-button"
+            :aria-label="$t('a11y.switchLanguage')"
+            :title="$t('a11y.switchLanguage')"
+            @click="handleSwitchLang"
+          >
+            {{ $t('language') }}
+          </button>
           <ThemeSwitch />
         </template>
 
@@ -127,7 +143,14 @@ onUnmounted(() => {
               </a>
             </li>
             <li v-if="mobile" class="page-header-nav-item">
-              <span class="switch-lang page-header-link" @click="handleSwitchLang">{{ $t('language') }}</span>
+              <button
+                type="button"
+                class="switch-lang page-header-link plain-button"
+                :aria-label="$t('a11y.switchLanguage')"
+                @click="handleSwitchLang"
+              >
+                {{ $t('language') }}
+              </button>
               <ThemeSwitch class="page-header-link" />
             </li>
           </ul>
@@ -171,7 +194,7 @@ onUnmounted(() => {
       width: 100%;
       height: 100%;
       border-radius: 0;
-      border-color: rgba($color: #aaa, $alpha: .1);
+      border-color: var(--border);
 
       .page-header-title {
         opacity: 1;
@@ -213,8 +236,8 @@ onUnmounted(() => {
     max-width: calc(v-bind(mobileThresholdValue) * 1px);
     min-width: 100px;
     box-sizing: border-box;
-    border: 1px solid rgba($color: #999, $alpha: .3);
-    border-bottom-color: rgba($color: #999, $alpha: .3) !important;
+    border: 1px solid var(--border-strong);
+    border-bottom-color: var(--border-strong) !important;
     background-color: rgba($color: #fff, $alpha: .35);
     backdrop-filter: blur(10px);
     transition: var(--transition-duration);
@@ -228,6 +251,11 @@ onUnmounted(() => {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--foreground-color);
+      text-decoration: none;
       opacity: 0;
       transition: opacity var(--transition-duration);
     }
@@ -274,7 +302,7 @@ onUnmounted(() => {
 
       &.column {
         flex-direction: column;
-        border-bottom: 1px solid rgba($color: #999, $alpha: .3) !important;
+        border-bottom: 1px solid var(--border-strong) !important;
         gap: 0px;
         background-color: rgba($color: #fff, $alpha: .35);
 
@@ -284,7 +312,7 @@ onUnmounted(() => {
 
         .page-header-nav-item {
           width: 90%;
-          border-bottom: 1px solid rgba($color: #999, $alpha: .3);
+          border-bottom: 1px solid var(--border);
 
           &:last-of-type {
             border: none !important;
@@ -300,14 +328,19 @@ onUnmounted(() => {
         .page-header-link {
           width: 100%;
           padding: 15px;
+          border-radius: var(--radius-sm);
           text-decoration: none;
-          color: var(--foreground-color);
+          color: var(--text-muted);
           transition:
             color var(--transition-duration),
             opacity var(--transition-duration);
           text-align: center;
           position: relative;
           z-index: 1;
+
+          &:hover {
+            color: var(--foreground-color);
+          }
 
           &::after {
             content: '';
@@ -340,10 +373,20 @@ onUnmounted(() => {
   }
 
   .switch-lang {
-    cursor: pointer;
-    padding: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
+    border-radius: 50%;
     font-size: 14px;
     line-height: 14px;
+    transition: background-color var(--transition-duration);
+
+    &:hover {
+      background-color: var(--surface-hover);
+    }
   }
 
   .overlay {
