@@ -8,6 +8,7 @@ import {
   onMounted,
   onUnmounted,
   ref,
+  watch,
 } from 'vue'
 import defaultBackground from '@/assets/images/stereo-card-bg.webp'
 import defaultPattern from '@/assets/images/stereo-card-pattern.webp'
@@ -109,7 +110,7 @@ function onMousemove(e: MouseEvent) {
 }
 
 function onMouseout() {
-  if (!cardWrapperRef.value)
+  if (props.enableExternalData || !cardWrapperRef.value)
     return
 
   const { perspectiveReboundStrength, perspectiveReboundCount, perspectiveReboundSpeed, speedX, speedY } = props
@@ -184,6 +185,9 @@ function setCardWrapperRefStyle({ X, Y }: { X: number, Y: number }) {
   })
 }
 
+let lastExternalX: number | undefined
+let lastExternalY: number | undefined
+
 function loopSetCardWrapperRefStyle() {
   if (!props.enableExternalData)
     return
@@ -191,12 +195,37 @@ function loopSetCardWrapperRefStyle() {
   cancelAnimationFrame(externalDataReq)
   externalDataReq = requestAnimationFrame(() => {
     const { X, Y } = props.externaData
-    setCardWrapperRefStyle({ X, Y })
+    // only write styles when the external data actually changed
+    if (X !== lastExternalX || Y !== lastExternalY) {
+      lastExternalX = X
+      lastExternalY = Y
+      setCardWrapperRefStyle({ X, Y })
+    }
 
     if (props.enableExternalData)
       loopSetCardWrapperRefStyle()
   })
 }
+
+function stopExternalDataLoop() {
+  cancelAnimationFrame(externalDataReq)
+  externalDataReq = 0
+  lastExternalX = undefined
+  lastExternalY = undefined
+}
+
+// enableExternalData usually turns true after mount (gyroscope permission is resolved asynchronously
+// in the parent), so switch modes whenever it changes instead of reading it only once on mount
+function applyExternalDataMode(enabled: boolean) {
+  clearReboundTimer()
+  stopExternalDataLoop()
+  setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
+
+  if (enabled)
+    loopSetCardWrapperRefStyle()
+}
+
+watch(() => props.enableExternalData, applyExternalDataMode)
 
 function isPrimaryLink(content: string) {
   return content === '_EXTERNAL_LINK_'
@@ -215,14 +244,9 @@ onMounted(() => {
   if (stereoCardRef.value)
     resizeObserver?.observe(stereoCardRef.value)
 
-  setCardWrapperRefStyle({ X: 0.5, Y: 0.5 })
-  if (props.enableExternalData) {
-    loopSetCardWrapperRefStyle()
-  }
-  else {
-    stereoCardRef.value?.addEventListener('mousemove', onMousemove)
-    stereoCardRef.value?.addEventListener('mouseout', onMouseout)
-  }
+  stereoCardRef.value?.addEventListener('mousemove', onMousemove)
+  stereoCardRef.value?.addEventListener('mouseout', onMouseout)
+  applyExternalDataMode(props.enableExternalData)
 
   globalThis.addEventListener('resize', markStereoCardRefParamsDirty, { passive: true })
   globalThis.addEventListener('scroll', markStereoCardRefParamsDirty, { passive: true })
@@ -231,7 +255,7 @@ onMounted(() => {
 onUnmounted(() => {
   clearReboundTimer()
   cancelAnimationFrame(myReq)
-  cancelAnimationFrame(externalDataReq)
+  stopExternalDataLoop()
 
   resizeObserver?.disconnect()
   stereoCardRef.value?.removeEventListener('mousemove', onMousemove)
