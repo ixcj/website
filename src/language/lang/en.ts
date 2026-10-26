@@ -138,6 +138,12 @@ export default {
 
   now: 'Now',
 
+  experienceMeta: {
+    year: '{n} yr | {n} yrs',
+    month: '{n} mo | {n} mos',
+    current: 'Current',
+  },
+
   a11y: {
     switchLanguage: '切换到中文',
     switchTheme: 'Toggle light / dark theme',

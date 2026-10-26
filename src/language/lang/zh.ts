@@ -75,7 +75,7 @@ export const experiences: TimelineTurntableItem[] = [
         describe: `
         <div>参与需求评估，与产品团队和后端团队密切合作，确保需求可行性与项目规划</div>
         <div>负责后台管理系统的持续优化和新功能开发，以提升系统效率</div>
-        <div>负开发和维护供应链小程序，确保其与业务需求的高度契合</div>
+        <div>负责开发和维护供应链小程序，确保其与业务需求的高度契合</div>
         <div>不断优化用户体验，通过细致的反馈和测试提升产品质量</div>
         `,
         range: [0, 1],
@@ -137,6 +137,12 @@ export default {
   contributionCalendar: 'GitHub 贡献日历',
 
   now: '至今',
+
+  experienceMeta: {
+    year: '{n} 年',
+    month: '{n} 个月',
+    current: '在职',
+  },
 
   a11y: {
     switchLanguage: 'Switch to English',
