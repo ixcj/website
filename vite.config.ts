@@ -12,6 +12,14 @@ export default defineConfig(({ command }) => {
 
   return {
     base,
+    define: {
+      // 项目全部使用 Composition API，关闭 Options API 支持以减小运行时体积
+      __VUE_OPTIONS_API__: false,
+      // 仅使用 Composition 模式与全局 $t，不使用 legacy API、<i18n-t> 组件和 v-t 指令
+      __VUE_I18N_LEGACY_API__: false,
+      __VUE_I18N_FULL_INSTALL__: false,
+      __INTLIFY_PROD_DEVTOOLS__: false,
+    },
     plugins: [
       vue(),
       Font.vite({

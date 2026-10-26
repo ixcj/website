@@ -21,40 +21,78 @@ const cursorStyle = computed<CSSStyleDeclaration>(() => {
   return cursor.value?.style || {} as CSSStyleDeclaration
 })
 
+const hideCursorSelectorList = computed(() => {
+  return Array.isArray(props.hideCursorSelector)
+    ? props.hideCursorSelector
+    : [props.hideCursorSelector]
+})
+
 let myReq: number = 0
+let pointerX = 0
+let pointerY = 0
+let pointerTarget: HTMLElement | null = null
+// Target resolved in the previous frame: skip getComputedStyle / closest while the target is unchanged,
+// so we don't force a style recalc every frame after other components write styles
+let resolvedTarget: HTMLElement | null = null
+let resolvedHide: boolean | undefined
+
+function resetResolvedTarget() {
+  resolvedTarget = null
+  resolvedHide = undefined
+}
+
+function cancelFrame() {
+  if (myReq)
+    cancelAnimationFrame(myReq)
+  myReq = 0
+}
+
+function renderCursor() {
+  myReq = 0
+  cursorStyle.value.transform = `translate3d(${pointerX}px, ${pointerY}px, 0)`
+
+  const target = pointerTarget
+  if (!target || target === resolvedTarget)
+    return
+
+  resolvedTarget = target
+  cursorType.value = getComputedStyle(target)?.cursor || 'auto'
+
+  const hideCursor = hideCursorSelectorList.value.some(item => target.closest(item) !== null)
+  if (hideCursor !== resolvedHide) {
+    resolvedHide = hideCursor
+    cursorStyle.value.opacity = hideCursor ? '0' : '1'
+    cursorStyle.value.transition = hideCursor ? '0.2s ease-out' : '0.125s ease-out'
+  }
+}
 
 function onMousemove(event: MouseEvent) {
   if (!cursor.value)
     return
 
-  cancelAnimationFrame(myReq)
+  pointerX = event.clientX
+  pointerY = event.clientY
+  pointerTarget = event.target as HTMLElement
 
-  const { clientX, clientY } = event
-  const target = event.target as HTMLElement
-
-  myReq = requestAnimationFrame(() => {
-    cursorStyle.value.transform = `translate3d(${clientX}px, ${clientY}px, 0)`
-    cursorType.value = getComputedStyle(target)?.cursor || 'auto'
-
-    const hideCursorSelectorList = Array.isArray(props.hideCursorSelector)
-      ? props.hideCursorSelector
-      : [props.hideCursorSelector]
-    const hideCursor = hideCursorSelectorList.some(item => target.closest(item) !== null)
-    cursorStyle.value.opacity = hideCursor ? '0' : '1'
-    cursorStyle.value.transition = hideCursor ? '0.2s ease-out' : '0.125s ease-out'
-  })
+  // only handle the latest move per frame
+  if (!myReq)
+    myReq = requestAnimationFrame(renderCursor)
 }
 
 function onMousedown() {
   cursorState.value = 'pressed'
+  // pressing / releasing may change the target cursor (e.g. grab -> grabbing); re-resolve on next move
+  resolvedTarget = null
 }
 
 function onMouseup() {
   cursorState.value = ''
+  resolvedTarget = null
 }
 
 function onMouseenter() {
-  cancelAnimationFrame(myReq)
+  cancelFrame()
+  resetResolvedTarget()
 
   requestAnimationFrame(() => {
     cursorStyle.value.transition = 'none'
@@ -63,7 +101,8 @@ function onMouseenter() {
 }
 
 function onMouseleave() {
-  cancelAnimationFrame(myReq)
+  cancelFrame()
+  resetResolvedTarget()
 
   requestAnimationFrame(() => {
     cursorStyle.value.opacity = '0'
@@ -79,6 +118,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  cancelFrame()
   globalThis.document.removeEventListener('mousemove', onMousemove)
   globalThis.document.removeEventListener('mousedown', onMousedown)
   globalThis.document.removeEventListener('mouseup', onMouseup)

@@ -72,13 +72,14 @@ const timelineData = computed<TimelineItem[]>(() => {
 // —— 滚动点亮轴线 + 入场 ——
 const rootRef = ref<HTMLElement | null>(null)
 const itemRefs = ref<HTMLElement[]>([])
-const axisProgress = ref(0)
 const reachedCount = ref(0)
 const motionReady = ref(false)
 const visibleSet = ref(new Set<number>())
 
 let frame = 0
 let observer: IntersectionObserver | null = null
+// Axis progress changes on every scroll frame: write the CSS variable directly instead of re-rendering the whole timeline
+let axisProgress = 0
 
 function updateProgress() {
   frame = 0
@@ -91,12 +92,21 @@ function updateProgress() {
   const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
   const anchor = atBottom ? window.innerHeight : window.innerHeight * 0.6
   const progress = (anchor - rect.top) / Math.max(rect.height, 1)
-  axisProgress.value = Math.min(Math.max(progress, 0), 1)
+  const nextProgress = Math.min(Math.max(progress, 0), 1)
 
-  reachedCount.value = itemRefs.value.filter((el) => {
+  let nextReachedCount = 0
+  for (const el of itemRefs.value) {
     const dot = el.querySelector('.timeline-dot')
-    return dot ? dot.getBoundingClientRect().top <= anchor : false
-  }).length
+    if (dot && dot.getBoundingClientRect().top <= anchor)
+      nextReachedCount++
+  }
+
+  // finish all layout reads before writing to avoid forced synchronous layout
+  if (nextProgress !== axisProgress) {
+    axisProgress = nextProgress
+    root.style.setProperty('--axis-progress', String(nextProgress))
+  }
+  reachedCount.value = nextReachedCount
 }
 
 function requestUpdate() {
@@ -149,7 +159,7 @@ onUnmounted(() => {
     ref="rootRef"
     class="timeline-line"
     :class="{ 'motion-ready': motionReady }"
-    :style="{ '--axis-progress': axisProgress }"
+    style="--axis-progress: 0"
   >
     <div class="timeline-axis" aria-hidden="true">
       <div class="timeline-axis-fill" />

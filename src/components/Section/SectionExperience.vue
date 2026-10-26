@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import TimelineLine from '@/components/TimelineLine/index.vue'
-import TimelineTurntable from '@/components/TimelineTurntable/index.vue'
 import { experienceType } from '@/config'
 
 const { t } = useI18n()
@@ -19,6 +18,11 @@ const experiences = computed(() => {
 })
 
 const isLineType = computed(() => experienceType === 'line')
+
+// The turntable timeline is large and only used when configured as 'turntable': load it on demand to keep it out of the main bundle
+const ExperienceTimeline = experienceType === 'line'
+  ? TimelineLine
+  : defineAsyncComponent(() => import('@/components/TimelineTurntable/index.vue'))
 </script>
 
 <template>
@@ -28,8 +32,7 @@ const isLineType = computed(() => experienceType === 'line')
     </h2>
 
     <div class="section-experience-box" :class="{ 'hide-page-cursor': !isLineType }">
-      <TimelineLine v-if="isLineType" :data="experiences" />
-      <TimelineTurntable v-else :data="experiences" />
+      <component :is="ExperienceTimeline" :data="experiences" />
     </div>
   </div>
 </template>

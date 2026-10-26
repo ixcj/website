@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StereoCard from '@/components/StereoCard/index.vue'
 import { useGyroscope } from '@/hooks/useGyroscope'
@@ -31,15 +31,19 @@ let initialBeta = 0
 let initialGamma = 0
 let frameRequest = 0
 
-const stereoCardData = shallowRef({ X: 0, Y: 0 })
+// Non-reactive and mutated in place: cards read the latest value in their own rAF loop.
+// Replacing it with a new reactive object every frame re-rendered this section and every card per frame.
+const stereoCardData = { X: 0, Y: 0 }
 
 function cancelFrameRequest() {
-  if (typeof cancelAnimationFrame === 'function')
+  if (frameRequest && typeof cancelAnimationFrame === 'function')
     cancelAnimationFrame(frameRequest)
+  frameRequest = 0
 }
 
-function setXY() {
-  if (typeof requestAnimationFrame !== 'function')
+function updateXY() {
+  frameRequest = 0
+  if (!activate.value)
     return
 
   if (!initialBeta)
@@ -47,18 +51,17 @@ function setXY() {
   if (!initialGamma)
     initialGamma = gamma.value
 
-  cancelFrameRequest()
-  frameRequest = requestAnimationFrame(() => {
-    const { xPercentage, yPercentage } = calculatePerspective(beta.value, gamma.value)
+  const { xPercentage, yPercentage } = calculatePerspective(beta.value, gamma.value)
+  stereoCardData.X = xPercentage
+  stereoCardData.Y = yPercentage
+}
 
-    stereoCardData.value = {
-      X: xPercentage,
-      Y: yPercentage,
-    }
+// Coalesce updates per frame and only when gyroscope data changes; no idle requestAnimationFrame loop
+function requestUpdateXY() {
+  if (frameRequest || typeof requestAnimationFrame !== 'function')
+    return
 
-    if (activate.value)
-      setXY()
-  })
+  frameRequest = requestAnimationFrame(updateXY)
 }
 
 function calculatePerspective(beta = 0, gamma = 0) {
@@ -68,6 +71,11 @@ function calculatePerspective(beta = 0, gamma = 0) {
     yPercentage: Math.sin((beta - initialBeta) * Math.PI / 180) + 0.5,
   }
 }
+
+watch([beta, gamma], () => {
+  if (activate.value)
+    requestUpdateXY()
+})
 
 watch(
   activate,
@@ -79,8 +87,7 @@ watch(
 
     initialBeta = 0
     initialGamma = 0
-    if (activate.value)
-      setXY()
+    requestUpdateXY()
   },
 )
 

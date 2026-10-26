@@ -55,22 +55,25 @@ let myReq = 0
 let externalDataReq = 0
 let reboundTimer: ReturnType<typeof globalThis.setTimeout> | undefined
 
+// The card rect is only needed on mousemove: scroll / resize just mark it dirty and it is re-read lazily,
+// instead of every card calling getBoundingClientRect synchronously on every scroll event
 let stereoCardRefParams = { top: 0, left: 0, width: 0, height: 0 }
+let stereoCardRefParamsDirty = true
 const ResizeObserver = globalThis?.ResizeObserver
-const resizeObserver = ResizeObserver && new ResizeObserver((entries) => {
-  for (const entry of entries) {
-    updateStereoCardRefParams(entry.target)
-  }
-})
+const resizeObserver = ResizeObserver && new ResizeObserver(markStereoCardRefParamsDirty)
 
-function updateStereoCardRefParams(el: Element | HTMLElement) {
-  const { top, left, width, height } = el.getBoundingClientRect()
-  stereoCardRefParams = { top, left, width, height }
+function markStereoCardRefParamsDirty() {
+  stereoCardRefParamsDirty = true
 }
 
-function setStereoCardRefParams() {
-  if (stereoCardRef.value)
-    updateStereoCardRefParams(stereoCardRef.value)
+function getStereoCardRefParams() {
+  if (stereoCardRefParamsDirty && stereoCardRef.value) {
+    const { top, left, width, height } = stereoCardRef.value.getBoundingClientRect()
+    stereoCardRefParams = { top, left, width, height }
+    stereoCardRefParamsDirty = false
+  }
+
+  return stereoCardRefParams
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -95,7 +98,7 @@ function onMousemove(e: MouseEvent) {
 
   clearReboundTimer()
 
-  const { top, left, width, height } = stereoCardRefParams
+  const { top, left, width, height } = getStereoCardRefParams()
   if (!width || !height)
     return
 
@@ -221,8 +224,8 @@ onMounted(() => {
     stereoCardRef.value?.addEventListener('mouseout', onMouseout)
   }
 
-  globalThis.addEventListener('resize', setStereoCardRefParams)
-  globalThis.addEventListener('scroll', setStereoCardRefParams)
+  globalThis.addEventListener('resize', markStereoCardRefParamsDirty, { passive: true })
+  globalThis.addEventListener('scroll', markStereoCardRefParamsDirty, { passive: true })
 })
 
 onUnmounted(() => {
@@ -233,8 +236,8 @@ onUnmounted(() => {
   resizeObserver?.disconnect()
   stereoCardRef.value?.removeEventListener('mousemove', onMousemove)
   stereoCardRef.value?.removeEventListener('mouseout', onMouseout)
-  globalThis.removeEventListener('resize', setStereoCardRefParams)
-  globalThis.removeEventListener('scroll', setStereoCardRefParams)
+  globalThis.removeEventListener('resize', markStereoCardRefParamsDirty)
+  globalThis.removeEventListener('scroll', markStereoCardRefParamsDirty)
 })
 </script>
 
